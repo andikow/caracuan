@@ -1,6 +1,5 @@
 import React from 'react';
 import Homepic from './../public/assets/img/homepic.png';
-import './../public/assets/css/home.css'
 
 export default class Home extends React.Component{
 
