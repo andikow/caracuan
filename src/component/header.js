@@ -1,0 +1,30 @@
+import React from 'react';
+import Logo from './../public/assets/img/logo_cover_white.png';
+
+export default class Header extends React.Component{
+
+  render(){
+
+    return(
+    <>
+    <nav className="navbar navbar-expand-lg navbar-light bg-primary ">
+    <div className="col-lg-3 d-flex">
+    <img src={Logo} alt="Logo" height="50px" />
+    </div>
+
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+        </button>
+      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div className="navbar-nav ml-auto">
+          <button class="btn btn-outline-light btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm text-white font-weight-bold"></i></button>
+          <a className="nav-item nav-link active text-white font-weight-bold" href="#" style={{paddingLeft:"20px"}}>Berita <span className="sr-only">(current)</span></a>
+          <a className="nav-item nav-link text-white" href="#"  style={{paddingLeft:"20px"}}>Saham</a>
+          <a className="nav-item nav-link text-white" href="#"  style={{paddingLeft:"20px"}}>Jadi Analis</a>
+        </div>
+      </div>
+    </nav>
+    </>
+    )
+  }
+}
