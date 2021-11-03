@@ -1,21 +1,23 @@
 import React, { Component } from "react";
+import CONFIG from './../public/scripts/globals/config.js';
 
 class Berita extends Component {
+  componentDidMount(){
+    if (typeof(stockdio_events) == "undefined") {
+     let stockdio_events = true;
+     var stockdio_eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+     var stockdio_eventer = window[stockdio_eventMethod];
+     var stockdio_messageEvent = stockdio_eventMethod == "attachEvent" ? "onmessage" : "message";
+     stockdio_eventer(stockdio_messageEvent, function (e) {
+        if (typeof(e.data) != "undefined" && typeof(e.data.method) != "undefined") {
+           eval(e.data.method);
+        }
+     },false);
+  }
+  }
   render() {
     return (
-      <div>
-        <h2>Berita</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Morbi et est vitae sapien hendrerit mattis sit amet sed purus.
-Nunc commodo sapien risus, eget commodo libero molestie vel.
-Donec a tortor tincidunt, lacinia orci eget, feugiat leo.
-Etiam volutpat molestie tempor. Mauris id eros porttitor, hendrerit odio
-eget, laoreet mi. Vestibulum diam erat, scelerisque id eros nec, iaculis
-pulvinar arcu. Mauris vestibulum magna vitae molestie egestas. Vestibulum
-lobortis diam vel mauris rutrum, eget maximus purus lacinia. Sed et tellus
-vel nibh vestibulum pretium non sit amet tortor. Nulla in mattis ligula.
-Curabitur feugiat eros nec odio pretium ullamcorper.</p>
-      </div>
+<iframe id='st_dba6e933ac124354a9b96681b5f2e189' frameBorder='0' scrolling='no' width='100%' height='100%' src={'https://api.stockdio.com/visualization/financial/charts/v1/EconomicNews?app-key='+ CONFIG.KEY + '&language=Indonesian&country=Indonesia&imageWidth=180&palette=Financial-Light&title=Berita&googleFont=true&onload=st_dba6e933ac124354a9b96681b5f2e189'}></iframe>
     );
   }
 }
