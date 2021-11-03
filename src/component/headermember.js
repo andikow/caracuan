@@ -2,7 +2,7 @@ import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
 
-export default class Headercreator extends React.Component{
+export default class Headermember extends React.Component{
 
   render(){
 
