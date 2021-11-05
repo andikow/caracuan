@@ -7,6 +7,7 @@ import JadiAnalis from "./../page/jadianalis.js";
 import Home from './../page/home.js';
 import CariCreator from './../page/caricreator.js';
 import Creator from './../page/creator.js';
+import Footer from './footer.js';
 
 export default class Header extends React.Component{
 
@@ -54,6 +55,7 @@ export default class Header extends React.Component{
       <Route path="/creator" component={Creator}/>
       </div>
       </HashRouter>
+      <Footer />
     </>
     )
   }

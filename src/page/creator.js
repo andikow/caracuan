@@ -34,9 +34,9 @@ export default class Creator extends React.Component{
       <img src={Potobg} alt="Potobg" height="225" width="100%" />
       <div className="row">
         <div className="col py-2">
-            <NavLink to="/beranda"><a className="btn btn-primary text-center mx-2 text-white font-weight-bold" href="#">Beranda</a></NavLink>
-            <NavLink to="/post"><a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#">Post</a></NavLink>
-            <NavLink to="/analisa"><a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#">Analisa</a></NavLink>
+            <NavLink to="/creator/beranda"><a className="btn btn-primary text-center mx-2 text-white font-weight-bold" href="#">Beranda</a></NavLink>
+            <NavLink to="/creator/post"><a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#">Post</a></NavLink>
+            <NavLink to="/creator/analisa"><a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#">Analisa</a></NavLink>
         </div>
         <div className="col py-2" style={{textAlign: 'right'}}>
           <a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#"><i className="fa fa-user-plus"></i> Ikuti</a>
@@ -46,9 +46,9 @@ export default class Creator extends React.Component{
       </div>
       <HashRouter>
       <div className="content">
-      <Route path="/beranda" component={CreatorBeranda}/>
-      <Route path="/post" component={CreatorPost}/>
-      <Route path="/analisa" component={CreatorAnalisa}/>
+      <Route path="/creator/beranda" component={CreatorBeranda}/>
+      <Route path="/creator/post" component={CreatorPost}/>
+      <Route path="/creator/analisa" component={CreatorAnalisa}/>
       </div>
       </HashRouter>
       </div>

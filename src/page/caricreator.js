@@ -21,7 +21,7 @@ export default class CariCreator extends React.Component{
                 </div>
                 <div class="info">
                     <div class="title">
-                      <a href="/#/creator"><h4 className="text-primary">Vandarina Risca</h4></a>
+                      <a href="/#/creator/beranda"><h4 className="text-primary">Vandarina Risca</h4></a>
                     </div>
                     <h5 class="desc">@vandarinarisca</h5>
                     <h5 class="desc">Swing Trader</h5>
