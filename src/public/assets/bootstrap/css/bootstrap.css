@@ -7025,6 +7025,9 @@ button.bg-dark:focus {
 a.text-primary:hover {
   color: #fff !important; }
 
+a i.fa-chevron-circle-down:hover {
+  color: #fff !important; }
+
 .text-secondary {
   color: #B0B0B0 !important; }
 

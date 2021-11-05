@@ -37,7 +37,7 @@ export default class Creator extends React.Component{
         <div className="col py-2" style={{textAlign: 'right'}}>
           <a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#"><i className="fa fa-user-plus"></i> Ikuti</a>
           <a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#"><i className="fa fa-share"></i> Bagikan</a>
-          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i style={{color:"#BE1E2D"}} className="fa fa-exclamation-triangle"></i></a>
+          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i></a>
         </div>
       </div>
       <div className="row">
