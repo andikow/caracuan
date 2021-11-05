@@ -5,6 +5,8 @@ import Berita from "./../page/berita.js";
 import Saham from "./../page/saham.js";
 import JadiAnalis from "./../page/jadianalis.js";
 import Home from './../page/home.js';
+import CariCreator from './../page/caricreator.js';
+import Creator from './../page/creator.js';
 
 export default class Header extends React.Component{
 
@@ -23,7 +25,7 @@ export default class Header extends React.Component{
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ml-auto">
             <button class="btn btn-outline-light btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm text-white font-weight-bold"></i></button>
-            <NavLink to="/explore">
+            <NavLink to="/cari">
               <a className="nav-item nav-link active text-white font-weight-bold" href="" style={{paddingLeft:"20px"}}>Cari Kreator<span className="sr-only">(current)</span>
               </a>
             </NavLink>
@@ -45,9 +47,11 @@ export default class Header extends React.Component{
       <HashRouter>
       <div className="content">
       <Route exact path="/" component={Home}/>
+      <Route path="/cari" component={CariCreator}/>
       <Route path="/berita" component={Berita}/>
       <Route path="/saham" component={Saham}/>
       <Route path="/jadianalis" component={JadiAnalis}/>
+      <Route path="/creator" component={Creator}/>
       </div>
       </HashRouter>
     </>
