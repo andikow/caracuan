@@ -5,13 +5,13 @@ import './App.css';
 import  './public/assets/fontawesome/css/all.css';
 import './public/assets/bootstrap/css/bootstrap.css';
 import Headercreator from './component/headercreator.js';
-import Creatoranalisa from './page/creatoranalisa.js';
+import Creatorpost from './page/creatorpost.js';
 
 function App() {
   return (
     <HashRouter>
       <Headercreator />
-      <Creatoranalisa />
+      <Creatorpost />
     </HashRouter>
   );
 }
