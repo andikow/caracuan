@@ -72,7 +72,7 @@ class Sidebar extends Component {
                   </ul>
               </nav>
               <HashRouter>
-              <Route path="/dashboard" component={Dashboardcreator}/>
+              <Route path="/" component={Dashboardcreator}/>
               <Route path="/saldo" component={Saldo}/>
               <Route path="/post" component={Post}/>
               <Route path="/analisasaya" component={AnalisaSaya}/>
