@@ -10,7 +10,7 @@ import Sidebar from './component/sidebar.js';
 function App() {
   return (
     <HashRouter>
-      <Headercreator />
+    <Headercreator />
       <Sidebar />
     </HashRouter>
   );
