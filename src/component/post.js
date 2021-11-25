@@ -1,20 +1,41 @@
 import React, { Component } from "react";
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import './../public/assets/css/react-draft-wysiwyg.css';
 
 class Saldo extends Component {
+  constructor(props) {
+   super(props);
+   this.state = {
+     editorState: EditorState.createEmpty(),
+   };
+ }
+
+ onEditorStateChange: Function = (editorState) => {
+   this.setState({
+     editorState,
+   });
+ };
+
   render() {
+    const { editorState } = this.state;
     return (
       <div>
-        <h2>Home</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- Morbi et est vitae sapien hendrerit mattis sit amet sed purus.
-Nunc commodo sapien risus, eget commodo libero molestie vel.
-Donec a tortor tincidunt, lacinia orci eget, feugiat leo.
-Etiam volutpat molestie tempor. Mauris id eros porttitor, hendrerit odio
-eget, laoreet mi. Vestibulum diam erat, scelerisque id eros nec, iaculis
-pulvinar arcu. Mauris vestibulum magna vitae molestie egestas. Vestibulum
-lobortis diam vel mauris rutrum, eget maximus purus lacinia. Sed et tellus
-vel nibh vestibulum pretium non sit amet tortor. Nulla in mattis ligula.
-Curabitur feugiat eros nec odio pretium ullamcorper.</p>
+        <h2 class="m-3">Create Post</h2>
+        <h3 class="m-3">Title</h3>
+        <div class="m-3">
+          <input class="form-control" type="text" placeholder="Judul Post" aria-label="post-title" />
+        </div>
+        <h3 class="m-3">Description</h3>
+        <div class="m-3 border">
+          <Editor
+          editorState={editorState}
+          wrapperClassName="demo-wrapper"
+          editorClassName="demo-editor"
+          onEditorStateChange={this.onEditorStateChange}
+          />
+        </div>
+        <button type="button" class="m-3 btn btn-primary">Create Post</button>
       </div>
     );
   }
