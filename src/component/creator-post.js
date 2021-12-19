@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-
+import { Route, NavLink, HashRouter } from "react-router-dom";
 import Poto from './../public/assets/img/creator.png';
 import Poto1 from './../public/assets/img/creatorpost1.jpg';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
+import DetailPost from './detail-post.js';
 
 class CreatorPost extends Component {
   render() {
@@ -26,7 +27,7 @@ class CreatorPost extends Component {
                           <i className="far fa-comments-alt text-danger" style={{fontSize:"13px"}}> <span className="text-primary"> 12</span></i>
                         </div>
                         <div class="col">
-                          <button class="btn btn-info btn-sm">Free</button>
+                          <NavLink to="/creator/post/1"><button class="btn btn-info btn-sm">Free</button></NavLink>
                         </div>
                       </div>
 
@@ -50,7 +51,7 @@ class CreatorPost extends Component {
                               <i className="far fa-comments-alt text-danger" style={{fontSize:"13px"}}> <span className="text-primary"> 12</span></i>
                             </div>
                             <div class="col">
-                              <button class="btn btn-info btn-sm">Free</button>
+                              <NavLink to="/#/creator/post/1"><button class="btn btn-info btn-sm">Free</button></NavLink>
                             </div>
                           </div>
 
@@ -106,6 +107,9 @@ class CreatorPost extends Component {
                             </div>
                         </div>
 
+                        <HashRouter>
+                          <Route path="/creator/post/1" component={DetailPost}/>
+                        </HashRouter>
       </div>
     );
   }

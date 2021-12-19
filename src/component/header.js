@@ -8,6 +8,7 @@ import Home from './../page/home.js';
 import CariCreator from './../page/caricreator.js';
 import Creator from './../page/creator.js';
 import Footer from './footer.js';
+import DetailPost from './detail-post.js';
 
 export default class Header extends React.Component{
 

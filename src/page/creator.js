@@ -5,6 +5,7 @@ import Potobg from './../public/assets/img/bgcreator.jpg';
 import CreatorBeranda from './../component/creator-beranda.js';
 import CreatorPost from './../component/creator-post.js';
 import CreatorAnalisa from './../component/creator-analisa.js';
+import DetailPost from './../component/detail-post.js';
 
 export default class Creator extends React.Component{
 
@@ -34,9 +35,18 @@ export default class Creator extends React.Component{
       <img src={Potobg} alt="Potobg" height="225" width="100%" />
       <div className="row">
         <div className="col py-2">
-            <NavLink to="/creator/beranda"><a className="btn btn-primary text-center mx-2 text-white font-weight-bold" href="#">Beranda</a></NavLink>
-            <NavLink to="/creator/post"><a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#">Post</a></NavLink>
-            <NavLink to="/creator/analisa"><a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#">Analisa</a></NavLink>
+
+              <NavLink activeClassName="active" to="/creator/beranda"> <a className="btn btn-outline-primary text-center font-weight-bold" href="#">
+              <input type="radio" name="options" id="option1"/> Beranda
+              </a></NavLink>
+              <NavLink activeClassName="active" to="/creator/post"><a className="btn btn-outline-primary text-center mx-2 font-weight-bold" href="#">
+                <input type="radio" name="options" id="option1"/> Post
+              </a></NavLink>
+              <NavLink activeClassName="active" to="/creator/analisa"><a className="btn btn-outline-primary text-center font-weight-bold" href="#">
+                  <input type="radio" name="options" id="option1"/> Analisa
+              </a></NavLink>
+
+
         </div>
         <div className="col py-2" style={{textAlign: 'right'}}>
           <a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#"><i className="fa fa-user-plus"></i> Ikuti</a>
@@ -47,8 +57,9 @@ export default class Creator extends React.Component{
       <HashRouter>
       <div className="content">
       <Route path="/creator/beranda" component={CreatorBeranda}/>
-      <Route path="/creator/post" component={CreatorPost}/>
+      <Route exact path="/creator/post" component={CreatorPost}/>
       <Route path="/creator/analisa" component={CreatorAnalisa}/>
+      <Route exact path="/creator/post/1" component={DetailPost}/>
       </div>
       </HashRouter>
       </div>

@@ -10,8 +10,7 @@ import DashboardCreator from './component/dashboardcreator.js';
 function App() {
   return (
     <HashRouter>
-      <HeaderCreator />
-      <Sidebar />
+      <Header />
     </HashRouter>
   );
 }
