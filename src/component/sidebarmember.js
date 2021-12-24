@@ -15,7 +15,7 @@ class Sidebarmember extends Component {
               <nav id="sidebar">
 
                   <ul class="list-unstyled components">
-                    <NavLink to="/">
+                    <NavLink to="/akademi">
                       <li class ="active">
                           <a href="#">Akademi</a>
                       </li>
@@ -45,7 +45,7 @@ class Sidebarmember extends Component {
                   </ul>
               </nav>
               <HashRouter>
-              <Route exact path="/" component={Akademi}/>
+              <Route exact path="/akademi" component={Akademi}/>
               <Route path="/mengikuti" component={Mengikuti}/>
               <Route path="/transaksi" component={Transaksi}/>
               </HashRouter>
