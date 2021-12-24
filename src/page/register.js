@@ -11,7 +11,7 @@ class Register extends Component {
           </div>
           <div class="col-md-6 col-sm-12">
             <div class="row d-flex justify-content-end my-4 mx-4">
-              <a className="btn btn-outline-primary text-primary text-center" href="#">Masuk</a>
+              <a className="btn btn-outline-primary text-primary text-center" href="/#/login/">Masuk</a>
             </div>
               <div class="row d-flex align-items-center justify-content-center">
               <form>
@@ -38,7 +38,7 @@ class Register extends Component {
                   </div>
                   <a className="btn btn-primary text-center mx-auto text-white font-weight-bold" href="#" style={{width:"300px"}}>Daftar</a>
                   <div class="my-3">
-                     <center><a className="text-secondary" style={{fontSize:13}} href="#" >Sudah punya akun? Masuk</a></center>
+                     <center><a className="text-secondary" style={{fontSize:13}} href="/#/login/" >Sudah punya akun? Masuk</a></center>
                   </div>
 
 

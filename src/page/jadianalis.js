@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 
+import Header from './../component/header.js';
+import Footer from './../component/footer.js';
+
 class JadiAnalis extends Component {
   render() {
     return (
+      <>
+      <Header/>
       <div>
         <h2>JadiAnalis</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -16,6 +21,8 @@ lobortis diam vel mauris rutrum, eget maximus purus lacinia. Sed et tellus
 vel nibh vestibulum pretium non sit amet tortor. Nulla in mattis ligula.
 Curabitur feugiat eros nec odio pretium ullamcorper.</p>
       </div>
+      <Footer/>
+      </>
     );
   }
 }

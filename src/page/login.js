@@ -11,7 +11,7 @@ class Login extends Component {
           </div>
           <div class="col-md-6 col-sm-12">
             <div class="row d-flex justify-content-end my-4 mx-4">
-              <a className="btn btn-outline-primary text-primary text-center" href="#">Daftar</a>
+              <a className="btn btn-outline-primary text-primary text-center" href="/#/register/">Daftar</a>
             </div>
               <div class="row d-flex align-items-center justify-content-center">
               <form>

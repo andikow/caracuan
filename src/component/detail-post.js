@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Route, NavLink, HashRouter } from "react-router-dom";
 
 class DetailPost extends Component {
   render() {
@@ -55,7 +56,7 @@ class DetailPost extends Component {
                       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 
                         <div class="list-group">
-                          <a href="#" class="list-group-item list-group-item-action border">
+                          <a href="/#/andika/1" class="list-group-item list-group-item-action border">
                             <div class="row justify-content-between">
                               <div class="col">
                                 1. Apa itu Trendline
