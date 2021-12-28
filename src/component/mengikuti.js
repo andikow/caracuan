@@ -15,21 +15,23 @@ class Mengikuti extends Component {
   render() {
     return (
     <>
-      <div>
-        <h2 className="mx-4 my-4 text-primary">Mengikuti</h2>
-        <h4  className="mx-4 my-4 text-primary">Menampilkan</h4>
-        <div class="dropdown">
+    <div class="container">
+      <div className="row">
+        <h2 className="col-12 m-1 text-primary">Mengikuti</h2>
+        <h4  className="col-auto m-1 text-primary">Menampilkan</h4>
+        <div class="dropdown col">
 
-        	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        		30 <i className="fa fa-chevron-down"></i>
-        	</button>
-        	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        		<a class="dropdown-item">30</a>
-        		<a class="dropdown-item">60</a>
-        		<a class="dropdown-item">100</a>
-        	</div>
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            30 <i className="fa fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item">30</a>
+            <a class="dropdown-item">60</a>
+            <a class="dropdown-item">100</a>
+          </div>
         </div>
       </div>
+    </div>
     </>
     )
   }
