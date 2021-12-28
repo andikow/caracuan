@@ -1,6 +1,9 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Potobg from './../public/assets/img/bgcreator.jpg';
+
+import Header from './../component/header.js';
+import Footer from './../component/footer.js';
 import "./../public/assets/css/caricreator.css";
 
 export default class CariCreator extends React.Component{
@@ -9,8 +12,9 @@ export default class CariCreator extends React.Component{
 
     return(
     <>
+    <Header/>
       <h1 class="text-primary py-2" style={{textAlign:"center"}}>Cari Analis</h1>
-    <div class="row py-4 justify-content-center">
+    <div class="row py-4 justify-content-center m-0">
 		<div class="col-lg-3 col-sm-6 mx-4">
             <div class="card hovercard">
                 <div class="cardheader">
@@ -181,6 +185,7 @@ export default class CariCreator extends React.Component{
                             </div>
 
 	</div>
+  <Footer/>
     </>
     )
   }

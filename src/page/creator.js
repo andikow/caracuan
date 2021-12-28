@@ -1,5 +1,9 @@
 import React from 'react';
 import { Route, NavLink, HashRouter } from "react-router-dom";
+
+import Header from './../component/header.js';
+import Footer from './../component/footer.js';
+
 import Poto from './../public/assets/img/creator.png';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import CreatorBeranda from './../component/creator-beranda.js';
@@ -13,6 +17,7 @@ export default class Creator extends React.Component{
 
     return(
     <>
+    <Header/>
       <div className="row"  style={{paddingLeft:"70px", paddingRight:"70px", paddingTop:"40px", paddingBottom:"40px"}}>
       <div className="aside pb-4 bg-light col-xs-12 col-sm-4 col-md-3 text-primary">
         <img src={Poto} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
@@ -64,6 +69,7 @@ export default class Creator extends React.Component{
       </HashRouter>
       </div>
       </div>
+      <Footer/>
     </>
     )
   }

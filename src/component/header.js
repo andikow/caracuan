@@ -1,14 +1,10 @@
 import React from 'react';
 import Logo from './../public/assets/img/logo_cover_white.png';
 import { Route, NavLink, HashRouter } from "react-router-dom";
-import Berita from "./../page/berita.js";
-import Saham from "./../page/saham.js";
-import JadiAnalis from "./../page/jadianalis.js";
+
 import Home from './../page/home.js';
-import CariCreator from './../page/caricreator.js';
-import Creator from './../page/creator.js';
-import Footer from './footer.js';
-import DetailPost from './detail-post.js';
+
+import Login from './../page/login.js';
 
 export default class Header extends React.Component{
 
@@ -46,17 +42,6 @@ export default class Header extends React.Component{
           </div>
         </div>
       </nav>
-      <HashRouter>
-      <div className="content">
-      <Route exact path="/" component={Home}/>
-      <Route path="/cari" component={CariCreator}/>
-      <Route path="/berita" component={Berita}/>
-      <Route path="/saham" component={Saham}/>
-      <Route path="/jadianalis" component={JadiAnalis}/>
-      <Route path="/creator" component={Creator}/>
-      </div>
-      </HashRouter>
-      <Footer />
     </>
     )
   }
