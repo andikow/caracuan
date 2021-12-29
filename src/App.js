@@ -18,20 +18,14 @@ import DetailPost from './component/detail-post.js';
 import Login from './page/login.js';
 import Register from './page/register.js'
 
+import HeaderMember from './component/headermember.js';
 import Sidebarmember from './component/sidebarmember.js';
 
 function App() {
   return (
     <HashRouter>
-    <Route exact path="/" component={Home}/>
-    <Route path="/cari" component={CariCreator}/>
-    <Route path="/berita" component={Berita}/>
-    <Route path="/saham" component={Saham}/>
-    <Route path="/jadianalis" component={JadiAnalis}/>
-    <Route path="/creator" component={Creator}/>
-    <Route path="/andika/1" component={MainPost}/>
-    <Route path="/login" component={Login}/>
-    <Route path="/register" component={Register}/>
+      <HeaderMember/>
+      <Sidebarmember/>
     </HashRouter>
   );
 }
