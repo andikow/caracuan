@@ -21,11 +21,22 @@ import Register from './page/register.js'
 import HeaderMember from './component/headermember.js';
 import Sidebarmember from './component/sidebarmember.js';
 
+import Headercreator from './component/headercreator.js';
+import Sidebar from './component/sidebar.js';
+
 function App() {
   return (
     <HashRouter>
-      <HeaderMember/>
-      <Sidebarmember/>
+    <Route exact path="/" component={Home}/>
+    <Route path="/cari" component={CariCreator}/>
+    <Route path="/berita" component={Berita}/>
+    <Route path="/saham" component={Saham}/>
+    <Route path="/jadianalis" component={JadiAnalis}/>
+    <Route path="/creator" component={Creator}/>
+    <Route path="/andika/1" component={MainPost}/>
+    <Route path="/login" component={Login}/>
+    <Route path="/register" component={Register}/>
+
     </HashRouter>
   );
 }

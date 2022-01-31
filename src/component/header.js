@@ -35,7 +35,7 @@ export default class Header extends React.Component{
               <a className="nav-item nav-link text-white" href="" style={{paddingLeft:"20px"}}>Saham
               </a>
             </NavLink>
-            <NavLink to="/jadianalis">
+            <NavLink to="/login">
               <a className="nav-item nav-link text-white" href="" style={{paddingLeft:"20px"}}>Jadi Analis
               </a>
             </NavLink>
