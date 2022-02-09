@@ -5,6 +5,7 @@ import { Route, NavLink, HashRouter } from "react-router-dom";
 import Akademi from './akademi.js';
 import Mengikuti from './mengikuti.js';
 import Transaksi from './transaksi.js';
+import Pengaturan from './pengaturan.js';
 
 class Sidebarmember extends Component {
 
@@ -30,9 +31,11 @@ class Sidebarmember extends Component {
                         <a href="#">Transaksi</a>
                       </li>
                     </NavLink>
+                    <NavLink to="/pengaturan">
                     <li>
                       <a href="#">Pengaturan</a>
                     </li>
+                    </NavLink>
                   </ul>
 
                   <ul class="list-unstyled CTAs">
@@ -48,6 +51,7 @@ class Sidebarmember extends Component {
               <Route exact path="/akademi" component={Akademi}/>
               <Route path="/mengikuti" component={Mengikuti}/>
               <Route path="/transaksi" component={Transaksi}/>
+              <Route path="/pengaturan" component={Pengaturan}/>
               </HashRouter>
 
           </div>
