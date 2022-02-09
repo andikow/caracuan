@@ -6,32 +6,37 @@ const pool = require('./db.js');
 router.get('/', async function(req,res){
     try {
         const sqlQuery = 'SELECT * FROM following';
-        const rows = await pool.query(sqlQuery, req.params.id);
+        const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
         res.status(400).send(error.message)
     }
 
 
-
-    res.status(200).json({id:req.params.id})
 });
-//
-// router.post('/register', async function(req,res) {
-//     try {
-//         const {email, password} = req.body;
-//
-//         const encryptedPassword = await bcrypt.hash(password,10)
-//
-//         const sqlQuery = 'INSERT INTO user (email, password) VALUES (?,?)';
-//         const result = await pool.query(sqlQuery, [email, encryptedPassword]);
-//
-//         res.status(200).json({userId: result.insertId});
-//     } catch (error) {
-//         res.status(400).send(error.message)
-//     }
-// })
-//
+
+router.post('/register', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `INSERT INTO member VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${data.password}','0')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.post('/login', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `SELECT Password FROM member	WHERE Email = "${data.email}"`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
 // router.post('/login', async function(req,res) {
 //     try {
 //         const {id,password} = req.body;
