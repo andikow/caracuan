@@ -1,18 +1,33 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const app = express();
+const bodyParser = require('body-parser')
 
+// Allow Origin Access
+app.use((req, res, next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, PATCH, OPTIONS')
+    if(req.method == 'OPTIONS'){
+        res.setHeader('Access-Control-Allow-Headers', 'Accept, Content-Type, X-Requested-With, Authorization')
+        return res.status(200).json({})
+    }
+    next()
+})
+// End Allow Origin Access
+
+/**
+* Middleware
+*/
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+
+const dotenv = require('dotenv');
 dotenv.config();
 
 const PORT = process.env.PORT || '3000';
 
-const app = express();
 
 
-/**
- * Middleware
- */
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+
 
 /**
  * Routes
