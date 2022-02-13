@@ -27,10 +27,7 @@ import Sidebar from './component/sidebar.js';
 function App() {
   return (
     <HashRouter>
-    <HeaderMember/>
-    <Sidebarmember/>
-    {/*
-      <Route exact path="/" component={Home}/>
+    {/*<Route exact path="/" component={Home}/>
     <Route path="/cari" component={CariCreator}/>
     <Route path="/berita" component={Berita}/>
     <Route path="/saham" component={Saham}/>
@@ -38,10 +35,9 @@ function App() {
     <Route path="/creator" component={Creator}/>
     <Route path="/andika/1" component={MainPost}/>
     <Route path="/login" component={Login}/>
-    <Route path="/register" component={Register}/>
+    <Route path="/register" component={Register}/>*/}
     <Headercreator/>
     <Sidebar/>
-    */}
 
     </HashRouter>
   );
