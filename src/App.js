@@ -36,8 +36,7 @@ function App() {
     <Route path="/andika/1" component={MainPost}/>
     <Route path="/login" component={Login}/>
     <Route path="/register" component={Register}/>*/}
-    <HeaderMember />
-    <Sidebarmember />
+    <Creator />
 
     </HashRouter>
   );
