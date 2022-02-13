@@ -19,25 +19,33 @@ class Pengaturan extends Component {
           </div>
           <div class="col-8">
             <div class="form-group">
-               <label class="text-primary">Nama Lengkap</label>
-               <input  type="text" class="form-control my-2" placeholder="Nama Lengkap" />
+               <label class="text-primary">Nama</label>
+               <input  type="text" class="form-control my-2" placeholder="Vandarina Risca" />
             </div>
             <div class="form-group">
                <label class="text-primary">Tanggal Lahir</label>
-               <input  type="date" class="form-control my-2"  />
+               <input  type="date" class="form-control my-2" />
             </div>
             <div class="form-group">
                <label class="text-primary">No. Handphone</label>
-               <input type="text" class="form-control my-2" placeholder="No. Handphone" />
+               <input type="text" class="form-control my-2" placeholder="085624742052" />
             </div>
             <div class="form-group">
                <label class="text-primary">Email</label>
-               <input type="text" class="form-control my-2" placeholder="Email" />
+               <input type="text" class="form-control my-2" placeholder="vandarina.risca@gmail.com" />
             </div>
-            <div class="form-group">
-               <label class="text-primary">Password</label>
+            <div class="pt-4 form-group">
+              <p class="pt-4 text-primary">Ganti Password</p>
+               <label class="text-primary">Password Baru</label>
                <input type="password" class="form-control my-2" placeholder="Password" />
+               <label class="text-primary">Konfirmasi Password Baru</label>
+               <input type="password" class="form-control my-2" placeholder="Password" />
+               <p className="text-primary" style={{fontSize:14}}>Lupa Password?</p>
             </div>
+            <div class="d-flex my-2">
+              <button className="btn btn-primary text-center text-white ml-auto font-weight-bold" href="#" style={{width:"150px"}}>Simpan</button>
+            </div>
+
           </div>
         </div>
       </div>
