@@ -8,21 +8,49 @@ import './../public/assets/css/react-draft-wysiwyg.css';
 class Post extends Component {
   componentDidMount(){
     $('input[name="jenisPostingan"]').change(function(){
- $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ?true:false);
-});
+      $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ? true:false);
+    });
   }
   constructor(props) {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
+      judul:'',
+      deskripsi:'',
+      linkvideo:'',
+      jenispostingan:false,
+      price:''
     };
   }
 
   onEditorStateChange: Function = (editorState) => {
     this.setState({
       editorState,
+      deskripsi: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
+
+  submitpost(){
+    var data = {
+      judul:this.state.name,
+      deskripsi:this.state.deskripsi,
+      linkVideo:this.state.linkVideo,
+      jenisPostingan:this.state.jenisPostingan,
+      harga:this.state.harga
+    }    
+    fetch('http://localhost:3000/user/submitpost',
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    }
+  ).then(res => res.json())
+  .then(alert('Postingan berhasil ditayangkan!'))
+  .then(this.props.history.push('/login'))
+}
 
   render() {
     const { editorState } = this.state;
@@ -32,7 +60,7 @@ class Post extends Component {
         <h2 class = "col-12 my-2">Buat Postingan</h2>
         <h3 class = "col-12 my-2">Judul</h3>
         <div class="col-12 my-2">
-          <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" />
+          <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
         </div>
         <h3 class="col-12 my-2">Deskripsi</h3>
         <div class="col-12 my-2">
@@ -64,7 +92,7 @@ class Post extends Component {
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-primary my-2">Tayangkan</button>
+        <button type="button" class="btn btn-primary my-2" onClick={() => this.submitpost()}>Tayangkan</button>
       </div>
       );
     }

@@ -16,22 +16,22 @@ class Sidebarmember extends Component {
               <nav id="sidebar">
 
                   <ul class="list-unstyled components">
-                    <NavLink to="/akademi">
+                    <NavLink to="/dashboard/akademi">
                       <li class ="active">
                           <a href="#">Akademi</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/mengikuti">
+                    <NavLink to="/dashboard/mengikuti">
                       <li>
                         <a href="#">Mengikuti</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/transaksi">
+                    <NavLink to="/dashboard/transaksi">
                       <li>
                         <a href="#">Transaksi</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/pengaturan">
+                    <NavLink to="/dashboard/pengaturan">
                     <li>
                       <a href="#">Pengaturan</a>
                     </li>
@@ -48,10 +48,10 @@ class Sidebarmember extends Component {
                   </ul>
               </nav>
               <HashRouter>
-              <Route exact path="/akademi" component={Akademi}/>
-              <Route path="/mengikuti" component={Mengikuti}/>
-              <Route path="/transaksi" component={Transaksi}/>
-              <Route path="/pengaturan" component={Pengaturan}/>
+              <Route exact path="/dashboard/akademi" component={Akademi}/>
+              <Route path="/dashboard/mengikuti" component={Mengikuti}/>
+              <Route path="/dashboard/transaksi" component={Transaksi}/>
+              <Route path="/dashboard/pengaturan" component={Pengaturan}/>
               </HashRouter>
 
           </div>

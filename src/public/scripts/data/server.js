@@ -1,6 +1,11 @@
 const express = require('express');
-const app = express();
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const bodyParser = require('body-parser')
+
+const app = express();
+dotenv.config();
 
 // Allow Origin Access
 app.use((req, res, next)=>{
@@ -17,17 +22,11 @@ app.use((req, res, next)=>{
 /**
 * Middleware
 */
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-const dotenv = require('dotenv');
-dotenv.config();
-
 const PORT = process.env.PORT || '3000';
-
-
-
-
 
 /**
  * Routes

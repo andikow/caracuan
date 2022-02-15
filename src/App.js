@@ -1,7 +1,8 @@
-import { Route, NavLink, HashRouter } from "react-router-dom";
+import { Route, HashRouter } from "react-router-dom";
 import './App.css';
 import  './public/assets/fontawesome/css/all.css';
 import './public/assets/bootstrap/css/bootstrap.css';
+
 import Header from './component/header.js';
 import Footer from './component/footer.js';
 
@@ -27,10 +28,7 @@ import Sidebar from './component/sidebar.js';
 function App() {
   return (
     <HashRouter>
-    <HeaderMember/>
-    <Sidebarmember/>
-    {/*
-      <Route exact path="/" component={Home}/>
+    <Route exact path="/" component={Home}/>
     <Route path="/cari" component={CariCreator}/>
     <Route path="/berita" component={Berita}/>
     <Route path="/saham" component={Saham}/>
@@ -39,6 +37,9 @@ function App() {
     <Route path="/andika/1" component={MainPost}/>
     <Route path="/login" component={Login}/>
     <Route path="/register" component={Register}/>
+    <Route path ="/dashboard" component={HeaderMember}/>
+    <Route path ="/dashboard" component={Sidebarmember}/>
+    {/*
     <Headercreator/>
     <Sidebar/>
     */}

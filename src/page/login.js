@@ -6,7 +6,8 @@ class Login extends Component {
      super();
      this.state = {
        email:'',
-       password:''
+       password:'',
+       msg:''
      }
   }
 
@@ -16,18 +17,28 @@ class Login extends Component {
       password:this.state.password
     }
     fetch('http://localhost:3000/user/login',
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    }
-  ).then(res => res.json())
-  .then(response => {console.log(response[0].Password + 'aa')})
-  .then(alert(`Akun berhasil dibuat!`))
-  .then(this.props.history.push('/register'))
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+    .then(res=>{
+      if(!res.ok){
+        return res.json();
+      }
+      this.props.history.push('/dashboard')
+    })
+    .then(res=>{
+      if(res){
+        throw res;
+      }
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
 }
 
   render() {
@@ -43,7 +54,8 @@ class Login extends Component {
             </div>
               <div class="row d-flex align-items-center justify-content-center">
               <form>
-                <h2 class="my-4 text-center text-primary">Masuk</h2>
+              <h6 class="m-0 text-center text-danger">{this.state.msg}</h6>
+                <h2 class="mb-4 text-center text-primary">Masuk</h2>
                   <div class="form-group">
                      <label class="text-primary">Email</label>
                      <input onChange={ev => this.setState({ email: ev.target.value })} type="text" class="form-control my-2" placeholder="Email" />
@@ -53,9 +65,9 @@ class Login extends Component {
                      <input onChange={ev => this.setState({ password: ev.target.value })} type="password" class="form-control my-2" placeholder="Password" />
                   </div>
                   <button className="btn btn-primary text-center mx-auto text-white font-weight-bold" href="#" style={{width:"300px"}}
-                    onClick={() => this.login()}>Masuk</button>
+                    onClick={(e) => { e.preventDefault(); this.login()}}>Masuk</button>
                   <div class="my-3">
-                     <center><a className="text-secondary" style={{fontSize:13}} href="#" >Lupa password?</a></center>
+                     <center><a className="text-secondary" style={{fontSize:13}}>Lupa password?</a></center>
                   </div>
 
 
