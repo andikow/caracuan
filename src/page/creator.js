@@ -45,7 +45,7 @@ export default class Creator extends React.Component{
               <input type="radio" name="options" id="option1"/> Beranda
               </a></NavLink>
               <NavLink activeClassName="active" to="/creator/post"><a className="btn btn-outline-primary text-center mx-2 font-weight-bold" href="#">
-                <input type="radio" name="options" id="option1"/> Post
+                <input type="radio" name="options" id="option1"/> Akademi
               </a></NavLink>
               <NavLink activeClassName="active" to="/creator/analisa"><a className="btn btn-outline-primary text-center font-weight-bold" href="#">
                   <input type="radio" name="options" id="option1"/> Analisa
@@ -56,7 +56,7 @@ export default class Creator extends React.Component{
         <div className="col py-2" style={{textAlign: 'right'}}>
           <a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#"><i className="fa fa-user-plus"></i> Ikuti</a>
           <a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#"><i className="fa fa-share"></i> Bagikan</a>
-          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i></a>
+          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i> Laporkan</a>
         </div>
       </div>
       <HashRouter>
