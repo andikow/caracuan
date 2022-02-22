@@ -9,19 +9,16 @@ dotenv.config();
 
 // Allow Origin Access
 app.use((req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, PATCH, OPTIONS')
-    if(req.method == 'OPTIONS'){
-        res.setHeader('Access-Control-Allow-Headers', 'Accept, Content-Type, X-Requested-With, Authorization')
-        return res.status(200).json({})
-    }
-    next()
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+next();
 })
 // End Allow Origin Access
 
 /**
 * Middleware
 */
+app.use(cors({ credentials:true, origin:'http://localhost:3001' }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));

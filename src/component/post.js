@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import $ from 'jquery';
+import jwt_decode from 'jwt-decode';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
@@ -10,11 +11,39 @@ class Post extends Component {
     $('input[name="jenisPostingan"]').change(function(){
       $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ? true:false);
     });
+    fetch('http://localhost:3000/user/token',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        memberID: decoded.memberID,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push('/login')
+    })
   }
+
   constructor(props) {
     super(props);
     this.state = {
+      token:'',
       editorState: EditorState.createEmpty(),
+      memberID:'',
       judul:'',
       deskripsi:'',
       linkvideo:'',
@@ -32,12 +61,13 @@ class Post extends Component {
 
   submitpost(){
     var data = {
-      judul:this.state.name,
+      judul:this.state.judul,
       deskripsi:this.state.deskripsi,
-      linkVideo:this.state.linkVideo,
-      jenisPostingan:this.state.jenisPostingan,
-      harga:this.state.harga
-    }    
+      linkvideo:this.state.linkvideo,
+      jenispostingan:this.state.jenispostingan,
+      harga:this.state.harga,
+      memberID:this.state.memberID
+    }
     fetch('http://localhost:3000/user/submitpost',
     {
       method: 'POST',
@@ -77,18 +107,18 @@ class Post extends Component {
           />*/}
           <h3 class = "col-12 my-2">Link Video</h3>
           <div class="col-12 my-2">
-            <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" />
+            <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
           </div>
           <h3 class = "col-12 my-2">Jenis Postingan</h3>
           <div class="col-12 my-2">
             <div class="form-check form-check-inline">
-              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis"/>
+              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
               <label class="form-check-label" for="opsiGratis">Gratis</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar"/>
+              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
               <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
-              <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" aria-label="post-title" disabled/>
+              <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" aria-label="post-title" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
             </div>
           </div>
         </div>

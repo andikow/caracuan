@@ -3,9 +3,6 @@ import './App.css';
 import  './public/assets/fontawesome/css/all.css';
 import './public/assets/bootstrap/css/bootstrap.css';
 
-import Header from './component/header.js';
-import Footer from './component/footer.js';
-
 import Berita from "./page/berita.js";
 import Saham from "./page/saham.js";
 import JadiAnalis from "./page/jadianalis.js";
@@ -14,7 +11,6 @@ import Home from './page/home.js';
 import CariCreator from './page/caricreator.js';
 import Creator from './page/creator.js';
 import MainPost from './page/mainpost.js';
-import DetailPost from './component/detail-post.js';
 
 import Login from './page/login.js';
 import Register from './page/register.js'
@@ -39,11 +35,8 @@ function App() {
     <Route path="/register" component={Register}/>
     <Route path ="/dashboard" component={HeaderMember}/>
     <Route path ="/dashboard" component={Sidebarmember}/>
-    {/*
-    <Headercreator/>
-    <Sidebar/>
-    */}
-
+    <Route path ="/dashboardcreator" component ={Headercreator}/>
+    <Route path ="/dashboardcreator" component ={Sidebar}/>
     </HashRouter>
   );
 }

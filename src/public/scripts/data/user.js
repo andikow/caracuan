@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   if(token == null) return res.sendStatus(401);
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if(err) return res.sendStatus(403);
-    req.email = decoded.email;
+    req.Email = decoded.Email;
     next();
   })
 }
@@ -56,11 +56,12 @@ router.post('/login', async function (req,res){
       const refreshToken = jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,{
           expiresIn: '1d'
       });
+      console.log("abc");
       const sqlQueryToken = `UPDATE member SET refresh_token = "${refreshToken}" WHERE memberId = "${userId}"`;
       await pool.query(sqlQueryToken);
       res.cookie('refreshToken', refreshToken,{
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000
+          maxAge: 24 * 60 * 60 * 1000,
       });
       res.json({ accessToken });
     } catch (error) {
@@ -71,16 +72,15 @@ router.post('/login', async function (req,res){
 router.get('/token', async function(req,res){
     try {
         const refreshToken = req.cookies.refreshToken;
-        if(!refreshToken) return res.sendStatus(401);
         const sqlQuery = `SELECT * FROM member WHERE refresh_token = "${refreshToken}"`;
         const rows = await pool.query(sqlQuery);
         if(!rows[0]) return res.sendStatus(403);
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if(err) return res.sendStatus(403);
-            const userId = rows[0].memberID;
+            const memberID = rows[0].memberID;
             const name = rows[0].Name;
             const email = rows[0].Email;
-            const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET,{
+            const accessToken = jwt.sign({memberID, name, email}, process.env.ACCESS_TOKEN_SECRET,{
                 expiresIn: '15s'
             });
             res.json({ accessToken });
@@ -113,7 +113,7 @@ router.delete('/logout', async function(req,res){
 router.post('/submitpost', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO posts VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${data.password}','0')`;
+      const sqlQuery = `INSERT INTO postsdetail VALUES ('','${data.judul}','${data.deskripsi}','${data.linkvideo}','${data.jenispostingan}', '${data.harga}','${data.memberID}')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {

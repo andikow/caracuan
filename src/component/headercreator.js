@@ -1,8 +1,48 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
+import jwt_decode from 'jwt-decode';
+import Post from './post.js';
 
-export default class Headercreator extends React.Component{
+class Headercreator extends React.Component{
+constructor(props) {
+  super(props);
+  this.state = {
+    name : '',
+    memberID:'',
+    token: '',
+    expire:'',
+    users:[]
+  };
+}
+componentDidMount() {
+  fetch('http://localhost:3000/user/token',
+  {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    credentials:'include'
+  })
+  .then(res=>{
+    return res.json()
+  })
+  .then(data=>{
+    this.setState({
+      token: data.accessToken
+    });
+    const decoded = jwt_decode(this.state.token)
+    this.setState({
+      name: decoded.name,
+      expire:decoded.exp,
+      memberID:decoded.memberID,
+    })
+  })
+  .catch((error)=>{
+    this.props.history.push('/login')
+  })
+}
 
   render(){
 
@@ -23,7 +63,7 @@ export default class Headercreator extends React.Component{
             <div className="row ml-2">
               <div className="col">
                 <div className="w-100 d-none d-md-block text-primary">
-                  <h5>Vandarina Risca</h5>
+                  <h5>{this.state.name}</h5>
                   <p style={{marginBottom: "0"}}>Analis</p>
                 </div>
 
@@ -36,3 +76,5 @@ export default class Headercreator extends React.Component{
     )
   }
 }
+
+export default Headercreator;

@@ -23,13 +23,14 @@ class Login extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
+        credentials:'include',
         body: JSON.stringify(data)
       })
     .then(res=>{
       if(!res.ok){
         return res.json();
       }
-      this.props.history.push('/dashboard')
+      this.props.history.push('/dashboard/akademi')
     })
     .then(res=>{
       if(res){

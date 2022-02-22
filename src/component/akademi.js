@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, NavLink, HashRouter } from "react-router-dom";
+import { Route , HashRouter } from "react-router-dom";
 import Poto from './../public/assets/img/creator.png';
 import Poto1 from './../public/assets/img/akademi1.jpg';
 import Poto2 from './../public/assets/img/akademi2.jpg';

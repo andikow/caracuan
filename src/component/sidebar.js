@@ -17,7 +17,7 @@ class Sidebar extends Component {
               <nav id="sidebar">
 
                   <ul class="list-unstyled components">
-                    <NavLink to="/">
+                    <NavLink to="/dashboardcreator/">
                       <li class ="active">
                           <a href="#">Dashboard</a>
                       </li>
@@ -36,22 +36,22 @@ class Sidebar extends Component {
                                 </li>
                             </ul>
                     </li>
-                    <NavLink to="/saldo">
+                    <NavLink to="/dashboardcreator/saldo">
                       <li>
                         <a href="#">Saldo</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/post">
+                    <NavLink to="/dashboardcreator/post">
                       <li>
                         <a href="#">Post</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/analisasaya">
+                    <NavLink to="/dashboardcreator/analisasaya">
                       <li>
                         <a href="#">Analisa Saya</a>
                       </li>
                     </NavLink>
-                    <NavLink to="/pengikut">
+                    <NavLink to="/dashboardcreator/pengikut">
                       <li>
                         <a href="#">Pengikut</a>
                       </li>
@@ -63,7 +63,7 @@ class Sidebar extends Component {
 
                   <ul class="list-unstyled CTAs">
                       <li>
-                          <a href="#" class="download">Masuk Sebagai Member</a>
+                          <a href="#/dashboard/akademi" class="download">Masuk Sebagai Member</a>
                       </li>
                       <li>
                           <a href="#" class="article">Keluar</a>
@@ -71,11 +71,11 @@ class Sidebar extends Component {
                   </ul>
               </nav>
               <HashRouter>
-              <Route exact path="/" component={Dashboardcreator}/>
-              <Route path="/saldo" component={Saldo}/>
-              <Route path="/post" component={Post}/>
-              <Route path="/analisasaya" component={AnalisaSaya}/>
-              <Route path="/pengikut" component={Pengikut}/>
+              <Route exact path="/dashboardcreator/" component={Dashboardcreator}/>
+              <Route path="/dashboardcreator/saldo" component={Saldo}/>
+              <Route path="/dashboardcreator/post" component={Post}/>
+              <Route path="/dashboardcreator/analisasaya" component={AnalisaSaya}/>
+              <Route path="/dashboardcreator/pengikut" component={Pengikut}/>
               </HashRouter>
 
           </div>

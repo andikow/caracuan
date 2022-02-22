@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import $ from "jquery";
 import './../public/assets/css/sidebar.css';
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Akademi from './akademi.js';
@@ -40,7 +39,7 @@ class Sidebarmember extends Component {
 
                   <ul class="list-unstyled CTAs">
                       <li>
-                          <a href="#" class="download">Masuk Sebagai Analis</a>
+                          <a href="#/dashboardcreator" class="download">Masuk Sebagai Analis</a>
                       </li>
                       <li>
                           <a href="#" class="article">Keluar</a>

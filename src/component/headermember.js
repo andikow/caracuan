@@ -1,9 +1,48 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
+import axios from 'axios'
+import jwt_decode from 'jwt-decode';
 
-export default class Headermember extends React.Component{
+class Headermember extends React.Component{
+  constructor() {
+    super();
+    this.state = {
+      name : '',
+      token: '',
+      expire:'',
+      users:[]
+    };
+  }
 
+componentDidMount() {
+    fetch('http://localhost:3000/user/token',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        name: decoded.name,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push('/login')
+    })
+
+}
   render(){
 
     return(
@@ -18,7 +57,7 @@ export default class Headermember extends React.Component{
         </button>
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav ml-auto">
-          <button className="btn btn-outline-primary btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm fa-fw font-weight-bold"></i></button>
+          <button onClick={(e) => { e.preventDefault(); this.getToken()}}className="btn btn-outline-primary btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm fa-fw font-weight-bold"></i></button>
           <button className="btn btn-sm my-auto"><a className="nav-item nav-link" href="#"  style={{paddingLeft:"20px", paddingRight:"20px"}}><i className="fa fa-bell-on fa-fw text-primary fa-lg"></i></a></button>
           <div className="d-flex align-content-center flex-wrap">
             <img src={Poto} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
@@ -27,7 +66,7 @@ export default class Headermember extends React.Component{
           <div className="row ml-2">
             <div className="col">
               <div className="w-100 d-none d-md-block text-primary">
-                <h5>Vandarina Risca</h5>
+                <h5>{this.state.name}</h5>
                 <p style={{marginBottom: "0"}}>Member</p>
               </div>
 
@@ -40,3 +79,5 @@ export default class Headermember extends React.Component{
     )
   }
 }
+
+export default Headermember;
