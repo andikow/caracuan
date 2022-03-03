@@ -1,6 +1,7 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
+import {NavLink} from "react-router-dom";
 import axios from 'axios'
 import jwt_decode from 'jwt-decode';
 
@@ -16,7 +17,7 @@ class Headermember extends React.Component{
   }
 
 componentDidMount() {
-    fetch('http://localhost:3000/user/token',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
       headers: {
@@ -49,7 +50,8 @@ componentDidMount() {
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
     <div className="col-lg-3 d-flex">
-    <img src={Logo} alt="Logo" height="50px" />
+    <NavLink to="/"><img src={Logo} alt="Logo" height="50px" />
+    </NavLink>
     </div>
 
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

@@ -3,6 +3,43 @@ import { Route, NavLink, HashRouter } from "react-router-dom";
 import Poto from './../public/assets/img/creator.png';
 
 class Pengaturan extends Component {
+  constructor(){
+    super();
+    this.state = {
+      image:"https://fakeimg.pl/350x200/",
+      saveImage:null,
+      msg:''
+    }
+  }
+
+  handleUploadChange(e) {
+    let uploaded = e.target.files[0];
+    this.setState({
+      image: URL.createObjectURL(uploaded),
+      saveImage:uploaded
+    });
+  }
+
+  handleSave() {
+  if (this.state.saveImage) {
+      // save image to backend
+      let formData = new FormData();
+      formData.append("photo", this.state.saveImage);
+
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/api/upload`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          window.location.href = data.image;
+        });
+    } else {
+      alert("Upload gambar dulu");
+    }
+  }
+
   render() {
     return (
       <>
@@ -12,10 +49,25 @@ class Pengaturan extends Component {
         </div>
         <div class="row">
           <div class="col-4">
-            <div class="align-items-center">
-              <img src={Poto} alt="Poto" height="150" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
-              <p class="text-primary text-align-center">Upload Image</p>
-            </div>
+          <div className="mt-5 mx-auto">
+        <div>
+          <img src={this.state.image} className="img-thumbnail" alt="..." />
+        </div>
+        <div className="my-3">
+          <label htmlFor="formFile" className="form-label">
+            Upload image here
+          </label>
+          <input
+            onChange={(e) => {e.preventDefault();this.handleUploadChange(e)}}
+            className="form-control"
+            type="file"
+            id="formFile"
+          />
+          <button onClick={(e)=>{e.preventDefault();this.handleSave()}} className="btn btn-primary mt-2 w-100">
+            Save my photo
+          </button>
+        </div>
+      </div>
           </div>
           <div class="col-8">
             <div class="form-group">

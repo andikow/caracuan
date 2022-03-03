@@ -7,6 +7,38 @@ import "./../public/assets/css/creatorpost.css";
 import DetailPost from './detail-post.js';
 
 class CreatorPost extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data:{},
+      id : this.props.location.pathname.split("/")[2],
+    };
+  }
+
+  componentDidMount() {
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.id + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        data: res[0]
+      });
+      console.log(this.state.data[0]);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+  }
+
   render() {
     return (
     <div className="row">
@@ -69,7 +101,7 @@ class CreatorPost extends Component {
                                  Dana
                                </div>
                                <div class="col p-0">
-                                 Siapkan perangkat anda yang terpasang Dana 
+                                 Siapkan perangkat anda yang terpasang Dana
                                </div>
                              </div>
                            </a>
@@ -106,7 +138,7 @@ class CreatorPost extends Component {
                 <i className="far fa-comments-alt text-danger" style={{fontSize:"13px"}}> <span className="text-primary"> 12</span></i>
               </div>
               <div class="col">
-                <NavLink to="/creator/post/1"><button class="btn btn-info btn-sm">Free</button></NavLink>
+                <NavLink to={`/creator/${this.state.id}/post/1`}><button class="btn btn-info btn-sm">Free</button></NavLink>
               </div>
             </div>
 
@@ -187,7 +219,7 @@ class CreatorPost extends Component {
       </div>
 
       <HashRouter>
-        <Route path="/creator/post/1" component={DetailPost}/>
+        <Route path="/creator/:i/post/1" component={DetailPost}/>
       </HashRouter>
     </div>
     );

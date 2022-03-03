@@ -56,7 +56,6 @@ router.post('/login', async function (req,res){
       const refreshToken = jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,{
           expiresIn: '1d'
       });
-      console.log("abc");
       const sqlQueryToken = `UPDATE member SET refresh_token = "${refreshToken}" WHERE memberId = "${userId}"`;
       await pool.query(sqlQueryToken);
       res.cookie('refreshToken', refreshToken,{
@@ -108,8 +107,17 @@ router.delete('/logout', async function(req,res){
         res.status(400).send(error.message)
     }
 
-
 });
+router.post('/submittopik', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `INSERT INTO topikheader VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.jenistopik}', '${data.harga}', CURRENT_DATE())`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
 router.post('/submitpost', async function (req,res){
     try {
       let data = req.body;
@@ -119,7 +127,45 @@ router.post('/submitpost', async function (req,res){
     } catch (error) {
         res.status(400).send(error.message)
     }
-})
+});
+
+router.get('/carikreator', async function(req,res){
+    try {
+        const sqlQuery = 'SELECT * FROM member';
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
+
+router.get('/kreator/:id', async function(req,res){
+    try {
+        var id = req.params.id
+        const sqlQuery = `SELECT * FROM member WHERE memberID = ${id}`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
+
+router.get('/topik/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT topikID, memberID, judul, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/", thumbnail) AS thumbnail, jenistopik, harga, createdAt FROM topikheader WHERE memberID = ${memberID}`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
 
 // router.post('/login', async function(req,res) {
 //     try {

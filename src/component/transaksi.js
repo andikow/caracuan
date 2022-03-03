@@ -8,8 +8,9 @@ class Transaksi extends Component {
   componentDidMount() {
     $(document).ready(function() {
     $('#transaksi').DataTable();
-      } );
-}
+    });
+  }
+
   render() {
     return (
       <>
@@ -65,7 +66,7 @@ class Transaksi extends Component {
         </tbody>
     </table>
 
-    </div>
+        </div>
       </div>
       </>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from './../public/assets/img/logo_cover_white.png';
-import { Route, NavLink, HashRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import Home from './../page/home.js';
 
@@ -15,7 +15,8 @@ export default class Header extends React.Component{
 
       <nav className="navbar navbar-expand-lg navbar-light bg-primary ">
       <div className="col-lg-3 d-flex">
-      <img src={Logo} alt="Logo" height="50px" />
+      <NavLink to="/"><img src={Logo} alt="Logo" height="50px" />
+      </NavLink>
       </div>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>

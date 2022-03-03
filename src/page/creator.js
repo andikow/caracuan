@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, NavLink, HashRouter } from "react-router-dom";
+import 'dotenv/config'
 
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
@@ -11,10 +12,41 @@ import CreatorPost from './../component/creator-post.js';
 import CreatorAnalisa from './../component/creator-analisa.js';
 import DetailPost from './../component/detail-post.js';
 
+
 export default class Creator extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      data:{},
+      id : this.props.location.pathname.split("/")[2],
+    };
+  }
+
+  componentDidMount() {
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.id + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        data: res[0]
+      });
+      console.log(this.state.data[0]);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+  }
 
   render(){
-
     return(
     <>
     <Header/>
@@ -22,7 +54,7 @@ export default class Creator extends React.Component{
       <div className="aside pb-4 bg-light col-xs-12 col-sm-4 col-md-3 text-primary">
         <img src={Poto} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
         <div style={{textAlign:'center'}}>
-        <h5 className="pt-4 font-weight-bold">Vandarina Risca</h5>
+        <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
         <p>@vandarinarisca</p>
          <h6 className="font-weight-bold">Pengikut : 100</h6>
          <h6 className="font-weight-bold">Performa : 85%</h6>
@@ -41,13 +73,13 @@ export default class Creator extends React.Component{
       <div className="row">
         <div className="col py-2">
 
-              <NavLink activeClassName="active" to="/creator/beranda"> <a className="btn btn-outline-primary text-center font-weight-bold" href="#">
+              <NavLink activeClassName="active" to={"/creator/" + this.state.id + "/beranda"}> <a className="btn btn-outline-primary text-center font-weight-bold" href="#">
               <input type="radio" name="options" id="option1"/> Beranda
               </a></NavLink>
-              <NavLink activeClassName="active" to="/creator/post"><a className="btn btn-outline-primary text-center mx-2 font-weight-bold" href="#">
+              <NavLink activeClassName="active" to={"/creator/" + this.state.id + "/post"}><a className="btn btn-outline-primary text-center mx-2 font-weight-bold" href="#">
                 <input type="radio" name="options" id="option1"/> Akademi
               </a></NavLink>
-              <NavLink activeClassName="active" to="/creator/analisa"><a className="btn btn-outline-primary text-center font-weight-bold" href="#">
+              <NavLink activeClassName="active" to={"/creator/" + this.state.id + "/analisa"}><a className="btn btn-outline-primary text-center font-weight-bold" href="#">
                   <input type="radio" name="options" id="option1"/> Analisa
               </a></NavLink>
 
@@ -61,10 +93,10 @@ export default class Creator extends React.Component{
       </div>
       <HashRouter>
       <div className="content">
-      <Route path="/creator/beranda" component={CreatorBeranda}/>
-      <Route exact path="/creator/post" component={CreatorPost}/>
-      <Route path="/creator/analisa" component={CreatorAnalisa}/>
-      <Route exact path="/creator/post/1" component={DetailPost}/>
+      <Route path="/creator/:id/beranda" component={CreatorBeranda}/>
+      <Route exact path="/creator/:id/post" component={CreatorPost}/>
+      <Route path="/creator/:id/analisa/" component={CreatorAnalisa}/>
+      <Route exact path="/creator/:id/post/1" component={DetailPost}/>
       </div>
       </HashRouter>
       </div>

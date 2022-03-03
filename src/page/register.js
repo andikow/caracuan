@@ -21,7 +21,7 @@ class Register extends Component {
         email:this.state.email,
         password:this.state.password
       }
-      fetch('http://localhost:3000/user/register',
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/register`,
       {
         method: 'POST',
         headers: {

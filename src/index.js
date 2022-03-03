@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Header from './component/header.js';
-import Creator from './page/creator.js';
 
 import reportWebVitals from './reportWebVitals';
 

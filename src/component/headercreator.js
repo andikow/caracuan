@@ -1,10 +1,12 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
+import {NavLink} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import Post from './post.js';
 
 class Headercreator extends React.Component{
+
 constructor(props) {
   super(props);
   this.state = {
@@ -15,8 +17,9 @@ constructor(props) {
     users:[]
   };
 }
+
 componentDidMount() {
-  fetch('http://localhost:3000/user/token',
+  fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
   {
     method: 'GET',
     headers: {
@@ -50,7 +53,8 @@ componentDidMount() {
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="col-lg-3 d-flex">
-          <img src={Logo} alt="Logo" height="50px" />
+        <NavLink to="/"><img src={Logo} alt="Logo" height="50px" />
+        </NavLink>
         </div>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ml-auto">

@@ -16,7 +16,7 @@ class Login extends Component {
       email:this.state.email,
       password:this.state.password
     }
-    fetch('http://localhost:3000/user/login',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/login`,
       {
         method: 'POST',
         headers: {

@@ -11,7 +11,7 @@ class Post extends Component {
     $('input[name="jenisPostingan"]').change(function(){
       $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ? true:false);
     });
-    fetch('http://localhost:3000/user/token',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
       headers: {
@@ -58,7 +58,9 @@ class Post extends Component {
       deskripsi: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
-
+  show(){
+  $('div[id="tambahbagian"]').toggleClass("d-inline")
+  }
   submitpost(){
     var data = {
       judul:this.state.judul,
@@ -68,7 +70,7 @@ class Post extends Component {
       harga:this.state.harga,
       memberID:this.state.memberID
     }
-    fetch('http://localhost:3000/user/submitpost',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submitpost`,
     {
       method: 'POST',
       headers: {
@@ -86,43 +88,71 @@ class Post extends Component {
     const { editorState } = this.state;
     return (
     <div class="m-4 col-9">
-      <div class="row">
-        <h2 class = "col-12 my-2">Buat Postingan</h2>
-        <h3 class = "col-12 my-2">Judul</h3>
-        <div class="col-12 my-2">
-          <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
-        </div>
-        <h3 class="col-12 my-2">Deskripsi</h3>
-        <div class="col-12 my-2">
-          <Editor
-          editorState={editorState}
-          wrapperClassName="demo-wrapper border"
-          editorClassName="demo-editor"
-          onEditorStateChange={this.onEditorStateChange}
-          />
-        </div>
-        {/*<textarea
-          disabled
-          value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-          />*/}
-          <h3 class = "col-12 my-2">Link Video</h3>
-          <div class="col-12 my-2">
-            <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
-          </div>
-          <h3 class = "col-12 my-2">Jenis Postingan</h3>
-          <div class="col-12 my-2">
-            <div class="form-check form-check-inline">
-              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
-              <label class="form-check-label" for="opsiGratis">Gratis</label>
+      <div class="container-fluid">
+
+          <h2 class = "col-12 my-2">Buat Akademi</h2>
+          <div class="card">
+            <h3 class = "col-12 my-2">Bagian</h3>
+            <div class="row">
+              <div class="col-2 my-2">
+                <button type="button" class="btn btn-link" onClick={() => this.show()}>+ Bagian</button>
+              </div>
+              <div id ="tambahbagian" class="col-9 my-2 tambahbagian d-none">
+                <input class="form-control" type="text" placeholder="Nama Bagian" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
+              </div>
+              <div id ="tambahbagian" class="col-1 my-2 tambahbagian d-none">
+                <button type="button" class="d-inline btn btn-block btn-primary" onClick={() => this.simpanbagian()}><i class="fal fa-save"></i></button>
+              </div>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
-              <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
-              <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" aria-label="post-title" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
+            <div class="col-12 my-2">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Bagian</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01">
+                  <option selected>Pilih Bagian...</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+          <h3 class = "col-12 my-2">Judul</h3>
+          <div class="col-12 my-2">
+            <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
+          </div>
+          <h3 class="col-12 my-2">Deskripsi</h3>
+          <div class="col-12 my-2">
+            <Editor
+            editorState={editorState}
+            wrapperClassName="demo-wrapper border"
+            editorClassName="demo-editor"
+            onEditorStateChange={this.onEditorStateChange}
+            />
+          </div>
+          {/*<textarea
+            disabled
+            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+            />*/}
+            <h3 class = "col-12 my-2">Link Video</h3>
+            <div class="col-12 my-2">
+              <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
+            </div>
+            <h3 class = "col-12 my-2">Jenis Akademi</h3>
+            <div class="col-12 my-2">
+              <div class="form-check form-check-inline">
+                <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
+                <label class="form-check-label" for="opsiGratis">Gratis</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
+                <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
+                <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" aria-label="post-title" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
+              </div>
+            </div>
         <button type="button" class="btn btn-primary my-2" onClick={() => this.submitpost()}>Tayangkan</button>
+      </div>
       </div>
       );
     }

@@ -119,6 +119,8 @@ class CreatorPost extends Component {
                           <Route path="/creator/post/1" component={DetailPost}/>
                         </HashRouter>
       </div>
+      <div class="row">
+      </div>
         </div>
     );
   }

@@ -26,7 +26,7 @@ class CreatorAnalisa extends Component {
           <div className="card" style={{width:"500px"}}>
           <div className="card-body">
             <p className="text-primary" style={{fontSize:"11px"}}>PREDIKSI BULLISH</p>
-            <h5 className="text-primary card-title">IHSG <span className="text-secondary" style={{fontSize:"11px"}}>Index Harga Saham Gabungan</span></h5>
+            <h5 className="text-primary card-title">IHSG<span className="text-secondary" style={{fontSize:"11px"}}>Index Harga Saham Gabungan</span></h5>
             <h3 className="text-primary card-title">6,700 <span className="text-secondary" style={{fontSize:"11px"}}>Target Harga</span></h3>
             <div className="row">
               <div className="col">
