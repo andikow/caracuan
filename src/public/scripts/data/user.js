@@ -167,6 +167,31 @@ router.get('/topik/:memberID', async function(req,res){
 
 });
 
+router.get('/following/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT following.followingID, member.Name FROM member, following WHERE following.followingID = member.memberID AND following.memberID = "${memberID}"`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
+
+router.get('/creator/:name', async function(req,res){
+    try {
+        let name = req.params.name
+        const sqlQuery = `SELECT * FROM member WHERE member.Name = "${name}"`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
 // router.post('/login', async function(req,res) {
 //     try {
 //         const {id,password} = req.body;

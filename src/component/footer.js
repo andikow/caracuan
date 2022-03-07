@@ -16,9 +16,9 @@ export default class Footer extends React.Component{
 				<div class="col-xs-12 col-sm-4 col-md-4">
 					<h5>Cara Cuan</h5>
 					<ul class="list-unstyled quick-links">
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Cari Analis</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Saham</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Berita Terkini</a></li>
+						<li><a href="#/cari"><i class="fa fa-angle-double-right"></i> Cari Analis</a></li>
+						<li><a href="#/saham"><i class="fa fa-angle-double-right"></i> Saham</a></li>
+						<li><a href="#/berita"><i class="fa fa-angle-double-right"></i> Berita Terkini</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-12 col-sm-4 col-md-4">

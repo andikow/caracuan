@@ -9,8 +9,67 @@ import Poto6 from './../public/assets/img/analis6.png';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
 import DetailPost from './detail-post.js';
+import jwt_decode from 'jwt-decode';
 
 class Mengikuti extends Component {
+  constructor(){
+    super();
+    this.state = {
+      memberID:'',
+      data:[],
+    }
+  }
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        memberID: decoded.memberID,
+        name: decoded.name,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push('/login')
+    })
+
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/following/${this.state.memberID}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        data: res
+      });
+      console.log(this.state.data);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+  }
+
   render() {
     return (
     <>
@@ -34,12 +93,15 @@ class Mengikuti extends Component {
           </div>
         </div>
       </div>
+
       <div class="row d-flex justify-content-end mr-4">
         <h5 className="col-auto m-3 px-0 text-primary">Cari</h5>
         <input type="text" class="form-control my-2" placeholder="Cari Analis" style={{width:200}} />
       </div>
-      <div class="row py-4 justify-content-center m-0">
-      <div class="col-lg-3 col-sm-6 mx-4">
+
+      <div class="row py-4 m-0">
+            {this.state.data.map(data =>
+              <div class="col-lg-3 col-sm-6 mx-4">
               <div class="card" style={{height:70}}>
                 <div class="row">
                     <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
@@ -47,100 +109,18 @@ class Mengikuti extends Component {
                     </div>
                     <div class="col">
                     <div class="row mr-auto">
-                      <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Teras Saham</p>
+                      <a href={"/#/creator/" + data.memberID + "/beranda/"}><p className="text-primary font-weight-bold mb-0">{data.Name}</p></a>
                     </div>
                     <div class="row mr-auto">
-                      <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>Paham Investasi-Melek Saham</p>
+                      <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>username</p>
                     </div>
+
                     </div>
-          </div>
-          </div>
-    </div>
-      <div class="col-lg-3 col-sm-6 mx-4">
-              <div class="card"  style={{height:70}}>
-                <div class="row">
-                    <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                      <img src={Poto2} alt="Poto" height="40" style={{borderRadius: "100%"}} />
-                    </div>
-                    <div class="col">
-                    <div class="row mr-auto">
-                      <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Basic Academy Investor</p>
-                    </div>
-                    <div class="row mr-auto">
-                      <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>Trader & Investor Saham</p>
-                    </div>
-                    </div>
-          </div>
-          </div>
-    </div>
-    <div class="col-lg-3 col-sm-6 mx-4">
-            <div class="card"  style={{height:70}}>
-              <div class="row">
-                  <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                    <img src={Poto3} alt="Poto" height="40" style={{borderRadius: "100%"}} />
-                  </div>
-                  <div class="col">
-                  <div class="row mr-auto">
-                    <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Kuliah Investasi</p>
-                  </div>
-                  <div class="row mr-auto">
-                    <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>Edukasi Saham</p>
-                  </div>
-                  </div>
-        </div>
-        </div>
-  </div>
-  <div class="col-lg-3 col-sm-6 mx-4">
-          <div class="card"  style={{height:70}}>
-            <div class="row">
-                <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                  <img src={Poto4} alt="Poto" height="40" style={{borderRadius: "100%"}} />
                 </div>
-                <div class="col">
-                <div class="row mr-auto">
-                  <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Saham Milenial</p>
-                </div>
-                <div class="row mr-auto">
-                  <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>Anak Milenial Harus Ngerti Saham</p>
-                </div>
-                </div>
-      </div>
-      </div>
-  </div>
-  <div class="col-lg-3 col-sm-6 mx-4">
-          <div class="card"  style={{height:70}}>
-            <div class="row">
-                <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                  <img src={Poto5} alt="Poto" height="40" style={{borderRadius: "100%"}} />
-                </div>
-                <div class="col">
-                <div class="row mr-auto">
-                  <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Saham ID</p>
-                </div>
-                <div class="row mr-auto">
-                  <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>investorsaham.id</p>
-                </div>
-                </div>
-      </div>
-      </div>
-  </div>
-  <div class="col-lg-3 col-sm-6 mx-4">
-          <div class="card"  style={{height:70}}>
-            <div class="row">
-                <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                  <img src={Poto6} alt="Poto" height="40" style={{borderRadius: "100%"}} />
-                </div>
-                <div class="col">
-                <div class="row mr-auto">
-                  <p  class="text-primary font-weight-bold mb-0" style={{fontSize:13}}>Kapten Saham</p>
-                </div>
-                <div class="row mr-auto">
-                  <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>Membeli Saham Gold Chip Berfundamental Baik!</p>
-                </div>
-                </div>
-      </div>
-      </div>
-  </div>
+              </div>
+              </div>
+            )}
+
     </div>
     <div class="row">
       <div class="col">

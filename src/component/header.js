@@ -23,9 +23,8 @@ export default class Header extends React.Component{
           </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ml-auto">
-            <button class="btn btn-outline-light btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm text-white font-weight-bold"></i></button>
             <NavLink to="/cari">
-              <a className="nav-item nav-link active text-white font-weight-bold" href="" style={{paddingLeft:"20px"}}>Cari Kreator<span className="sr-only">(current)</span>
+              <a className="nav-item nav-link active text-white font-weight-bold" href="" style={{paddingLeft:"20px"}}><i className="fa fa-search fa-sm text-white font-weight-bold pr-2"></i> Cari Analis<span className="sr-only">(current)</span>
               </a>
             </NavLink>
             <NavLink to="/berita">
