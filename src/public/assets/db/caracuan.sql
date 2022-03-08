@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2022 at 01:53 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.11
+-- Generation Time: 08 Mar 2022 pada 14.21
+-- Versi Server: 10.1.24-MariaDB
+-- PHP Version: 7.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `analysis`
+-- Struktur dari tabel `analysis`
 --
 
 CREATE TABLE `analysis` (
@@ -42,7 +43,7 @@ CREATE TABLE `analysis` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `creator`
+-- Struktur dari tabel `creator`
 --
 
 CREATE TABLE `creator` (
@@ -54,7 +55,7 @@ CREATE TABLE `creator` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `following`
+-- Struktur dari tabel `following`
 --
 
 CREATE TABLE `following` (
@@ -63,17 +64,21 @@ CREATE TABLE `following` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `following`
+-- Dumping data untuk tabel `following`
 --
 
 INSERT INTO `following` (`memberID`, `followingID`) VALUES
 (1, 1),
-(1, 33);
+(1, 33),
+(52, 41),
+(52, 47),
+(52, 49),
+(52, 51);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `member`
+-- Struktur dari tabel `member`
 --
 
 CREATE TABLE `member` (
@@ -83,23 +88,27 @@ CREATE TABLE `member` (
   `Phone` varchar(15) NOT NULL,
   `Email` varchar(60) NOT NULL,
   `Password` varchar(60) NOT NULL,
-  `refresh_token` text DEFAULT NULL,
-  `isCreator` tinyint(1) NOT NULL DEFAULT 0
+  `refresh_token` text,
+  `isCreator` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `member`
+-- Dumping data untuk tabel `member`
 --
 
 INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Password`, `refresh_token`, `isCreator`) VALUES
-(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjQ2NDg3NzYzLCJleHAiOjE2NDY1NzQxNjN9.wmZUzu7ydWElcHpTk7PyeXBHgSyUwuQAN76CocIo9f0', 0),
-(47, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', '${refreshToken}', 0),
-(48, 'Vandarina', '1999-01-12', '085621112472', 'vandarinaa@gmail.com', '$2b$10$DNIRnIRLwR3.dgR3aZkv6esG.g.9mVy3JToPbc8uCDMzvZPGWRmz.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIiwiZW1haWwiOiJ2YW5kYXJpbmFhQGdtYWlsLmNvbSIsImlhdCI6MTY0NTY5NzI5NiwiZXhwIjoxNjQ1NzgzNjk2fQ.yV2Iq7Op-x_fnws65IPnfg3R1LB35sUvHkzL8nXzEOI', 0);
+(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjQ2NTYwMjAxLCJleHAiOjE2NDY2NDY2MDF9.7xsmlwrCkDe4QAeWU3_R1rnDeT9beWZ8uqtkP9hqvts', 0),
+(47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', '${refreshToken}', 0),
+(48, 'Vandarina', '1999-01-12', '085621112472', 'vandarinaa@gmail.com', '$2b$10$DNIRnIRLwR3.dgR3aZkv6esG.g.9mVy3JToPbc8uCDMzvZPGWRmz.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIiwiZW1haWwiOiJ2YW5kYXJpbmFhQGdtYWlsLmNvbSIsImlhdCI6MTY0NTY5NzI5NiwiZXhwIjoxNjQ1NzgzNjk2fQ.yV2Iq7Op-x_fnws65IPnfg3R1LB35sUvHkzL8nXzEOI', 0),
+(49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', '', 0),
+(50, 'Balmond', '1945-08-17', '081266577899', 'balmond@gmail.com', '$2b$10$c92lts7Vtor8zZECGsqIJu.sCt8PKw4HXICqrM8H1ahTB3eKPywPa', '', 0),
+(51, 'Gatot', '1977-08-08', '082154468791', 'gatotkaca@gmail.com', '$2b$10$6M9e/FTvq8RX1glSri01FerOwOLuvNFdPqvgGUaDovzhkJh/4Ddsi', '', 0),
+(52, 'Vandarina', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUyLCJuYW1lIjoiVmFuZGFyaW5hIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjQ2NjY4NTkyLCJleHAiOjE2NDY3NTQ5OTJ9.qIIc_yrJsjyeZaZNGg293IRPusbeOsBWfoZsvodoKdU', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `postsdetail`
+-- Struktur dari tabel `postsdetail`
 --
 
 CREATE TABLE `postsdetail` (
@@ -115,7 +124,7 @@ CREATE TABLE `postsdetail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `postsdetail`
+-- Dumping data untuk tabel `postsdetail`
 --
 
 INSERT INTO `postsdetail` (`postID`, `judul`, `deskripsi`, `linkvideo`, `jenispostingan`, `hargapostingan`, `memberID`, `topikID`, `bagianID`) VALUES
@@ -133,7 +142,7 @@ INSERT INTO `postsdetail` (`postID`, `judul`, `deskripsi`, `linkvideo`, `jenispo
 -- --------------------------------------------------------
 
 --
--- Table structure for table `postsheader`
+-- Struktur dari tabel `postsheader`
 --
 
 CREATE TABLE `postsheader` (
@@ -147,7 +156,7 @@ CREATE TABLE `postsheader` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tblbagian`
+-- Struktur dari tabel `tblbagian`
 --
 
 CREATE TABLE `tblbagian` (
@@ -157,23 +166,22 @@ CREATE TABLE `tblbagian` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tblbagian`
+-- Dumping data untuk tabel `tblbagian`
 --
 
 INSERT INTO `tblbagian` (`bagianID`, `topikID`, `namaBagian`) VALUES
-(1, 15, 'Bagian1'),
-(2, 15, 'Bagian2'),
-(3, 15, 'Bagian3'),
-(4, 0, 'a'),
-(7, 16, 'Bagian2'),
-(8, 17, 'TesBagian'),
-(9, 18, 'Pengenalan'),
-(10, 15, 'Pengenalan');
+(1, 15, 'Apa itu Saham?'),
+(2, 15, 'Perbedaan Investor dan Trader Saham'),
+(3, 15, 'Ilmu Analisa Teknikal Candle Saham'),
+(5, 15, 'Cara Memperkirakan Pergerakan Harga Saham Bulan Depan'),
+(6, 15, 'Ilmu Average Down yang Benar'),
+(7, 16, 'Cara Trading di Saham Sideways'),
+(8, 17, 'Kapan Waktu yang Tepat untuk CUTLOSS?');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `topikheader`
+-- Struktur dari tabel `topikheader`
 --
 
 CREATE TABLE `topikheader` (
@@ -187,14 +195,13 @@ CREATE TABLE `topikheader` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `topikheader`
+-- Dumping data untuk tabel `topikheader`
 --
 
 INSERT INTO `topikheader` (`topikID`, `memberID`, `judul`, `thumbnail`, `jenistopik`, `harga`, `createdAt`) VALUES
-(15, 41, 'Topik 1', 'Gantt Chart-1646048129131.png', 'Berbayar', 30500, '2022-02-16'),
-(16, 41, 'Topik 2', 'Gantt Chart-1646048159740.png', 'Berbayar', 30500, '2022-02-02'),
-(17, 41, 'Topik 3', 'Gantt Chart-1646048254881.png', 'Berbayar', 30500, '2022-02-28'),
-(18, 41, 'Topik Saham', '14-1646393924761.jpg', 'Gratis', 0, '2022-03-04');
+(15, 41, 'Belajar Saham untuk Pemula', 'akademi1.jpg', 'Berbayar', 30500, '2022-02-16'),
+(16, 41, 'Cara Trading di Saham Sideways', 'akademi2.jpg', 'Berbayar', 30500, '2022-02-02'),
+(17, 41, 'Ilmu Analisa Teknikal Candle Tahunan Saham', 'akademi3.jpg', 'Berbayar', 30500, '2022-02-28');
 
 --
 -- Indexes for dumped tables
@@ -246,26 +253,22 @@ ALTER TABLE `topikheader`
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
-
+  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `postsdetail`
 --
 ALTER TABLE `postsdetail`
   MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `tblbagian`
 --
 ALTER TABLE `tblbagian`
-  MODIFY `bagianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
+  MODIFY `bagianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `topikheader`
 --
 ALTER TABLE `topikheader`
-  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-COMMIT;
+  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
