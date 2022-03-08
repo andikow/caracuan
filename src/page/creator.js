@@ -39,7 +39,6 @@ export default class Creator extends React.Component{
       this.setState({
         data: res[0]
       });
-      console.log(this.state.data[0]);
     })
     .catch((err) =>{
       this.setState({ msg: err.msg })
@@ -96,7 +95,7 @@ export default class Creator extends React.Component{
       <Route path="/creator/:id/beranda" component={CreatorBeranda}/>
       <Route exact path="/creator/:id/post" component={CreatorPost}/>
       <Route path="/creator/:id/analisa/" component={CreatorAnalisa}/>
-      <Route exact path="/creator/:id/post/1" component={DetailPost}/>
+      <Route exact path="/creator/:id/post/:topikID" component={DetailPost}/>
       </div>
       </HashRouter>
       </div>

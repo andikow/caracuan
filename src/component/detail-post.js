@@ -2,10 +2,53 @@ import React, { Component } from "react";
 import { Route, NavLink, HashRouter } from "react-router-dom";
 
 class DetailPost extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataBagian:[],
+      topikID : this.props.location.pathname.split("/")[4],
+      topik:'',
+    };
+  }
+  componentDidMount() {
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${this.state.topikID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data => {this.setState({ dataBagian:data })});
+
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/id/` + this.state.topikID + '/',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+      .then(res=>{
+        return res.json();
+      })
+      .then(res=>{
+        this.setState({
+          topik: res[0]
+        });
+        console.log(this.state.topik.judul);
+      })
+      .catch((err) =>{
+        this.setState({ msg: err.msg })
+      })
+
+    }
   render() {
     return (
     <div class="row">
-      <h2 class="m-2 p-2">Belajar Saham dari Awal untuk Pemula</h2>
+      <h2 class="m-2 p-2">{this.state.topik.judul}</h2>
       <div class="row col-12">
         <div class="col-12">
           <nav>
@@ -14,7 +57,9 @@ class DetailPost extends Component {
               <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Akademi</a>
             </div>
           </nav>
+
           <div class="tab-content" id="nav-tabContent">
+
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <div class="row col-12 m-auto p-0">
 
@@ -40,145 +85,52 @@ class DetailPost extends Component {
                 </div>
               </div>
             </div>
+
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
               <div class="row ">
                 <div class="col-12">
-                  <div id="accordion" >
-                    <div class="card">
-                      <div class="card-header" id="headingOne">
-                        <h5 class="mb-0">
-                          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Mengenal TrendLine
-                          </button>
-                        </h5>
-                      </div>
 
-                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-
-                        <div class="list-group">
-                          <a href="/#/andika/1" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                1. Apa itu Trendline
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai
-                              </div>
-                            </div>
-                          </a>
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                2. Cara Menggambar Trendline
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai
-                              </div>
-                            </div>
-                          </a>
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                3. Merevisi Trendline
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
+                  <div id="accordion">
+                    {this.state.dataBagian.map((data, index)=>
+                      <div class="card">
+                        <div class="card-header" id={"heading" + index}>
+                          <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
+                              {data.namaBagian}
+                            </button>
+                          </h5>
                         </div>
 
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Cara Entry yang Benar
-                          </button>
-                        </h5>
-                      </div>
-                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div id={"collapse" + index} class="collapse show" aria-labelledby={"heading" + index} data-parent="#accordion">
+                          <div class="list-group">
+                            {
+                              data.judul.map((judul, index)=>
 
-                        <div class="list-group">
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                1. Apa itu Entry
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                2. Entri Pasar dan Antri Pasar
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
+                              <a href={"/#/post/" + data.postID[index]} id = {data.postID[index]} class="list-group-item list-group-item-action border">
+                                <div class="row justify-content-between">
+                                  <div class="col">
+                                    {judul}
+                                  </div>
+                                  <div class="col-2 p-0">
+                                    <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai
+                                  </div>
+                                </div>
+                              </a>
+                              )}
+                          </div>
                         </div>
-
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Menggunakan Fibonacci
-                          </button>
-                        </h5>
-                      </div>
-                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-
-                        <div class="list-group">
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                1. Sejarah Fibonacci
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                2. Cara Menggambar Fibonacci
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
-                          <a href="#" class="list-group-item list-group-item-action border">
-                            <div class="row justify-content-between">
-                              <div class="col">
-                                3. Memanfaatkan Fibonacci Untuk Entry dan Exit
-                              </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai
-                              </div>
-                            </div>
-                          </a>
                         </div>
-
+                        )}
                       </div>
+
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
-
-      </div>
-    </div>
     );
   }
 }

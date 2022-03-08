@@ -3,6 +3,7 @@ import YouTube from 'react-youtube';
 
 class VideoContent extends React.Component {
   render() {
+
     const opts = {
       height: '390',
       width: '100%',
@@ -14,7 +15,7 @@ class VideoContent extends React.Component {
       },
     };
 
-    return <YouTube videoId="EIKwoP8YH20" opts={opts} onReady={this._onReady} />;
+      return <YouTube videoId={this.props.linkvideo} opts={opts} onReady={this._onReady} />;
   }
 
   _onReady(event) {

@@ -121,7 +121,18 @@ router.post('/submittopik', async function (req,res){
 router.post('/submitpost', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO postsdetail VALUES ('','${data.judul}','${data.deskripsi}','${data.linkvideo}','${data.jenispostingan}', '${data.harga}','${data.memberID}')`;
+      const sqlQuery = `INSERT INTO postsdetail VALUES ('','${data.judul}','${data.deskripsi}','${data.linkvideo}','${data.jenispostingan}', '${data.harga}','${data.memberID}','${data.topikID}','${data.bagianID}')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.post('/simpanbagian', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `INSERT INTO tblBagian VALUES ('','${data.topikID}','${data.namaBagian}')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -163,9 +174,78 @@ router.get('/topik/:memberID', async function(req,res){
     } catch (error) {
         res.status(400).send(error.message)
     }
-
-
 });
+
+router.get('/topik/id/:topikID', async function(req,res){
+    try {
+        let topikID = req.params.topikID
+        const sqlQuery = `SELECT * FROM topikheader WHERE topikID = ${topikID}`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/post/id/:postID', async function(req,res){
+    try {
+        let postID = req.params.postID
+        const sqlQuery = `SELECT * FROM postsdetail WHERE postID = ${postID}`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/tampilkanBagian/:topikID', async function(req,res){
+    try {
+        let topikID = req.params.topikID
+        const sqlQuery = `SELECT postID, judul, tblbagian.bagianID, namaBagian, tblbagian.topikID FROM postsdetail, tblbagian WHERE tblbagian.topikID = '${topikID}' AND tblbagian.bagianID = postsdetail.bagianID; `;
+        const rows = await pool.query(sqlQuery);
+        const objIds = rows.reduce((a, { namaBagian, bagianID, postID, judul }) => {
+          a[bagianID] = a[bagianID] || {bagianID, postID: [], judul:[]}
+          return {...a, ...{[bagianID]: {namaBagian, bagianID,
+            postID: a[bagianID].postID.concat(postID),
+            judul:a[bagianID].judul.concat(judul)}}}
+        }, {})
+
+        const result = Object.values(objIds)
+        res.status(200).json(result);
+        let newObject = Object.keys(result).reduce((acc, val) => {
+          acc[val] = result[val].namaBagian;
+          return acc;
+}, {});
+        console.log(newObject);
+
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/tampilkanMateri/:bagianID', async function(req,res){
+    try {
+        let topikID = req.params.topikID
+        const sqlQuery = `SELECT postID, judul, tblbagian.bagianID, namaBagian, tblbagian.topikID FROM postsdetail, tblbagian WHERE tblbagian.topikID = '${topikID}' AND tblbagian.bagianID = postsdetail.bagianID; `;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+// router.get('/tampilkanAkademi/:topikID/:bagianID', async function(req,res){
+//     try {
+//         let topikID = req.params.topikID
+//         let bagianID = req.params.bagianID
+//         const sqlQuery = `SELECT * FROM postsdetail WHERE topikID = ${topikID} AND bagianID = ${bagianID}`;
+//         const rows = await pool.query(sqlQuery);
+//         res.status(200).json(rows);
+//     } catch (error) {
+//         res.status(400).send(error.message)
+//     }
+// });
+
 
 // router.post('/login', async function(req,res) {
 //     try {
