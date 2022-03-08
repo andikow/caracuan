@@ -18,7 +18,7 @@ export default class Home extends React.Component{
       <h4 className="text-info pb-4">dengan fitur komprehensif</h4>
       <div class="row">
         <div class="col-4 mx-2">
-            <a className="btn btn-lg btn-primary text-center text-white font-weight-bold" href="#" style={{width:"200px"}}>Mulai Sekarang</a>
+            <a className="btn btn-lg btn-primary text-center text-white font-weight-bold" href="#/register" style={{width:"200px"}}>Mulai Sekarang</a>
         </div>
         <div class="col-4 mx-2">
             <a className="btn btn-lg btn-outline-primary btn-light text-primary text-center text-white font-weight-bold" href="/#/login" style={{width:"200px"}}>Login</a>

@@ -35,6 +35,28 @@ export default class CariCreator extends React.Component{
     .catch((err) =>{
       this.setState({ msg: err.msg })
     })
+
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/creator`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        data: res
+      });
+      console.log(this.state.data);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
   }
   render(){
 
@@ -43,6 +65,14 @@ export default class CariCreator extends React.Component{
     <>
     <Header/>
     <h1 class="text-primary py-2" style={{textAlign:"center"}}>Cari Analis</h1>
+    <div class="input-group mx-auto" style={{width:"500px"}}>
+      <input type="text" class="form-control" placeholder="Cari Analis" />
+      <div class="input-group-append">
+        <button class="btn btn-primary btn-link" type="button">
+          <i class="fa fa-search text-white"></i>
+        </button>
+      </div>
+    </div>
     <div class="row py-4 justify-content-center m-0">
       {this.state.data.map(data =>
         <div class="col-lg-3 col-sm-6 mx-4">
