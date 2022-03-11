@@ -46,8 +46,34 @@ const storage = multer.diskStorage({
     );
   },
 });
+const coverPhotostorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/uploads/cover");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      Date.now() +
+      path.extname(file.originalname)
+    );
+  },
+});
+const profilPhotostorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/uploads/profil");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      Date.now() +
+      path.extname(file.originalname)
+    );
+  },
+});
 
 const upload = multer({ storage: storage });
+const uploadcoverPhoto = multer({ storage: coverPhotostorage });
+const uploadprofilPhoto = multer({ storage: profilPhotostorage });
 
 app.post(`/api/upload`, upload.single("photo"), (req, res) => {
   // save filename nya ke database
@@ -55,6 +81,32 @@ app.post(`/api/upload`, upload.single("photo"), (req, res) => {
 
   let finalImageURL =
   req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
+  let imageName = req.file.filename;
+
+  res.json({
+    image: finalImageURL,
+    imageName:imageName,
+   });
+});
+app.post(`/api/uploadcover`, uploadcoverPhoto.single("photo"), (req, res) => {
+  // save filename nya ke database
+  // return url ke user
+
+  let finalImageURL =
+  req.protocol + "://" + req.get("host") + "/uploads/cover" + req.file.filename;
+  let imageName = req.file.filename;
+
+  res.json({
+    image: finalImageURL,
+    imageName:imageName,
+   });
+});
+app.post(`/api/uploadprofil`, uploadprofilPhoto.single("photo"), (req, res) => {
+  // save filename nya ke database
+  // return url ke user
+
+  let finalImageURL =
+  req.protocol + "://" + req.get("host") + "/uploads/profil" + req.file.filename;
   let imageName = req.file.filename;
 
   res.json({

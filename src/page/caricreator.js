@@ -1,6 +1,4 @@
 import React from 'react';
-import Poto from './../public/assets/img/creator.png';
-import Potobg from './../public/assets/img/bgcreator.jpg';
 
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
@@ -78,10 +76,10 @@ export default class CariCreator extends React.Component{
         <div class="col-lg-3 col-sm-6 mx-4">
           <div class="card hovercard">
             <div class="cardheader">
-              <img src={Potobg} alt="Potobg" height="125" width="100%" />
+              <img src={data.coverphoto} alt="Potobg" height="125" width="100%" />
             </div>
             <div class="avatar">
-              <img src={Poto} alt="Poto" height="150" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+              <img src={data.profilephoto} alt="Poto" height="150" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
             </div>
             <div class="info">
               <div class="title">

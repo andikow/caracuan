@@ -1,23 +1,24 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
-import {NavLink} from "react-router-dom";
-import axios from 'axios'
+import { NavLink } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
 class Headermember extends React.Component{
   constructor() {
     super();
     this.state = {
+      memberID:'',
       name : '',
       token: '',
       expire:'',
+      profilImage:'',
       users:[]
     };
   }
 
-componentDidMount() {
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
       headers: {
@@ -36,11 +37,34 @@ componentDidMount() {
       const decoded = jwt_decode(this.state.token);
       this.setState({
         name: decoded.name,
+        memberID:decoded.memberID,
         expire:decoded.exp
       })
     })
     .catch((error)=>{
       this.props.history.push('/login')
+    })
+
+    var data = {
+      memberID : this.state.memberID,
+    }
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/memberphoto`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+        this.setState({
+        profilImage: data[0].profilephoto,
+      })
     })
 
 }
@@ -62,7 +86,7 @@ componentDidMount() {
           <button onClick={(e) => { e.preventDefault(); this.getToken()}}className="btn btn-outline-primary btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm fa-fw font-weight-bold"></i></button>
           <button className="btn btn-sm my-auto"><a className="nav-item nav-link" href="#"  style={{paddingLeft:"20px", paddingRight:"20px"}}><i className="fa fa-bell-on fa-fw text-primary fa-lg"></i></a></button>
           <div className="d-flex align-content-center flex-wrap">
-            <img src={Poto} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+            <img src={this.state.profilImage} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
           </div>
 
           <div className="row ml-2">

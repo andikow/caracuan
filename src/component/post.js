@@ -124,9 +124,10 @@ class Post extends Component {
     })
     .then(res => res.json())
     .then(alert('Bagian Topik berhasil disimpan!'))
+    .then(this.tampilkanBagian(this.state.topikID))
   }
   tampilkanBagian(ev){
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${ev.target.value}`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagianKelas/${ev}`,
     {
       method: 'GET',
       headers: {
@@ -157,7 +158,7 @@ class Post extends Component {
                         </div>
                         <select class="custom-select" id="inputGroupSelect01"
                         onChange=
-                        {ev => {this.setState({ topikID: ev.target.value });this.tampilkanBagian(ev)}}>
+                        {ev => {this.setState({ topikID: ev.target.value });this.tampilkanBagian(ev.target.value)}}>
                         <option selected>Pilih Topik...</option>
                         {
                           this.state.datatopik.map(data=>
