@@ -156,7 +156,7 @@ class Topik extends Component {
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Topik</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Kelas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
@@ -164,8 +164,8 @@ class Topik extends Component {
         <div class="modal-body">
         <div class="container">
         <div class="row">
-        <label for="judultopik">Judul Topik</label>
-        <input type="text" class="form-control" id="judultopik" placeholder="Judul Topik" onChange={ev => this.setState({ judul: ev.target.value })}/>
+        <label for="judultopik">Judul Kelas</label>
+        <input type="text" class="form-control" id="judultopik" placeholder="Judul Kelas" onChange={ev => this.setState({ judul: ev.target.value })}/>
         </div>
         <div class="row">
         <label for="thumbnail">Thumbnail</label>
@@ -181,7 +181,7 @@ class Topik extends Component {
         />
         </div>
         <div class="row">
-        <label for="jenistopik">Jenis Topik</label>
+        <label for="jenistopik">Jenis Kelas</label>
         <div class="">
         <div class="form-check-inline">
         <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
@@ -207,9 +207,9 @@ class Topik extends Component {
         <div class="m-4 col-9">
         <div class="row">
         <div class="col-12">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltopik">+ Tambah Topik</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltopik">+ Tambah Kelas</button>
         </div>
-        <h2 class = "col-12 my-2">Daftar Topik</h2>
+        <h2 class = "col-12 my-2">Daftar Kelas</h2>
 
         <div class="ml-4 text-primary" style={{width:"100%"}}>
         <table id="transaksi" class="display" style={{width:"100%"}}>
@@ -218,7 +218,7 @@ class Topik extends Component {
         <th>Tanggal</th>
         <th>Judul</th>
         <th>Thumbnail</th>
-        <th>Jenis Topik</th>
+        <th>Jenis Kelas</th>
         <th>Harga</th>
         <th>Aksi</th>
         </tr>

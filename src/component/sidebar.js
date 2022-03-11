@@ -44,12 +44,12 @@ class Sidebar extends Component {
           </NavLink>
           <NavLink to="/dashboardcreator/topik">
             <li>
-              <a href="#">Topik</a>
+              <a href="#">Kelas</a>
             </li>
           </NavLink>
           <NavLink to="/dashboardcreator/buatakademi">
             <li>
-              <a href="#">Akademi</a>
+              <a href="#">Materi</a>
             </li>
           </NavLink>
           <NavLink to="/dashboardcreator/analisasaya">
