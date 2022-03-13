@@ -1,40 +1,103 @@
 import React, { Component } from "react";
-import { Route, NavLink, HashRouter } from "react-router-dom";
 import Poto from './../public/assets/img/creator.png';
+import jwt_decode from 'jwt-decode';
 
 class Pengaturan extends Component {
   constructor(){
     super();
     this.state = {
-      image:"https://fakeimg.pl/350x200/",
-      saveImage:null,
-      msg:''
+      memberID:'',
+      coverImage:"https://fakeimg.pl/1200x400/",
+      profilImage:"https://fakeimg.pl/300x300/",
+      saveCoverImage:null,
+      saveProfilImage:null,
+      coverImageName:'',
+      profilImageName:'',
+      expire:'',
     }
   }
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+      .then(res=>{
+        return res.json()
+      })
+      .then(data=>{
+        this.setState({
+          token: data.accessToken
+        });
+        const decoded = jwt_decode(this.state.token);
+        this.setState({
+          memberID: decoded.memberID,
+          expire:decoded.exp
+        })
+      })
+      .catch((error)=>{
+        this.props.history.push('/login')
+      })
+  }
 
-  handleUploadChange(e) {
+  handleUploadCoverChange(e) {
     let uploaded = e.target.files[0];
     this.setState({
-      image: URL.createObjectURL(uploaded),
-      saveImage:uploaded
+      coverImage: URL.createObjectURL(uploaded),
+      saveCoverImage:uploaded
     });
   }
 
-  handleSave() {
-  if (this.state.saveImage) {
+  handleUploadProfilChange(e) {
+    let uploaded = e.target.files[0];
+    this.setState({
+      profilImage: URL.createObjectURL(uploaded),
+      saveProfilImage:uploaded
+    });
+  }
+
+  async handleSave() {
+  if (this.state.saveCoverImage || this.state.saveProfilImage) {
       // save image to backend
       let formData = new FormData();
-      formData.append("photo", this.state.saveImage);
+      formData.append("photo", this.state.saveCoverImage);
 
-      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/api/upload`, {
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/api/uploadcover`, {
         method: "POST",
         body: formData,
       })
         .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          window.location.href = data.image;
-        });
+        .then((data)=> this.setState({coverImageName: data.imageName}))
+
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/api/uploadprofil`, {
+          method: "POST",
+          body: formData,
+        })
+        .then((res) => res.json())
+        .then((data)=> this.setState({profilImageName: data.imageName}))
+
+      var data = {
+          memberID:this.state.memberID,
+          coverImageName:this.state.coverImageName,
+          profilImageName:this.state.profilImageName,
+      }
+      
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/updatemember`,
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+          .then(res => res.json())
+          .then(alert('Perubahan disimpan!'))
+
     } else {
       alert("Upload gambar dulu");
     }
@@ -45,30 +108,47 @@ class Pengaturan extends Component {
       <>
       <div class="container">
         <div class="row">
-          <h2 className="col-12 mx-4 my-4 text-primary">Pengaturan</h2>
+          <h2 className="col-12 px-4 my-4 text-primary">Pengaturan</h2>
         </div>
         <div class="row">
-          <div class="col-4">
-          <div className="mt-5 mx-auto">
-        <div>
-          <img src={this.state.image} className="img-thumbnail" alt="..." />
-        </div>
-        <div className="my-3">
-          <label htmlFor="formFile" className="form-label">
-            Upload image here
-          </label>
-          <input
-            onChange={(e) => {e.preventDefault();this.handleUploadChange(e)}}
-            className="form-control"
-            type="file"
-            id="formFile"
-          />
-          <button onClick={(e)=>{e.preventDefault();this.handleSave()}} className="btn btn-primary mt-2 w-100">
-            Save my photo
-          </button>
-        </div>
-      </div>
+          <div class="col-12">
+            <div className="mx-auto">
+              <div>
+                <img src={this.state.coverImage} className="img-thumbnail" alt="..." />
+              </div>
+              <div className="my-3">
+                <label htmlFor="formFile" className="form-label text-primary">
+                  Upload foto cover
+                </label>
+                <input
+                onChange={(e) => {e.preventDefault();this.handleUploadCoverChange(e)}}
+                className="form-control"
+                type="file"
+                id="formFile"
+                />
+              </div>
+            </div>
           </div>
+
+          <div class="col-4">
+            <div className="mx-auto">
+              <div class="text-center">
+                <img src={this.state.profilImage} className="img-thumbnail" alt="..." />
+              </div>
+              <div className="my-3">
+                <label htmlFor="formFile" className="form-label text-primary">
+                  Upload foto profil
+                </label>
+                <input
+                onChange={(e) => {e.preventDefault();this.handleUploadProfilChange(e)}}
+                className="form-control"
+                type="file"
+                id="formFile"
+                />
+              </div>
+            </div>
+          </div>
+
           <div class="col-8">
             <div class="form-group">
                <label class="text-primary">Nama</label>
@@ -95,10 +175,11 @@ class Pengaturan extends Component {
                <p className="text-primary" style={{fontSize:14}}>Lupa Password?</p>
             </div>
             <div class="d-flex my-2">
-              <button className="btn btn-primary text-center text-white ml-auto font-weight-bold" href="#" style={{width:"150px"}}>Simpan</button>
+              <button onClick={(e)=>{e.preventDefault();this.handleSave()}} className="btn btn-primary text-center text-white ml-auto font-weight-bold" href="#" style={{width:"150px"}}>Simpan</button>
             </div>
 
           </div>
+
         </div>
       </div>
       </>

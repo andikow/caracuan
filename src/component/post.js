@@ -123,10 +123,11 @@ class Post extends Component {
       body: JSON.stringify(data)
     })
     .then(res => res.json())
-    .then(alert('Bagian Topik berhasil disimpan!'))
+    .then(alert('Topik Kelas berhasil disimpan!'))
+    .then(this.tampilkanBagian(this.state.topikID))
   }
   tampilkanBagian(ev){
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${ev.target.value}`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagianKelas/${ev}`,
     {
       method: 'GET',
       headers: {
@@ -143,22 +144,22 @@ class Post extends Component {
     return (
     <div class="container">
       <div class="row">
-        <h2 class = "col-12 my-2">Buat Akademi</h2>
-        {/*Topik*/}
+        <h2 class = "col-12 my-2">Buat Materi</h2>
+        {/*Kelas*/}
         <div class="col-12">
           <div class="card pt-0">
-                <div class="card-header">Topik</div>
+                <div class="card-header">Kelas</div>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-12 my-2">
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Topik</label>
+                          <label class="input-group-text" for="inputGroupSelect01">Kelas</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect01"
                         onChange=
-                        {ev => {this.setState({ topikID: ev.target.value });this.tampilkanBagian(ev)}}>
-                        <option selected>Pilih Topik...</option>
+                        {ev => {this.setState({ topikID: ev.target.value });this.tampilkanBagian(ev.target.value)}}>
+                        <option selected>Pilih Kelas...</option>
                         {
                           this.state.datatopik.map(data=>
                             <>
@@ -177,14 +178,14 @@ class Post extends Component {
 
           </div>
         </div>
-        {/*Bagian*/}
+        {/*Topik*/}
         <div class="col-12">
           <div class="card pt-0">
-                <div class="card-header">Bagian</div>
+                <div class="card-header">Topik</div>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-2 my-2 d-inline">
-                      <button type="button" class="btn btn-link" onClick={() => this.show()}>+ Bagian</button>
+                      <button type="button" class="btn btn-link" onClick={() => this.show()}>+ Topik</button>
                     </div>
                     <div id ="tambahbagian" class="col-9 my-2 d-none">
                       <input class="form-control" type="text" placeholder="Nama Bagian" aria-label="post-title" onChange={ev => this.setState({ namaBagian: ev.target.value })}/>
@@ -195,11 +196,11 @@ class Post extends Component {
                     <div class="col-12 my-2">
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <label class="input-group-text" for="inputGroupSelect01">Bagian</label>
+                          <label class="input-group-text" for="inputGroupSelect01">Topik</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect01" onChange=
                         {ev => {this.setState({ bagianID: ev.target.value })}}>
-                          <option selected>Pilih Bagian...</option>
+                          <option selected>Pilih Topik...</option>
                           {
                             this.state.dataBagian.map(data=>
                               <>
@@ -218,10 +219,10 @@ class Post extends Component {
 
           </div>
         </div>
-        {/*Akademi*/}
+        {/*Materi*/}
         <div class="col-12">
           <div class="card pt-0">
-            <div class="card-header">Akademi</div>
+            <div class="card-header">Materi</div>
             <div class="card-body">
               <div class="row">
                 <h5 class="col-12 my-2">Judul</h5>
@@ -245,7 +246,7 @@ class Post extends Component {
                   <div class="col-12 my-2">
                     <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
                   </div>
-                  <h5 class = "col-12 my-2">Jenis Akademi</h5>
+                  <h5 class = "col-12 my-2">Jenis Materi</h5>
                   <div class="col-12 my-2">
                     <div class="form-check form-check-inline">
                       <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>

@@ -76,7 +76,7 @@ export default class Creator extends React.Component{
               <input type="radio" name="options" id="option1"/> Beranda
               </a></NavLink>
               <NavLink activeClassName="active" to={"/creator/" + this.state.id + "/post"}><a className="btn btn-outline-primary text-center mx-2 font-weight-bold" href="#">
-                <input type="radio" name="options" id="option1"/> Akademi
+                <input type="radio" name="options" id="option1"/> Kelas
               </a></NavLink>
               <NavLink activeClassName="active" to={"/creator/" + this.state.id + "/analisa"}><a className="btn btn-outline-primary text-center font-weight-bold" href="#">
                   <input type="radio" name="options" id="option1"/> Analisa

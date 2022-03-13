@@ -17,7 +17,7 @@ class Sidebarmember extends Component {
                   <ul class="list-unstyled components">
                     <NavLink to="/dashboard/akademi">
                       <li class ="active">
-                          <a href="#">Akademi</a>
+                          <a href="#">Kelas</a>
                       </li>
                     </NavLink>
                     <NavLink to="/dashboard/mengikuti">

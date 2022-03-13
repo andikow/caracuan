@@ -143,9 +143,38 @@ router.post('/simpanbagian', async function (req,res){
     }
 });
 
+router.post('/updatemember', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `
+        UPDATE member
+        SET profilephoto = '${data.profilImageName}', coverphoto = '${data.coverImageName}'
+        WHERE memberID = ${data.memberID}`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
 router.get('/carikreator', async function(req,res){
     try {
-        const sqlQuery = 'SELECT * FROM member';
+        const sqlQuery = `SELECT memberID, Name, refresh_token, isCreator, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto FROM member`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+
+});
+
+router.post('/memberphoto', async function(req,res){
+    let data = req.body;
+    try {
+        const sqlQuery = `SELECT
+        CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto
+        FROM member WHERE memberID LIKE '${data.memberID}'`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -220,6 +249,18 @@ router.get('/tampilkanBagian/:topikID', async function(req,res){
           return acc;
 }, {});
         console.log(newObject);
+
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/tampilkanBagianKelas/:topikID', async function(req,res){
+    try {
+        let topikID = req.params.topikID
+        const sqlQuery = `SELECT * FROM tblbagian WHERE topikID = '${topikID}'`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
 
     } catch (error) {
         res.status(400).send(error.message)
