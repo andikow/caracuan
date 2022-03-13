@@ -117,9 +117,9 @@ class MainPost extends Component {
               <VideoContent linkvideo = {this.state.yID}/>
             }
             </div>
-            <div class="col-12 mx-auto px-5 text-dark">
-              {this.state.dataMateri.deskripsi}
-            </div>
+            <div class="col-12 mx-auto px-5 text-dark"
+              dangerouslySetInnerHTML={{__html: this.state.dataMateri.deskripsi}}
+            />
 
           </div>
         </div>

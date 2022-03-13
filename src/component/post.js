@@ -104,9 +104,10 @@ class Post extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
-    }
-  ).then(res => res.json())
-  .then(alert('Postingan berhasil ditayangkan!'))
+    })
+    .then(res => res.json())
+    .then(alert('Postingan berhasil ditayangkan!'))
+
   }
   simpanbagian(){
     var data = {
@@ -126,6 +127,7 @@ class Post extends Component {
     .then(alert('Topik Kelas berhasil disimpan!'))
     .then(this.tampilkanBagian(this.state.topikID))
   }
+
   tampilkanBagian(ev){
     fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagianKelas/${ev}`,
     {
