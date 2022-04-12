@@ -70,7 +70,6 @@ class Topik extends Component {
           this.setState({
             datatopik: data
           });
-
           $('#transaksi').DataTable({
             data: data,
             columns: [
@@ -150,88 +149,88 @@ class Topik extends Component {
 
     render() {
       return (
-        <>
+      <>
 
-        <div class="modal fade" id="modaltopik" tabindex="-1" role="dialog" aria-labelledby="modaltopik" aria-hidden="true">
+      <div class="modal fade" id="modaltopik" tabindex="-1" role="dialog" aria-labelledby="modaltopik" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Kelas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Tambah Kelas</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <label for="judultopik">Judul Kelas</label>
+                  <input type="text" class="form-control" id="judultopik" placeholder="Judul Kelas" onChange={ev => this.setState({ judul: ev.target.value })}/>
+                </div>
+                <div class="row">
+                  <label for="thumbnail">Thumbnail</label>
+                  <div className="col-12 text-center">
+                    <img src={this.state.image} className="img-thumbnail" alt="..." />
+                  </div>
+                  <label htmlFor="formFile" className="form-label">Upload image here</label>
+                  <input
+                  onChange={(e) => {e.preventDefault();this.handleUploadChange(e)}}
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  />
+                </div>
+                <div class="row">
+                  <label for="jenistopik">Jenis Kelas</label>
+                  <div class="">
+                    <div class="form-check-inline">
+                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
+                      <label class="form-check-label" for="opsiGratis">Gratis</label>
+                    </div>
+                    <div class="form-check-inline">
+                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
+                      <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
+                      <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              <button type="button" class="btn btn-primary" onClick={() => this.submittopik()}>Simpan</button>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-        <div class="container">
-        <div class="row">
-        <label for="judultopik">Judul Kelas</label>
-        <input type="text" class="form-control" id="judultopik" placeholder="Judul Kelas" onChange={ev => this.setState({ judul: ev.target.value })}/>
-        </div>
-        <div class="row">
-        <label for="thumbnail">Thumbnail</label>
-        <div className="col-12 text-center">
-        <img src={this.state.image} className="img-thumbnail" alt="..." />
-        </div>
-        <label htmlFor="formFile" className="form-label">Upload image here</label>
-        <input
-        onChange={(e) => {e.preventDefault();this.handleUploadChange(e)}}
-        className="form-control"
-        type="file"
-        id="formFile"
-        />
-        </div>
-        <div class="row">
-        <label for="jenistopik">Jenis Kelas</label>
-        <div class="">
-        <div class="form-check-inline">
-        <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
-        <label class="form-check-label" for="opsiGratis">Gratis</label>
-        </div>
-        <div class="form-check-inline">
-        <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
-        <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
-        <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-primary" onClick={() => this.submittopik()}>Simpan</button>
-        </div>
-        </div>
-        </div>
-        </div>
+      </div>
 
-        <div class="m-4 col-9">
+      <div class="m-4 col-9">
         <div class="row">
-        <div class="col-12">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltopik">+ Tambah Kelas</button>
-        </div>
-        <h2 class = "col-12 my-2">Daftar Kelas</h2>
+          <div class="col-12">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltopik">+ Tambah Kelas</button>
+          </div>
+          <h2 class = "col-12 my-2">Daftar Kelas</h2>
 
-        <div class="ml-4 text-primary" style={{width:"100%"}}>
-        <table id="transaksi" class="display" style={{width:"100%"}}>
-        <thead>
-        <tr>
-        <th>Tanggal</th>
-        <th>Judul</th>
-        <th>Thumbnail</th>
-        <th>Jenis Kelas</th>
-        <th>Harga</th>
-        <th>Aksi</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
+          <div class="ml-4 text-primary" style={{width:"100%"}}>
+            <table id="transaksi" class="display" style={{width:"100%"}}>
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Judul</th>
+                  <th>Thumbnail</th>
+                  <th>Jenis Kelas</th>
+                  <th>Harga</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+
+          </div>
 
         </div>
-
-        </div>
-        </div>
-        </>
+      </div>
+      </>
       );
     }
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Poto from './../public/assets/img/mainpost-img.jpg';
-
+import './../public/assets/css/modalsuccess.css';
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
 
@@ -17,6 +17,7 @@ class MainPost extends Component {
       postID : this.props.location.pathname.split("/")[2],
     }
   }
+
   async componentDidMount() {
 
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/post/id/` + this.state.postID + '/',
@@ -53,11 +54,42 @@ class MainPost extends Component {
       .then(res => res.json())
       .then(data => {this.setState({ dataBagian:data })});
 
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/postsdonedetail/${this.state.dataMateri.topikID}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
+      .then(res => res.json())
+      .then(data => {this.setState({ dataBagian:data })});
+
   }
+
   render() {
     return (
     <>
     <Header/>
+
+    <div id="modalPenyelesaian" class="modal fade">
+      <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+          <div class="modal-header mx-auto">
+            <div class="icon-box">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <h4 class="modal-title">Selamat!</h4>
+          </div>
+          <div class="modal-body">
+            <p class="text-center">Anda sudah menyelesaikan materi ini.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success btn-block" data-dismiss="modal">Oke</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container">
       <div class="row">
@@ -95,13 +127,13 @@ class MainPost extends Component {
                             </div>
                           </a>
                           )}
+                        </div>
                       </div>
-                    </div>
                     </div>
                     )}
                   </div>
-            </div>
-          </div>
+                </div>
+              </div>
         </div>
         {/*End Left Content*/}
 
@@ -112,23 +144,26 @@ class MainPost extends Component {
               <h2 class="text-center">{this.state.dataMateri.judul}</h2>
             </div>
             <div class="col-12">
-            {
-              this.state.isLoading ? null :
-              <VideoContent linkvideo = {this.state.yID}/>
-            }
+              {
+                this.state.isLoading ? null :
+                <VideoContent linkvideo = {this.state.yID}/>
+              }
             </div>
             <div class="col-12 mx-auto px-5 text-dark"
-              dangerouslySetInnerHTML={{__html: this.state.dataMateri.deskripsi}}
+            dangerouslySetInnerHTML={{__html: this.state.dataMateri.deskripsi}}
             />
+            <div class="col-12 mx-auto my-2 px-5 text-dark text-right">
+              <button type="button" class="btn btn-success text-white" data-toggle="modal" data-target="#modalPenyelesaian"><i class="fas fa-check fa-fw"></i>Sudah Selesai</button>
+            </div>
 
           </div>
         </div>
         {/*End Right Content*/}
-      </div>
+          </div>
     </div>
 
-    <Footer/>
-                </>
+        <Footer/>
+        </>
                 );
               }
             }

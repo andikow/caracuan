@@ -1,13 +1,15 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom'
 import Logo from './../public/assets/img/logo_cover.png';
 
 class Login extends Component {
-  constructor(){
-     super();
+  constructor(props){
+     super(props);
      this.state = {
        email:'',
        password:'',
-       msg:''
+       msg:'',
+       from:this.props.location.state || '/dashboard/akademi',
      }
   }
 
@@ -30,7 +32,7 @@ class Login extends Component {
       if(!res.ok){
         return res.json();
       }
-      this.props.history.push('/dashboard/akademi')
+      this.props.history.push(this.state.from)
     })
     .then(res=>{
       if(res){
@@ -44,7 +46,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div class="container-fluid">
         <div class="row d-flex" style={{height:"620px"}}>
           <div class="col-md-6 col-sm-12 d-flex align-items-center justify-content-center" style={{background:"#ECF1FF"}}>
             <img src={Logo} alt="Logo" height="100px" />
@@ -81,4 +83,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

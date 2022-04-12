@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, NavLink, HashRouter } from "react-router-dom";
+import { Route, NavLink, HashRouter, withRouter } from "react-router-dom";
 import 'dotenv/config'
 
 import Header from './../component/header.js';
@@ -12,18 +12,22 @@ import CreatorPost from './../component/creator-post.js';
 import CreatorAnalisa from './../component/creator-analisa.js';
 import DetailPost from './../component/detail-post.js';
 
+import Login from './login'
 
-export default class Creator extends React.Component{
+
+class Creator extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       data:{},
       id : this.props.location.pathname.split("/")[2],
+      profilImage:'',
+      coverImage:'',
     };
   }
 
-  componentDidMount() {
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.id + '/',
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.id + '/',
     {
       method: 'GET',
       headers: {
@@ -43,15 +47,39 @@ export default class Creator extends React.Component{
     .catch((err) =>{
       this.setState({ msg: err.msg })
     })
+
+    var data = {
+      memberID : this.state.id,
+    }
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/memberphoto`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+        this.setState({
+        profilImage: data[0].profilephoto,
+        coverImage: data[0].coverphoto,
+      })
+    })
+
   }
 
   render(){
     return(
     <>
     <Header/>
-      <div className="row"  style={{paddingLeft:"70px", paddingRight:"70px", paddingTop:"40px", paddingBottom:"40px"}}>
+      <div className="row container-fluid"  style={{paddingLeft:"70px", paddingRight:"70px", paddingTop:"40px", paddingBottom:"40px"}}>
       <div className="aside pb-4 bg-light col-xs-12 col-sm-4 col-md-3 text-primary">
-        <img src={Poto} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+        <img src={this.state.profilImage} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
         <div style={{textAlign:'center'}}>
         <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
         <p>@vandarinarisca</p>
@@ -68,7 +96,7 @@ export default class Creator extends React.Component{
         </div>
       </div>
       <div className="container col-xs-12 col-sm-8 col-md-9">
-      <img src={Potobg} alt="Potobg" height="225" width="100%" />
+      <img src={this.state.coverImage} alt="Potobg" height="225" width="100%" />
       <div className="row">
         <div className="col py-2">
 
@@ -90,14 +118,13 @@ export default class Creator extends React.Component{
           <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i> Laporkan</a>
         </div>
       </div>
-      <HashRouter>
+
       <div className="content">
       <Route path="/creator/:id/beranda" component={CreatorBeranda}/>
       <Route exact path="/creator/:id/post" component={CreatorPost}/>
       <Route path="/creator/:id/analisa/" component={CreatorAnalisa}/>
       <Route exact path="/creator/:id/post/:topikID" component={DetailPost}/>
       </div>
-      </HashRouter>
       </div>
       </div>
       <Footer/>
@@ -105,3 +132,5 @@ export default class Creator extends React.Component{
     )
   }
 }
+
+export default Creator;

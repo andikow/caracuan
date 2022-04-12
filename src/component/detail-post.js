@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Route, NavLink, HashRouter } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
+import { withRouter } from 'react-router-dom';
+import Iframe from 'react-iframe';
 
 class DetailPost extends Component {
   constructor(props) {
@@ -8,19 +10,70 @@ class DetailPost extends Component {
       dataBagian:[],
       topikID : this.props.location.pathname.split("/")[4],
       topik:'',
+      memberID:'',
+      postID:16,
+      doneDetail:[],
+      data:[],
+      invoice_url:'',
+      isPaid:false,
     };
   }
-  componentDidMount() {
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${this.state.topikID}`,
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+  async componentDidMount() {
+    this.setState({
+      isPaid: false
+    });
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        name: decoded.name,
+        memberID:decoded.memberID,
+        expire:decoded.exp
       })
-      .then(res => res.json())
-      .then(data => {this.setState({ dataBagian:data })});
+    })
+    .catch((error)=>{
+      this.props.history.push({
+        pathname:"/login",
+        state: this.props.location.pathname
+      })
+    })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.memberID + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        data: res[0]
+      });
+      console.log(this.state.data);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
 
     fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/id/` + this.state.topikID + '/',
       {
@@ -38,18 +91,136 @@ class DetailPost extends Component {
         this.setState({
           topik: res[0]
         });
-        console.log(this.state.topik.judul);
       })
       .catch((err) =>{
         this.setState({ msg: err.msg })
       })
 
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${this.state.topikID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data => {this.setState({ dataBagian:data })});
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/postsdonedetail/${this.state.memberID}/${this.state.topikID}/`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+      .then(res=>{
+        return res.json();
+      })
+      .then(res=>{
+        this.setState({
+          doneDetail: res
+        });
+      })
+      .catch((err) =>{
+        this.setState({ msg: err.msg })
+      })
+
+    var data = {
+        topikID:this.state.topikID,
+        memberID:this.state.memberID,
+      }
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cekinvoice`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(res=>{
+        if(res.status === "PAID" || res.status === "SETTLED"){
+          this.setState({
+            isPaid: true
+          });
+        }
+      })
+      .catch((err) =>{})
+
+    console.log(this.state.dataBagian);
+    console.log(this.state.topik);
+    console.log(this.state.doneDetail);
     }
+
+  async checkout(){
+      var data = {
+        topikID:this.state.topikID,
+        memberID:this.state.memberID,
+        email:this.state.data.Email,
+        name:this.state.data.Name,
+        phone:this.state.data.Phone,
+        judul:this.state.topik.judul,
+        harga:this.state.topik.harga,
+        currentpath:`http://localhost:3000/#${this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/'))}`,
+      }
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cetakinvoice`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(res=>{
+        this.setState({
+          invoice_url: res.invoice_url,
+        });
+      })
+
+
+    }
+
   render() {
     return (
+    <>
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title m-auto" id="exampleModalLabel">Dukung Analismu!</h5>
+            <button type="button" class="close m-0 p-0" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body m-0 p-0" style={{height:"100vh"}}>
+
+          <Iframe url={this.state.invoice_url}
+          width="100%"
+          height="100%"
+          overflow="auto"
+          display="block"
+          frameBorder="0"
+          />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
-      <h2 class="m-2 p-2">{this.state.topik.judul}</h2>
-      <div class="row col-12">
+      {this.state.isPaid ? <div></div> : <div class="col-12 mt-2">
+        <div class="alert alert-warning" role="alert">
+          Anda belum berlangganan kelas ini! Traktir <button onClick={() => this.checkout()} type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#paymentModal">1 <i className="far fa-ice-cream" style={{color:"white"}}></i></button> untuk berlangganan.
+        </div>
+      </div>}
+      <div class="col-12 mb-2">
+        <h2>{this.state.topik.judul}</h2>
+      </div>
         <div class="col-12">
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -106,14 +277,19 @@ class DetailPost extends Component {
                             {
                               data.judul.map((judul, index)=>
 
-                              <a href={"/#/post/" + data.postID[index]} id = {data.postID[index]} class="list-group-item list-group-item-action border">
+                              <a href={"/#/post/" + data.postID[index]} id = {data.postID[index]} class={this.state.isPaid ? "list-group-item list-group-item-action border" : "list-group-item list-group-item-action border disabled"}>
                                 <div class="row justify-content-between">
                                   <div class="col">
                                     {judul}
                                   </div>
-                                  <div class="col-2 p-0">
-                                    <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai
-                                  </div>
+                                  {
+                                    this.state.doneDetail.findIndex(done => done.postID == data.postID[index]) > -1 ?
+                                    <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
+                                    <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
+                                    }
+
+
+
                                 </div>
                               </a>
                               )}
@@ -129,10 +305,10 @@ class DetailPost extends Component {
               </div>
             </div>
 
-          </div>
         </div>
+        </>
     );
   }
 }
 
-export default DetailPost;
+export default withRouter(DetailPost);

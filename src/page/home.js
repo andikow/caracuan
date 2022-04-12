@@ -1,8 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
 import Homepic from './../public/assets/img/homepic.png';
 import Header from './../component/header.js'
 import Footer from './../component/footer.js';
-export default class Home extends React.Component{
+
+class Home extends React.Component{
 
   render(){
 
@@ -37,3 +39,5 @@ export default class Home extends React.Component{
     )
   }
 }
+
+export default withRouter(Home);
