@@ -173,7 +173,7 @@ class Saldo extends Component {
   render() {
     return (
       <>
-        <div class="modal fade" id="modalpenarikan" tabindex="-1" role="dialog" aria-labelledby="modalpenarikan" aria-hidden="true">
+      <div class="modal fade" id="modalpenarikan" tabindex="-1" role="dialog" aria-labelledby="modalpenarikan" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -185,7 +185,7 @@ class Saldo extends Component {
             <div class="modal-body">
               <div class="container">
                 <div class="row my-2">
-                  <label for="tujuanPenarikan">Tujuan Penarikan</label>
+                  <h5><strong>Tujuan Penarikan</strong></h5>
                 </div>
                 <div class="row my-2">
                   <label>{this.state.dataRekening.bankName} - {this.state.dataRekening.nomorRekening}</label>
@@ -194,7 +194,7 @@ class Saldo extends Component {
                   <label>{this.state.dataRekening.namaPemilik}</label>
                 </div>
                 <div class="row my-2">
-                  <label style={{display:"block"}}>Saldo Sekarang</label>
+                  <h5 style={{display:"block"}}><strong>Saldo Sekarang</strong></h5>
                 </div>
                 <div class="row my-2">
                   <label for="saldoSekarang">{"Rp " + this.numberWithCommas(this.state.saldoSekarang)}</label>
@@ -212,31 +212,31 @@ class Saldo extends Component {
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-        <div class="modal fade" id="modalakunbank" tabindex="-1" role="dialog" aria-labelledby="modalakunbank" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Akun Bank</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row my-2">
-                    <label for="bank">Bank</label>
-                    <select id="bank" class="custom-select" id="inputGroupSelect01" onChange={ev => {this.setState({ bankCode: ev.target.value, bankName: ev.target[ev.target.selectedIndex].text })}}>
+      <div class="modal fade" id="modalakunbank" tabindex="-1" role="dialog" aria-labelledby="modalakunbank" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Tambah Akun Bank</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row my-2">
+                  <label for="bank">Bank</label>
+                  <select id="bank" class="custom-select" id="inputGroupSelect01" onChange={ev => {this.setState({ bankCode: ev.target.value, bankName: ev.target[ev.target.selectedIndex].text })}}>
                     <option selected>Pilih Bank...</option>
                     {
                       this.state.dataBank.map(data=>
-                        <>
-                        <option value={data.code}>
+                      <>
+                      <option value={data.code}>
                         {data.name}
-                        </option>
-                        </>
-                    )}
+                      </option>
+                      </>
+                      )}
                     </select>
                   </div>
                   <div class="row my-2">
@@ -256,7 +256,7 @@ class Saldo extends Component {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
         <div class="container">
           <div class="row">
@@ -286,10 +286,11 @@ class Saldo extends Component {
 
                     </div>
                   </div>
-                  <div class="row">
+
                     <div class="row">
-                      <div class="col m-4 table-responsive">
-                        <table class="table">
+                      <div class="col mt-4 table-responsive">
+                        <h5><strong>Riwayat Transaksi</strong></h5>
+                        <table class="table table-striped display" style={{width:"100%"}}>
                           <thead class="thead-light">
                             <tr>
                               <th scope="col">#</th>
@@ -321,7 +322,7 @@ class Saldo extends Component {
                         </table>
                       </div>
                     </div>
-                  </div>
+
                 </div>
 
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
