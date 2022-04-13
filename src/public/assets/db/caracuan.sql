@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 17 Mar 2022 pada 12.28
--- Versi Server: 10.1.24-MariaDB
--- PHP Version: 7.1.6
+-- Generation Time: Apr 13, 2022 at 03:31 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,25 +24,52 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `analysis`
+-- Table structure for table `analysisdetail`
 --
 
-CREATE TABLE `analysis` (
+CREATE TABLE `analysisdetail` (
   `analysisID` int(11) NOT NULL,
   `memberID` int(11) NOT NULL,
-  `date` int(11) NOT NULL,
+  `date` date NOT NULL,
   `description` varchar(250) NOT NULL,
   `stockCode` varchar(4) NOT NULL,
   `targetPrice` int(11) NOT NULL,
   `stopPrice` int(11) NOT NULL,
+  `isHit` varchar(10) NOT NULL DEFAULT 'Hold',
   `agreed` int(11) NOT NULL,
   `disagreed` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `analysisdetail`
+--
+
+INSERT INTO `analysisdetail` (`analysisID`, `memberID`, `date`, `description`, `stockCode`, `targetPrice`, `stopPrice`, `isHit`, `agreed`, `disagreed`) VALUES
+(1, 41, '2022-04-05', 'Secara fundamental masih cukup menarik', 'BBCA', 8000, 7500, 'Hold', 352, 252),
+(2, 41, '2022-04-06', 'Secara teknikal ada potensi rebound', 'EKAD', 1800, 1200, 'Hold', 1, 2);
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `creator`
+-- Table structure for table `balancedetail`
+--
+
+CREATE TABLE `balancedetail` (
+  `memberID` int(11) NOT NULL,
+  `balance` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `balancedetail`
+--
+
+INSERT INTO `balancedetail` (`memberID`, `balance`) VALUES
+(41, 50500);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `creator`
 --
 
 CREATE TABLE `creator` (
@@ -55,7 +81,7 @@ CREATE TABLE `creator` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `following`
+-- Table structure for table `following`
 --
 
 CREATE TABLE `following` (
@@ -64,7 +90,7 @@ CREATE TABLE `following` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `following`
+-- Dumping data for table `following`
 --
 
 INSERT INTO `following` (`memberID`, `followingID`) VALUES
@@ -78,7 +104,7 @@ INSERT INTO `following` (`memberID`, `followingID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `member`
+-- Table structure for table `member`
 --
 
 CREATE TABLE `member` (
@@ -88,18 +114,18 @@ CREATE TABLE `member` (
   `Phone` varchar(15) NOT NULL,
   `Email` varchar(60) NOT NULL,
   `Password` varchar(60) NOT NULL,
-  `refresh_token` text,
-  `isCreator` tinyint(1) NOT NULL DEFAULT '0',
+  `refresh_token` text DEFAULT NULL,
+  `isCreator` tinyint(1) NOT NULL DEFAULT 0,
   `profilephoto` varchar(50) NOT NULL,
   `coverphoto` varchar(59) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `member`
+-- Dumping data for table `member`
 --
 
 INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Password`, `refresh_token`, `isCreator`, `profilephoto`, `coverphoto`) VALUES
-(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjQ3MTc2MjYxLCJleHAiOjE2NDcyNjI2NjF9.AESg5uJAwGlAOJIoXMdti4mwHq_-MkqCApj7MAuZiCI', 0, 'andikatama.jpg', 'andikatama.jpg'),
+(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjQ5ODI2ODQ0LCJleHAiOjE2NDk5MTMyNDR9.Pt_cybFuO41qbwrIuVbWkIpZ5fHyGHxLrT_Znst_m3g', 0, 'andikatama.jpg', 'andikatama.jpg'),
 (47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ3LCJuYW1lIjoiS2FwdGVuIFNhaGFtIiwiZW1haWwiOiJhbmR5a2F0YW1hQGdtYWlsLmNvbWEiLCJpYXQiOjE2NDcxNzkyNDMsImV4cCI6MTY0NzI2NTY0M30.lMWSEVcbFBvewOJYwfoiDrGrSCyK-Y0K43g2wErlD_M', 0, 'kapten.jpg', 'kapten.jpg'),
 (48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIFJpc2NhIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjQ3MjcxOTEzLCJleHAiOjE2NDczNTgzMTN9.HR_1vYRRQ6dZ_T4ptsoaFokyxeEmZKe_2vZh1C81Ngw', 0, 'vandarina.jpg', 'vandarina.jpg'),
 (49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoiTHlsaWEiLCJlbWFpbCI6Imx5bGlhODhAZ21haWwuY29tIiwiaWF0IjoxNjQ3NDQwMzUyLCJleHAiOjE2NDc1MjY3NTJ9.53JoiEKjYwq8ipUbh6wQybQ_UhHcMp-3K0zqyGFgrb0', 0, 'lylia.jpg', 'lylia.jpg'),
@@ -109,7 +135,62 @@ INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Passwo
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `postsdetail`
+-- Table structure for table `memberpurchasedetail`
+--
+
+CREATE TABLE `memberpurchasedetail` (
+  `memberID` int(11) NOT NULL,
+  `topikID` int(11) NOT NULL,
+  `invoiceID` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `memberpurchasedetail`
+--
+
+INSERT INTO `memberpurchasedetail` (`memberID`, `topikID`, `invoiceID`) VALUES
+(41, 16, '6241dc4fa3ab7811c4bb9fbc'),
+(41, 19, '624dbbcc50492b6ad2737905'),
+(41, 21, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payoutaddressdetail`
+--
+
+CREATE TABLE `payoutaddressdetail` (
+  `memberID` int(11) NOT NULL,
+  `bankCode` varchar(15) NOT NULL,
+  `bankName` varchar(60) NOT NULL,
+  `namaPemilik` varchar(45) NOT NULL,
+  `nomorRekening` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `payoutaddressdetail`
+--
+
+INSERT INTO `payoutaddressdetail` (`memberID`, `bankCode`, `bankName`, `namaPemilik`, `nomorRekening`) VALUES
+(41, 'MANDIRI', 'Bank Mandiri', 'Andikatama', '12345678');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payoutsdetail`
+--
+
+CREATE TABLE `payoutsdetail` (
+  `payoutID` varchar(40) NOT NULL,
+  `memberID` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postsdetail`
 --
 
 CREATE TABLE `postsdetail` (
@@ -125,7 +206,7 @@ CREATE TABLE `postsdetail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `postsdetail`
+-- Dumping data for table `postsdetail`
 --
 
 INSERT INTO `postsdetail` (`postID`, `judul`, `deskripsi`, `linkvideo`, `jenispostingan`, `hargapostingan`, `memberID`, `topikID`, `bagianID`) VALUES
@@ -164,7 +245,7 @@ INSERT INTO `postsdetail` (`postID`, `judul`, `deskripsi`, `linkvideo`, `jenispo
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `postsdonedetail`
+-- Table structure for table `postsdonedetail`
 --
 
 CREATE TABLE `postsdonedetail` (
@@ -175,7 +256,7 @@ CREATE TABLE `postsdonedetail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `postsdonedetail`
+-- Dumping data for table `postsdonedetail`
 --
 
 INSERT INTO `postsdonedetail` (`doneID`, `memberID`, `topikID`, `postID`) VALUES
@@ -185,7 +266,7 @@ INSERT INTO `postsdonedetail` (`doneID`, `memberID`, `topikID`, `postID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `postsheader`
+-- Table structure for table `postsheader`
 --
 
 CREATE TABLE `postsheader` (
@@ -199,7 +280,7 @@ CREATE TABLE `postsheader` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tblbagian`
+-- Table structure for table `tblbagian`
 --
 
 CREATE TABLE `tblbagian` (
@@ -209,7 +290,7 @@ CREATE TABLE `tblbagian` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `tblbagian`
+-- Dumping data for table `tblbagian`
 --
 
 INSERT INTO `tblbagian` (`bagianID`, `topikID`, `namaBagian`) VALUES
@@ -229,12 +310,13 @@ INSERT INTO `tblbagian` (`bagianID`, `topikID`, `namaBagian`) VALUES
 (21, 25, 'Downtrend'),
 (22, 25, 'Sideways'),
 (23, 26, 'Apa itu Dividen?'),
-(24, 26, 'Perhitungan Dividen');
+(24, 26, 'Perhitungan Dividen'),
+(25, 16, 'Pengertian Sideways');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `topikheader`
+-- Table structure for table `topikheader`
 --
 
 CREATE TABLE `topikheader` (
@@ -248,7 +330,7 @@ CREATE TABLE `topikheader` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `topikheader`
+-- Dumping data for table `topikheader`
 --
 
 INSERT INTO `topikheader` (`topikID`, `memberID`, `judul`, `thumbnail`, `jenistopik`, `harga`, `createdAt`) VALUES
@@ -267,6 +349,18 @@ INSERT INTO `topikheader` (`topikID`, `memberID`, `judul`, `thumbnail`, `jenisto
 --
 
 --
+-- Indexes for table `analysisdetail`
+--
+ALTER TABLE `analysisdetail`
+  ADD PRIMARY KEY (`analysisID`);
+
+--
+-- Indexes for table `balancedetail`
+--
+ALTER TABLE `balancedetail`
+  ADD PRIMARY KEY (`memberID`);
+
+--
 -- Indexes for table `creator`
 --
 ALTER TABLE `creator`
@@ -279,6 +373,24 @@ ALTER TABLE `creator`
 ALTER TABLE `member`
   ADD PRIMARY KEY (`memberID`),
   ADD UNIQUE KEY `Email` (`Email`);
+
+--
+-- Indexes for table `memberpurchasedetail`
+--
+ALTER TABLE `memberpurchasedetail`
+  ADD PRIMARY KEY (`memberID`,`topikID`);
+
+--
+-- Indexes for table `payoutaddressdetail`
+--
+ALTER TABLE `payoutaddressdetail`
+  ADD PRIMARY KEY (`memberID`);
+
+--
+-- Indexes for table `payoutsdetail`
+--
+ALTER TABLE `payoutsdetail`
+  ADD PRIMARY KEY (`payoutID`);
 
 --
 -- Indexes for table `postsdetail`
@@ -319,26 +431,31 @@ ALTER TABLE `topikheader`
 --
 ALTER TABLE `member`
   MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
 --
 -- AUTO_INCREMENT for table `postsdetail`
 --
 ALTER TABLE `postsdetail`
   MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
 --
 -- AUTO_INCREMENT for table `postsdonedetail`
 --
 ALTER TABLE `postsdonedetail`
   MODIFY `doneID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `tblbagian`
 --
 ALTER TABLE `tblbagian`
-  MODIFY `bagianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `bagianID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
 --
 -- AUTO_INCREMENT for table `topikheader`
 --
 ALTER TABLE `topikheader`
-  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;COMMIT;
+  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
