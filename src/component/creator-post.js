@@ -11,7 +11,7 @@ class CreatorPost extends Component {
     this.state = {
       data:[],
       id : this.props.location.pathname.split("/")[2],
-      dataTopik:[],
+      dataKelas:[],
     };
   }
 
@@ -38,7 +38,7 @@ async componentDidMount() {
       this.setState({ msg: err.msg })
     })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/` + this.state.data.memberID + '/',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelas/` + this.state.data.memberID + '/',
     {
       method: 'GET',
       headers: {
@@ -52,7 +52,7 @@ async componentDidMount() {
     })
     .then(res=>{
       this.setState({
-        dataTopik: res
+        dataKelas: res
       });
     })
     .catch((err) =>{
@@ -66,12 +66,12 @@ async componentDidMount() {
     <div className="row">
 
       {
-        this.state.dataTopik.map(data=>
+        this.state.dataKelas.map(data=>
         <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
           <div class="card-akademi card-inverse card-info">
             <img class="card-img-top" src={data.thumbnail} />
             <div class="card-block">
-            <NavLink to={`/creator/${this.state.id}/post/${data.topikID}`}>
+            <NavLink to={`/creator/${this.state.id}/post/${data.kelasID}`}>
               <div class="card-text font-weight-bold">
                 {data.judul}
               </div>
@@ -86,7 +86,7 @@ async componentDidMount() {
                   <i className="far fa-comments-alt text-danger" style={{fontSize:"13px"}}> <span className="text-primary"> 12</span></i>
                 </div>
                 <div class="col">
-                  <NavLink to={`/creator/${this.state.id}/post/${data.topikID}`}>
+                  <NavLink to={`/creator/${this.state.id}/post/${data.kelasID}`}>
                     <button type="button" class="btn btn-info btn-sm text-primary"><i className="far fa-shopping-cart" style={{color:"white"}}></i></button>
                   </NavLink>
                 </div>

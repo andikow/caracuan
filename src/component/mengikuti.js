@@ -47,7 +47,7 @@ class Mengikuti extends Component {
       this.props.history.push('/login')
     })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/following/${this.state.memberID}`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/mengikuti/${this.state.memberID}`,
     {
       method: 'GET',
       headers: {

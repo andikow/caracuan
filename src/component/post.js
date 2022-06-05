@@ -38,7 +38,7 @@ class Post extends Component {
       this.props.history.push('/login')
     })
 
-    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/${this.state.memberID}`,
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelas/${this.state.memberID}`,
         {
           method: 'GET',
           headers: {
@@ -52,7 +52,7 @@ class Post extends Component {
         })
       .then(data=>{
           this.setState({
-            datatopik: data
+            dataKelas: data
           });
       })
   }
@@ -68,11 +68,11 @@ class Post extends Component {
       linkvideo:'',
       jenispostingan:false,
       price:'',
-      datatopik:[],
-      namaBagian:'',
+      dataKelas:[],
+      namaTopik:'',
+      kelasID:'',
+      dataTopik:[],
       topikID:'',
-      dataBagian:[],
-      bagianID:'',
     };
   }
 
@@ -83,20 +83,16 @@ class Post extends Component {
     });
   };
   show(){
-  $('div[id="tambahbagian"]').toggleClass("d-inline")
+  $('div[id="tambahtopik"]').toggleClass("d-inline")
   }
-  submitpost(){
+  submitmateri(){
     var data = {
+      topikID:this.state.topikID,
       judul:this.state.judul,
       deskripsi:this.state.deskripsi,
       linkvideo:this.state.linkvideo,
-      jenispostingan:this.state.jenispostingan,
-      harga:this.state.harga,
-      memberID:this.state.memberID,
-      bagianID:this.state.bagianID,
-      topikID:this.state.topikID,
     }
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submitpost`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submitmateri`,
     {
       method: 'POST',
       headers: {
@@ -109,12 +105,12 @@ class Post extends Component {
     .then(alert('Postingan berhasil ditayangkan!'))
 
   }
-  simpanbagian(){
+  simpanTopik(){
     var data = {
-      topikID:this.state.topikID,
-      namaBagian:this.state.namaBagian,
+      kelasID:this.state.kelasID,
+      namaTopik:this.state.namaTopik,
     }
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/simpanbagian`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/simpantopik`,
     {
       method: 'POST',
       headers: {
@@ -125,11 +121,11 @@ class Post extends Component {
     })
     .then(res => res.json())
     .then(alert('Topik Kelas berhasil disimpan!'))
-    .then(this.tampilkanBagian(this.state.topikID))
+    .then(this.tampilkanTopik(this.state.kelasID))
   }
 
-  tampilkanBagian(ev){
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagianKelas/${ev}`,
+  tampilkanTopik(ev){
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanTopikKelas/${ev}`,
     {
       method: 'GET',
       headers: {
@@ -138,7 +134,7 @@ class Post extends Component {
       },
     })
     .then(res => res.json())
-    .then(data => {this.setState({ dataBagian:data })})
+    .then(data => {this.setState({ dataTopik:data })})
   }
 
   render() {
@@ -160,12 +156,12 @@ class Post extends Component {
                         </div>
                         <select class="custom-select" id="inputGroupSelect01"
                         onChange=
-                        {ev => {this.setState({ topikID: ev.target.value });this.tampilkanBagian(ev.target.value)}}>
+                        {ev => {this.setState({ kelasID: ev.target.value });this.tampilkanTopik(ev.target.value)}}>
                         <option selected>Pilih Kelas...</option>
                         {
-                          this.state.datatopik.map(data=>
+                          this.state.dataKelas.map(data=>
                             <>
-                            <option value={data.topikID}>
+                            <option value={data.kelasID}>
                             {data.judul}
                             </option>
                             </>
@@ -189,11 +185,11 @@ class Post extends Component {
                     <div class="col-2 my-2 d-inline">
                       <button type="button" class="btn btn-link" onClick={() => this.show()}>+ Topik</button>
                     </div>
-                    <div id ="tambahbagian" class="col-9 my-2 d-none">
-                      <input class="form-control" type="text" placeholder="Nama Bagian" aria-label="post-title" onChange={ev => this.setState({ namaBagian: ev.target.value })}/>
+                    <div id ="tambahtopik" class="col-9 my-2 d-none">
+                      <input class="form-control" type="text" placeholder="Nama Topik" aria-label="post-title" onChange={ev => this.setState({ namaTopik: ev.target.value })}/>
                     </div>
-                    <div id ="tambahbagian" class="col-1 my-2 d-none">
-                      <button type="button" class="d-inline btn btn-block btn-primary" onClick={() => this.simpanbagian()}><i class="fal fa-save"></i></button>
+                    <div id ="tambahtopik" class="col-1 my-2 d-none">
+                      <button type="button" class="d-inline btn btn-block btn-primary" onClick={() => this.simpanTopik()}><i class="fal fa-save"></i></button>
                     </div>
                     <div class="col-12 my-2">
                       <div class="input-group mb-3">
@@ -201,13 +197,13 @@ class Post extends Component {
                           <label class="input-group-text" for="inputGroupSelect01">Topik</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect01" onChange=
-                        {ev => {this.setState({ bagianID: ev.target.value })}}>
+                        {ev => {this.setState({ topikID: ev.target.value })}}>
                           <option selected>Pilih Topik...</option>
                           {
-                            this.state.dataBagian.map(data=>
+                            this.state.dataTopik.map(data=>
                               <>
-                              <option value={data.bagianID}>
-                              {data.namaBagian}
+                              <option value={data.topikID}>
+                              {data.namaTopik}
                               </option>
                               </>
                           )}
@@ -248,18 +244,8 @@ class Post extends Component {
                   <div class="col-12 my-2">
                     <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
                   </div>
-                  <h5 class = "col-12 my-2">Jenis Materi</h5>
                   <div class="col-12 my-2">
-                    <div class="form-check form-check-inline">
-                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
-                      <label class="form-check-label" for="opsiGratis">Gratis</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenispostingan: ev.target.value })}/>
-                      <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
-                      <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" aria-label="post-title" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
-                    </div>
-                    <button type="button" class="btn btn-primary my-2 d-block" onClick={() => this.submitpost()}>Tayangkan</button>
+                    <button type="button" class="btn btn-primary my-2 d-block" onClick={() => this.submitmateri()}>Tayangkan</button>
                   </div>
               </div>
             </div>

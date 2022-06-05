@@ -14,7 +14,7 @@ class Topik extends Component {
       memberID:'',
       judul:'',
       thumbnail:'',
-      jenistopik:'',
+      jenisKelas:'',
       harga:'',
       image:"https://fakeimg.pl/350x200/",
       saveImage:null,
@@ -54,7 +54,7 @@ class Topik extends Component {
         this.props.history.push('/login')
       })
 
-    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/${this.state.memberID}`,
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelas/${this.state.memberID}`,
         {
           method: 'GET',
           headers: {
@@ -89,7 +89,7 @@ class Topik extends Component {
                 return '<img src="'+ data + '" width= "100px"/>'
               }
             },
-            { data: "jenistopik" },
+            { data: "jenisKelas" },
             { data: "harga" },
             { data: "",
             render:function(){
@@ -101,7 +101,7 @@ class Topik extends Component {
       })
   }
 
-    async submittopik(){
+    async submitKelas(){
       let formData = new FormData();
       formData.append("photo", this.state.saveImage);
 
@@ -121,11 +121,11 @@ class Topik extends Component {
         memberID:this.state.memberID,
         judul:this.state.judul,
         thumbnail:this.state.thumbnail,
-        jenistopik:this.state.jenistopik,
+        jenisKelas:this.state.jenisKelas,
         harga:this.state.harga,
       }
 
-      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submittopik`,
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submitkelas`,
         {
           method: 'POST',
           headers: {
@@ -135,7 +135,7 @@ class Topik extends Component {
           body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(alert('Topik berhasil disimpan!'))
+        .then(alert('Kelas berhasil disimpan!'))
 
     }
 
@@ -180,14 +180,14 @@ class Topik extends Component {
                   />
                 </div>
                 <div class="row">
-                  <label for="jenistopik">Jenis Kelas</label>
+                  <label for="jenisKelas">Jenis Kelas</label>
                   <div class="">
                     <div class="form-check-inline">
-                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
+                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenisKelas: ev.target.value })}/>
                       <label class="form-check-label" for="opsiGratis">Gratis</label>
                     </div>
                     <div class="form-check-inline">
-                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenistopik: ev.target.value })}/>
+                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenisKelas: ev.target.value })}/>
                       <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
                       <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
                     </div>
@@ -197,7 +197,7 @@ class Topik extends Component {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-              <button type="button" class="btn btn-primary" onClick={() => this.submittopik()}>Simpan</button>
+              <button type="button" class="btn btn-primary" onClick={() => this.submitKelas()}>Simpan</button>
             </div>
           </div>
         </div>

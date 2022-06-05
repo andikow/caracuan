@@ -140,6 +140,9 @@ class Saldo extends Component {
                   <input class="form-control col-2" id="kode-saham" type="text" placeholder="Kode Saham" aria-label="input-kode-saham" />
                   <label for="harga-saham" class="col-auto col-form-label">adalah</label>
                   <input class="form-control col-2" id="harga-saham" type="text" placeholder="Harga" aria-label="input-harga-saham" />
+                  <label for="harga-saham" class="col-auto col-form-label">tercapai dalam</label>
+                  <input class="form-control col-2" id="harga-saham" type="text" placeholder="" aria-label="input-harga-saham" />
+                  <label for="harga-saham" class="col-auto col-form-label">hari</label>
                 </div>
                 <div class="row m-2">
                   <label for="kode-saham" class="col-form-label col-auto pl-0">Deskripsi</label>

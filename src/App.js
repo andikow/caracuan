@@ -8,7 +8,7 @@ import Saham from "./page/saham.js";
 import JadiAnalis from "./page/jadianalis.js";
 
 import Home from './page/home.js';
-import CariCreator from './page/caricreator.js';
+import CariAnalis from './page/carianalis.js';
 import Creator from './page/creator.js';
 import MainPost from './page/mainpost.js';
 
@@ -25,7 +25,7 @@ function App() {
   return (
     <HashRouter>
     <Route exact path="/" component={Home}/>
-    <Route path="/cari" component={CariCreator}/>
+    <Route path="/cari" component={CariAnalis}/>
     <Route path="/berita" component={Berita}/>
     <Route path="/saham" component={Saham}/>
     <Route path="/jadianalis" component={JadiAnalis}/>
