@@ -24,10 +24,10 @@ export default class Footer extends React.Component{
 				<div class="col-xs-12 col-sm-4 col-md-4">
 					<h5>Informasi</h5>
 					<ul class="list-unstyled quick-links">
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Tentang</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Syarat dan Ketentuan</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Bantuan</a></li>
-						<li><a href="#"><i class="fa fa-angle-double-right"></i> Kebijakan Privasi</a></li>
+						<li><a href="#/tentang"><i class="fa fa-angle-double-right"></i> Tentang</a></li>
+						<li><a href="#/syaratketentuan"><i class="fa fa-angle-double-right"></i> Syarat dan Ketentuan</a></li>
+						<li><a href="#/bantuan"><i class="fa fa-angle-double-right"></i> Bantuan</a></li>
+						<li><a href="#/kebijakanprivasi"><i class="fa fa-angle-double-right"></i> Kebijakan Privasi</a></li>
 					</ul>
 				</div>
 			</div>

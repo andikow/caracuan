@@ -21,6 +21,11 @@ import Sidebarmember from './component/sidebarmember.js';
 import Headercreator from './component/headercreator.js';
 import Sidebar from './component/sidebar.js';
 
+import Tentang from './page/tentang.js';
+import Bantuan from './page/bantuan.js';
+import Syaratketentuan from './page/syaratketentuan.js';
+import Kebijakanprivasi from './page/kebijakanprivasi.js';
+
 function App() {
   return (
     <HashRouter>
@@ -37,6 +42,10 @@ function App() {
     <Route path ="/dashboard" component={Sidebarmember}/>
     <Route path ="/dashboardcreator" component ={Headercreator}/>
     <Route path ="/dashboardcreator" component ={Sidebar}/>
+    <Route path="/tentang" component={Tentang}/>
+    <Route path="/bantuan" component={Bantuan}/>
+    <Route path="/syaratketentuan" component={Syaratketentuan}/>
+    <Route path="/kebijakanprivasi" component={Kebijakanprivasi}/>
     </HashRouter>
   );
 }
