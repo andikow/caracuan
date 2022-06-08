@@ -7,9 +7,9 @@ class DetailPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataBagian:[],
-      topikID : this.props.location.pathname.split("/")[4],
-      topik:'',
+      dataTopik:[],
+      kelasID : this.props.location.pathname.split("/")[4],
+      kelas:'',
       memberID:'',
       postID:16,
       doneDetail:[],
@@ -75,7 +75,7 @@ class DetailPost extends Component {
       this.setState({ msg: err.msg })
     })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/topik/id/` + this.state.topikID + '/',
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelas/id/` + this.state.kelasID + '/',
       {
         method: 'GET',
         headers: {
@@ -89,14 +89,14 @@ class DetailPost extends Component {
       })
       .then(res=>{
         this.setState({
-          topik: res[0]
+          kelas: res[0]
         });
       })
       .catch((err) =>{
         this.setState({ msg: err.msg })
       })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${this.state.topikID}`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanTopik/${this.state.kelasID}`,
       {
         method: 'GET',
         headers: {
@@ -105,9 +105,9 @@ class DetailPost extends Component {
         },
       })
       .then(res => res.json())
-      .then(data => {this.setState({ dataBagian:data })});
+      .then(data => {this.setState({ dataTopik:data })});
 
-    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/postsdonedetail/${this.state.memberID}/${this.state.topikID}/`,
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/materiselesaibaca/${this.state.memberID}/${this.state.kelasID}/`,
       {
         method: 'GET',
         headers: {
@@ -129,7 +129,7 @@ class DetailPost extends Component {
       })
 
     var data = {
-        topikID:this.state.topikID,
+        kelasID:this.state.kelasID,
         memberID:this.state.memberID,
       }
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cekinvoice`,
@@ -151,20 +151,20 @@ class DetailPost extends Component {
       })
       .catch((err) =>{})
 
-    console.log(this.state.dataBagian);
-    console.log(this.state.topik);
+    console.log(this.state.dataTopik);
+    console.log(this.state.kelas);
     console.log(this.state.doneDetail);
     }
 
   async checkout(){
       var data = {
-        topikID:this.state.topikID,
+        kelasID:this.state.kelasID,
         memberID:this.state.memberID,
         email:this.state.data.Email,
         name:this.state.data.Name,
         phone:this.state.data.Phone,
-        judul:this.state.topik.judul,
-        harga:this.state.topik.harga,
+        judul:this.state.kelas.judul,
+        harga:this.state.kelas.harga,
         currentpath:`http://localhost:3000/#${this.props.location.pathname.slice(0, this.props.location.pathname.lastIndexOf('/'))}`,
       }
       await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cetakinvoice`,
@@ -219,7 +219,7 @@ class DetailPost extends Component {
         </div>
       </div>}
       <div class="col-12 mb-2">
-        <h2>{this.state.topik.judul}</h2>
+        <h2>{this.state.kelas.judul}</h2>
       </div>
         <div class="col-12">
           <nav>
@@ -262,12 +262,12 @@ class DetailPost extends Component {
                 <div class="col-12">
 
                   <div id="accordion">
-                    {this.state.dataBagian.map((data, index)=>
+                    {this.state.dataTopik.map((data, index)=>
                       <div class="card">
                         <div class="card-header" id={"heading" + index}>
                           <h5 class="mb-0">
                             <button class="btn btn-link" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
-                              {data.namaBagian}
+                              {data.namaTopik}
                             </button>
                           </h5>
                         </div>
@@ -277,13 +277,13 @@ class DetailPost extends Component {
                             {
                               data.judul.map((judul, index)=>
 
-                              <a href={"/#/post/" + data.postID[index]} id = {data.postID[index]} class={this.state.isPaid ? "list-group-item list-group-item-action border" : "list-group-item list-group-item-action border disabled"}>
+                              <a href={"/#/post/" + data.materiID[index]} id = {data.materiID[index]} class={this.state.isPaid ? "list-group-item list-group-item-action border" : "list-group-item list-group-item-action border disabled"}>
                                 <div class="row justify-content-between">
                                   <div class="col">
                                     {judul}
                                   </div>
                                   {
-                                    this.state.doneDetail.findIndex(done => done.postID == data.postID[index]) > -1 ?
+                                    this.state.doneDetail.findIndex(done => done.materiID == data.materiID[index]) > -1 ?
                                     <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
                                     <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
                                     }

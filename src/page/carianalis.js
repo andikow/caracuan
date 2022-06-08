@@ -2,9 +2,9 @@ import React from 'react';
 
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
-import "./../public/assets/css/caricreator.css";
+import "./../public/assets/css/carianalis.css";
 
-export default class CariCreator extends React.Component{
+export default class CariAnalis extends React.Component{
   constructor(){
     super();
     this.state = {
@@ -12,7 +12,7 @@ export default class CariCreator extends React.Component{
     }
   }
   componentDidMount() {
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/carikreator`,
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/carianalis`,
     {
       method: 'GET',
       headers: {
@@ -34,27 +34,6 @@ export default class CariCreator extends React.Component{
       this.setState({ msg: err.msg })
     })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/creator`,
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials:'include'
-    })
-    .then(res=>{
-      return res.json();
-    })
-    .then(res=>{
-      this.setState({
-        data: res
-      });
-      console.log(this.state.data);
-    })
-    .catch((err) =>{
-      this.setState({ msg: err.msg })
-    })
   }
   render(){
 

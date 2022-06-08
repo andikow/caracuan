@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import jwt_decode from 'jwt-decode';
 import Poto from './../public/assets/img/mainpost-img.jpg';
 import './../public/assets/css/modalsuccess.css';
 import Header from './../component/header.js';
@@ -7,20 +8,8 @@ import Footer from './../component/footer.js';
 import VideoContent from './../component/video-content.js';
 
 class MainPost extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      yID:'',
-      isLoading:true,
-      dataBagian:[],
-      dataMateri:[],
-      postID : this.props.location.pathname.split("/")[2],
-    }
-  }
-
   async componentDidMount() {
-
-    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/post/id/` + this.state.postID + '/',
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
         method: 'GET',
         headers: {
@@ -30,41 +19,115 @@ class MainPost extends Component {
         credentials:'include'
       })
       .then(res=>{
-        return res.json();
+        return res.json()
       })
-      .then(res=>{
+      .then(data=>{
         this.setState({
-          dataMateri: res[0],
-          yID: res[0].linkvideo,
-          isLoading: false,
+          token: data.accessToken
         });
+        const decoded = jwt_decode(this.state.token);
+        this.setState({
+          name: decoded.name,
+          memberID:decoded.memberID,
+          expire:decoded.exp
+        })
       })
-      .catch((err) =>{
-        this.setState({ msg: err.msg })
+      .catch((error)=>{
+        this.props.history.push({
+          pathname:"/login",
+          state: this.props.location.pathname
+        })
       })
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanBagian/${this.state.dataMateri.topikID}`,
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/materi/id/` + this.state.materiID + '/',
         {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
+          credentials:'include'
         })
-      .then(res => res.json())
-      .then(data => {this.setState({ dataBagian:data })});
-
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/postsdonedetail/${this.state.dataMateri.topikID}`,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
+        .then(res=>{
+          return res.json();
         })
-      .then(res => res.json())
-      .then(data => {this.setState({ dataBagian:data })});
+        .then(res=>{
+          this.setState({
+            dataMateri: res[0],
+            kelasID: res[0].kelasID,
+            yID: res[0].linkvideo,
+            isLoading: false,
+          });
+        })
+        .catch((err) =>{
+          this.setState({ msg: err.msg })
+        })
 
+        await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/tampilkanTopik/${this.state.dataMateri.kelasID}`,
+          {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(res => res.json())
+          .then(data => {this.setState({ dataTopik:data })});
+
+          await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/materiselesaibaca/${this.state.memberID}/${this.state.kelasID}/`,
+            {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              credentials:'include'
+            })
+            .then(res=>{
+              return res.json();
+            })
+            .then(res=>{
+              this.setState({
+                doneDetail: res
+              });
+            })
+            .catch((err) =>{
+              this.setState({ msg: err.msg })
+            })
+
+
+          }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      memberID:'',
+      yID:'',
+      isLoading:true,
+      dataTopik:[],
+      kelasID:'',
+      dataMateri:[],
+      doneDetail:[],
+      materiID : this.props.location.pathname.split("/")[2],
+    }
+  }
+
+  setSelesai(){
+    var data = {
+      kelasID:this.state.kelasID,
+      materiID:this.state.materiID,
+      memberID:this.state.memberID,
+    }
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/setselesai`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
   }
 
   render() {
@@ -101,12 +164,12 @@ class MainPost extends Component {
             </div>
             <div class="col-12">
               <div id="accordion">
-                {this.state.dataBagian.map((data, index)=>
+                {this.state.dataTopik.map((data, index)=>
                   <div class="card">
                     <div class="card-header" id={"heading" + index}>
                       <h5 class="mb-0">
                         <button class="btn btn-link" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
-                          {data.namaBagian}
+                          {data.namaTopik}
                         </button>
                       </h5>
                     </div>
@@ -116,14 +179,16 @@ class MainPost extends Component {
                         {
                           data.judul.map((judul, index)=>
 
-                          <a href={"/#/post/" + data.postID[index]} id = {data.postID[index]} class="list-group-item list-group-item-action border">
+                          <a onClick={() => {window.location.href="/#/post/" + data.materiID[index];window.location.reload()}} id = {data.materiID[index]} class="list-group-item list-group-item-action border">
                             <div class="row justify-content-between">
                               <div class="col">
                                 {judul}
                               </div>
-                              <div class="col-2 p-0">
-                                <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai
-                              </div>
+                              {
+                                this.state.doneDetail.findIndex(done => done.materiID == data.materiID[index]) > -1 ?
+                                <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
+                                <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
+                                }
                             </div>
                           </a>
                           )}
@@ -153,7 +218,7 @@ class MainPost extends Component {
             dangerouslySetInnerHTML={{__html: this.state.dataMateri.deskripsi}}
             />
             <div class="col-12 mx-auto my-2 px-5 text-dark text-right">
-              <button type="button" class="btn btn-success text-white" data-toggle="modal" data-target="#modalPenyelesaian"><i class="fas fa-check fa-fw"></i>Sudah Selesai</button>
+              <button type="button" onClick={() => this.setSelesai()} class="btn btn-success text-white" data-toggle="modal" data-target="#modalPenyelesaian"><i class="fas fa-check fa-fw"></i>Sudah Selesai</button>
             </div>
 
           </div>
@@ -165,7 +230,7 @@ class MainPost extends Component {
         <Footer/>
         </>
                 );
-              }
-            }
+  }
+}
 
-            export default MainPost;
+export default MainPost;

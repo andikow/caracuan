@@ -112,10 +112,10 @@ router.delete('/logout', async function(req,res){
 
 });
 
-router.post('/submittopik', async function (req,res){
+router.post('/submitkelas', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO topikheader VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.jenistopik}', '${data.harga}', CURRENT_DATE())`;
+      const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -123,10 +123,10 @@ router.post('/submittopik', async function (req,res){
     }
 })
 
-router.post('/submitpost', async function (req,res){
+router.post('/submitmateri', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO postsdetail VALUES ('','${data.judul}','${data.deskripsi}','${data.linkvideo}','${data.jenispostingan}', '${data.harga}','${data.memberID}','${data.topikID}','${data.bagianID}')`;
+      const sqlQuery = `INSERT INTO materi VALUES ('','${data.topikID}','${data.judul}','${data.deskripsi}','${data.linkvideo}')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -134,10 +134,10 @@ router.post('/submitpost', async function (req,res){
     }
 });
 
-router.post('/simpanbagian', async function (req,res){
+router.post('/simpantopik', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO tblBagian VALUES ('','${data.topikID}','${data.namaBagian}')`;
+      const sqlQuery = `INSERT INTO topik VALUES ('','${data.kelasID}','${data.namaTopik}')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -177,7 +177,7 @@ router.post('/memberphoto', async function(req,res){
 router.post('/datarekening', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `SELECT * FROM payoutaddressdetail WHERE memberID = '${data.memberID}'`;
+      const sqlQuery = `SELECT * FROM payoutaddress WHERE memberID = '${data.memberID}'`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -185,9 +185,20 @@ router.post('/datarekening', async function (req,res){
     }
 });
 
-router.get('/carikreator', async function(req,res){
+router.post('/setselesai', async function (req,res){
     try {
-        const sqlQuery = `SELECT memberID, Name, refresh_token, isCreator, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto FROM member`;
+      let data = req.body;
+      const sqlQuery = `INSERT INTO materiselesaibaca VALUES ('','${data.memberID}','${data.kelasID}','${data.materiID}')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/carianalis', async function(req,res){
+    try {
+        const sqlQuery = `SELECT memberID, Name, refresh_token, isAnalyst, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto FROM member`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -210,10 +221,10 @@ router.get('/kreator/:id', async function(req,res){
 
 });
 
-router.get('/topik/:memberID', async function(req,res){
+router.get('/kelas/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        const sqlQuery = `SELECT topikID, memberID, judul, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/", thumbnail) AS thumbnail, jenistopik, harga, createdAt FROM topikheader WHERE memberID = ${memberID}`;
+        const sqlQuery = `SELECT kelasID, memberID, judul, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/", thumbnail) AS thumbnail, jenisKelas, harga, createdAt FROM kelas WHERE memberID = ${memberID}`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -221,10 +232,10 @@ router.get('/topik/:memberID', async function(req,res){
     }
 });
 
-router.get('/topik/id/:topikID', async function(req,res){
+router.get('/kelas/id/:kelasID', async function(req,res){
     try {
-        let topikID = req.params.topikID
-        const sqlQuery = `SELECT * FROM topikheader WHERE topikID = ${topikID}`;
+        let kelasID = req.params.kelasID
+        const sqlQuery = `SELECT * FROM kelas WHERE kelasID = ${kelasID}`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -232,10 +243,10 @@ router.get('/topik/id/:topikID', async function(req,res){
     }
 });
 
-router.get('/post/id/:postID', async function(req,res){
+router.get('/materi/id/:materiID', async function(req,res){
     try {
-        let postID = req.params.postID
-        const sqlQuery = `SELECT * FROM postsdetail WHERE postID = ${postID}`;
+        let materiID = req.params.materiID
+        const sqlQuery = `SELECT materi.materiID, topik.kelasID, materi.topikID, materi.judul, materi.deskripsi, materi.linkvideo FROM materi, topik WHERE materi.topikID = topik.topikID AND materi.materiID = ${materiID}`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -243,11 +254,11 @@ router.get('/post/id/:postID', async function(req,res){
     }
 });
 
-router.get('/postsdonedetail/:memberID/:topikID', async function(req,res){
+router.get('/materiselesaibaca/:memberID/:kelasID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        let topikID = req.params.topikID
-        const sqlQuery = `SELECT * FROM postsdonedetail WHERE topikID = ${topikID} AND memberID = ${memberID}`;
+        let kelasID = req.params.kelasID
+        const sqlQuery = `SELECT * FROM materiselesaibaca WHERE kelasID = ${kelasID} AND memberID = ${memberID}`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -255,22 +266,22 @@ router.get('/postsdonedetail/:memberID/:topikID', async function(req,res){
     }
 });
 
-router.get('/tampilkanBagian/:topikID', async function(req,res){
+router.get('/tampilkanTopik/:kelasID', async function(req,res){
     try {
-        let topikID = req.params.topikID
-        const sqlQuery = `SELECT postID, judul, tblbagian.bagianID, namaBagian, tblbagian.topikID FROM postsdetail, tblbagian WHERE tblbagian.topikID = '${topikID}' AND tblbagian.bagianID = postsdetail.bagianID; `;
+        let kelasID = req.params.kelasID
+        const sqlQuery = `SELECT materiID, judul, topik.topikID, namaTopik, topik.kelasID FROM materi, topik WHERE topik.kelasID = '${kelasID}' AND topik.topikID = materi.topikID`;
         const rows = await pool.query(sqlQuery);
-        const objIds = rows.reduce((a, { namaBagian, bagianID, postID, judul }) => {
-          a[bagianID] = a[bagianID] || {bagianID, postID: [], judul:[]}
-          return {...a, ...{[bagianID]: {namaBagian, bagianID,
-            postID: a[bagianID].postID.concat(postID),
-            judul:a[bagianID].judul.concat(judul)}}}
+        const objIds = rows.reduce((a, { namaTopik, topikID, materiID, judul }) => {
+          a[topikID] = a[topikID] || {topikID, materiID: [], judul:[]}
+          return {...a, ...{[topikID]: {namaTopik, topikID,
+            materiID: a[topikID].materiID.concat(materiID),
+            judul:a[topikID].judul.concat(judul)}}}
         }, {})
 
         const result = Object.values(objIds)
         res.status(200).json(result);
         let newObject = Object.keys(result).reduce((acc, val) => {
-          acc[val] = result[val].namaBagian;
+          acc[val] = result[val].namaTopik;
           return acc;
 }, {});
         console.log(newObject);
@@ -280,10 +291,10 @@ router.get('/tampilkanBagian/:topikID', async function(req,res){
     }
 });
 
-router.get('/tampilkanBagianKelas/:topikID', async function(req,res){
+router.get('/tampilkanTopikKelas/:kelasID', async function(req,res){
     try {
-        let topikID = req.params.topikID
-        const sqlQuery = `SELECT * FROM tblbagian WHERE topikID = '${topikID}'`;
+        let kelasID = req.params.kelasID
+        const sqlQuery = `SELECT * FROM topik WHERE kelasID = '${kelasID}'`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
 
@@ -292,20 +303,20 @@ router.get('/tampilkanBagianKelas/:topikID', async function(req,res){
     }
 });
 
-router.get('/tampilkanMateri/:bagianID', async function(req,res){
+router.get('/tampilkanMateri/:topikID', async function(req,res){
     try {
         let topikID = req.params.topikID
-        const sqlQuery = `SELECT postID, judul, tblbagian.bagianID, namaBagian, tblbagian.topikID FROM postsdetail, tblbagian WHERE tblbagian.topikID = '${topikID}' AND tblbagian.bagianID = postsdetail.bagianID; `;
+        const sqlQuery = `SELECT materiID, judul, topik.topikID, namaTopik, topik.topikID FROM materi, topik WHERE topik.topikID = '${topikID}' AND topik.topikID = materi.topikID; `;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
         res.status(400).send(error.message)
-    }
+    }});
 
-router.get('/following/:memberID', async function(req,res){
+router.get('/mengikuti/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        const sqlQuery = `SELECT following.followingID, member.Name FROM member, following WHERE following.followingID = member.memberID AND following.memberID = "${memberID}"`;
+        const sqlQuery = `SELECT following.followedID, member.Name FROM member, following WHERE following.followedID = member.memberID AND following.memberID = '${memberID}';`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -313,11 +324,11 @@ router.get('/following/:memberID', async function(req,res){
     }
 });
 
-// router.get('/tampilkanAkademi/:topikID/:bagianID', async function(req,res){
+// router.get('/tampilkanAkademi/:topikID/:topikID', async function(req,res){
 //     try {
 //         let topikID = req.params.topikID
-//         let bagianID = req.params.bagianID
-//         const sqlQuery = `SELECT * FROM postsdetail WHERE topikID = ${topikID} AND bagianID = ${bagianID}`;
+//         let topikID = req.params.topikID
+//         const sqlQuery = `SELECT * FROM materi WHERE topikID = ${topikID} AND topikID = ${topikID}`;
 //         const rows = await pool.query(sqlQuery);
 //         res.status(200).json(rows);
 //     } catch (error) {
@@ -325,10 +336,6 @@ router.get('/following/:memberID', async function(req,res){
 //     }
 // });
 
-
-
-
-});
 
 router.get('/creator/:name', async function(req,res){
     try {
@@ -381,7 +388,7 @@ router.post('/cetakinvoice', async function (req,res){
         },
         successRedirectURL: data.currentpath,
       });
-      pool.query(`INSERT INTO memberpurchasedetail (memberID, topikID, invoiceID) values ('${data.memberID}', '${data.topikID}', '${invoice.id}') ON DUPLICATE KEY UPDATE invoiceID = '${invoice.id}'`);
+      pool.query(`INSERT INTO memberpurchase (memberID, kelasID, invoiceID) values ('${data.memberID}', '${data.kelasID}', '${invoice.id}') ON DUPLICATE KEY UPDATE invoiceID = '${invoice.id}'`);
       res.status(200).json(invoice)
     } catch (e) {
       res.status(400).send(e.message)
@@ -398,7 +405,7 @@ router.post('/cekinvoice', async function (req,res){
 
   (async function() {
     try {
-      let invoiceID = await pool.query(`SELECT invoiceID FROM memberpurchasedetail WHERE memberID = '${req.body.memberID}' AND topikID = '${req.body.topikID}'`);
+      let invoiceID = await pool.query(`SELECT invoiceID FROM memberpurchase WHERE memberID = '${req.body.memberID}' AND kelasID = '${req.body.kelasID}'`);
       let invoice = await i.getInvoice({ invoiceID: invoiceID[0].invoiceID });
       res.status(200).json(invoice)
     } catch (e) {
@@ -423,7 +430,7 @@ router.post('/ceksaldo', async function (req,res){
 router.post('/simpanrekening', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO payoutaddressdetail VALUES ('${data.memberID}','${data.bankCode}','${data.bankName}','${data.namaPemilik}','${data.nomorRekening}')`;
+      const sqlQuery = `INSERT INTO payoutaddress VALUES ('${data.memberID}','${data.bankCode}','${data.bankName}','${data.namaPemilik}','${data.nomorRekening}')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {

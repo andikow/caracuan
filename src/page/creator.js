@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, NavLink, HashRouter, withRouter } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import 'dotenv/config'
 
 import Header from './../component/header.js';
@@ -11,8 +11,6 @@ import CreatorBeranda from './../component/creator-beranda.js';
 import CreatorPost from './../component/creator-post.js';
 import CreatorAnalisa from './../component/creator-analisa.js';
 import DetailPost from './../component/detail-post.js';
-
-import Login from './login'
 
 
 class Creator extends React.Component{
