@@ -5,9 +5,67 @@ import Akademi from './akademi.js';
 import Mengikuti from './mengikuti.js';
 import Transaksi from './transaksi.js';
 import Pengaturan from './pengaturan.js';
+import jwt_decode from 'jwt-decode';
 
 class Sidebarmember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      memberID:'',
+      isAnalyst:'',
+    };
+  }
+  cekAnalis(){
+    console.log("");
+  }
 
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        name: decoded.name,
+        memberID:decoded.memberID,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push('/login')
+    })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/isanalyst/${this.state.memberID}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include'
+        })
+      .then(res=>{
+          return res.json()
+        })
+      .then(data=>{
+          this.setState({
+            isAnalyst: data[0].isAnalyst,
+          });
+      })
+
+  }
   render(){
     return (
       <>
@@ -39,7 +97,7 @@ class Sidebarmember extends Component {
 
                   <ul class="list-unstyled CTAs">
                       <li>
-                          <a href="#/dashboardcreator" class="download">Masuk Sebagai Analis</a>
+                          <a href={this.state.isAnalyst ? "#/dashboardcreator":"#/soal"} class="download">Masuk Sebagai Analis</a>
                       </li>
                       <li>
                           <a href="#" class="article">Keluar</a>

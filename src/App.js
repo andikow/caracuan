@@ -18,6 +18,8 @@ import Register from './page/register.js'
 import HeaderMember from './component/headermember.js';
 import Sidebarmember from './component/sidebarmember.js';
 
+import Soal from './page/soal.js';
+
 import Headercreator from './component/headercreator.js';
 import Sidebar from './component/sidebar.js';
 
@@ -35,6 +37,7 @@ function App() {
     <Route path="/register" component={Register}/>
     <Route path ="/dashboard" component={HeaderMember}/>
     <Route path ="/dashboard" component={Sidebarmember}/>
+    <Route path="/soal" component={Soal}/>
     <Route path ="/dashboardcreator" component ={Headercreator}/>
     <Route path ="/dashboardcreator" component ={Sidebar}/>
     </HashRouter>

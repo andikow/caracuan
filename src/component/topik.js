@@ -101,7 +101,7 @@ class Topik extends Component {
       })
   }
 
-    async submitKelas(){
+  async submitKelas(){
       let formData = new FormData();
       formData.append("photo", this.state.saveImage);
 
@@ -139,7 +139,7 @@ class Topik extends Component {
 
     }
 
-    handleUploadChange(e) {
+  handleUploadChange(e) {
       let uploaded = e.target.files[0];
       this.setState({
         image: URL.createObjectURL(uploaded),
