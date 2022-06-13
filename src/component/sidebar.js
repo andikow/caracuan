@@ -4,8 +4,8 @@ import './../public/assets/css/sidebar.css';
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Dashboardcreator from './dashboardcreator.js';
 import Saldo from './saldo.js';
-import Post from './post.js';
-import Topik from './topik.js';
+import Materi from './materi.js';
+import Kelas from './kelas.js';
 import AnalisaSaya from './analisasaya.js';
 import Pengikut from './pengikut.js';
 
@@ -42,12 +42,12 @@ class Sidebar extends Component {
               <a href="#">Saldo</a>
             </li>
           </NavLink>
-          <NavLink to="/dashboardcreator/topik">
+          <NavLink to="/dashboardcreator/kelas">
             <li>
               <a href="#">Kelas</a>
             </li>
           </NavLink>
-          <NavLink to="/dashboardcreator/buatakademi">
+          <NavLink to="/dashboardcreator/buatmateri">
             <li>
               <a href="#">Materi</a>
             </li>
@@ -79,8 +79,8 @@ class Sidebar extends Component {
       <HashRouter>
         <Route exact path="/dashboardcreator/" component={Dashboardcreator}/>
         <Route path="/dashboardcreator/saldo" component={Saldo}/>
-        <Route path="/dashboardcreator/topik" component={Topik}/>
-        <Route path="/dashboardcreator/buatakademi" component={Post}/>
+        <Route path="/dashboardcreator/kelas" component={Kelas}/>
+        <Route path="/dashboardcreator/buatmateri" component={Materi}/>
         <Route path="/dashboardcreator/analisasaya" component={AnalisaSaya}/>
         <Route path="/dashboardcreator/pengikut" component={Pengikut}/>
       </HashRouter>
