@@ -2,13 +2,13 @@ html {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
 }
 
-body {
+.test {
   width: 50%;
   min-width: 820px;
   margin: 0 auto;
 }
 
-.card {
+.cardtest {
   padding: 8px;
   background-color: #fff;
   -webkit-border-radius: 2px;
@@ -22,18 +22,18 @@ body {
 #quiz-result {
   display: none;
   margin-bottom: 10px;
-  
+
   text-align: center;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 16px;
   color: #fff;
 }
 
-input[type="text"]  {
+.inputtest[type="text"]  {
   margin-left: 20px;
 }
 
-button {
+.buttontest {
   margin-top: 10px;
   margin-bottom: 30px;
   padding: 4px;
@@ -60,4 +60,74 @@ button:active {
   -webkit-box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+.cardmodal {
+    border-radius: 3vh;
+    background-color: white;
+    margin: auto;
+    max-width: 380px;
+    padding: 7vh 6vh;
+    align-items: center;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+@media(max-width:767px) {
+    .cardmodal {
+        width: 90vw
+    }
+}
+
+.cardmodal-img {
+    padding: 10px 0;
+    width: 90%;
+    margin: auto;
+}
+
+.cardmodal-img img {
+    opacity: 0.7
+}
+
+.cardmodal-title {
+    margin-bottom: unset;
+    text-align: center;
+}
+
+.cardmodal-title p {
+    color: #217691;
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: unset
+}
+
+.cardmodal-text p {
+    color: #217691;
+    font-size: 20px;
+    text-align: center;
+    padding: 3vh 0;
+    font-weight: 500
+}
+
+.btnmodal {
+    width: 100%;
+    background-color: #217691;
+    border-radius: 15px;
+    padding: 2px;
+    color: white;
+    font-size: 20px
+}
+
+.btnmodal:focus {
+    box-shadow: none;
+    outline: none;
+    box-shadow: none;
+    color: white;
+    -webkit-box-shadow: none;
+    -webkit-user-select: none;
+    transition: none
+}
+
+.btnmodal:hover {
+    color: white
 }
