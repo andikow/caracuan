@@ -161,6 +161,17 @@ router.get('/isanalyst/:memberID', async function(req,res){
     }
 });
 
+router.get('/member/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT name FROM member WHERE memberID = "${memberID}"`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
 
 // Materi
 
@@ -168,6 +179,34 @@ router.post('/submitkelas', async function (req,res){
     try {
       let data = req.body;
       const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.put('/ubahkelas', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `UPDATE kelas
+      SET
+      judul = "${data.judul}",
+      thumbnail = IF(thumbnail = "${data.thumbnail}", thumbnail, "${data.thumbnail}"),
+      jenisKelas = "${data.jenisKelas}",
+      harga = "${data.harga}",
+      createdAt = CURRENT_DATE()
+      WHERE kelasID = "${data.kelasID}"`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.delete('/hapuskelas', async function (req,res){
+    try {
+      const sqlQuery = `DELETE FROM kelas WHERE kelasID='${req.body.kelasID}'`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -363,7 +402,6 @@ router.get('/creator/:name', async function(req,res){
 
 });
 
-
 // Analisis
 
 router.get('/analisa/:memberID', async function(req,res){
@@ -383,6 +421,17 @@ router.post('/submitanalisis', async function (req,res){
     try {
       let data = req.body;
       const sqlQuery = `INSERT INTO analysis VALUES ('','${data.memberID}',CURRENT_DATE(),'${data.deskripsi}','${data.kodeSaham}','${data.targetHarga}','${data.hargaAwal}','Hold','0','0')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.post('/voting', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `UPDATE analysis SET ${data.voting} = ${data.voting} + 1 WHERE analysisID = ${data.analysisID};`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {

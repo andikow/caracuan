@@ -105,7 +105,7 @@ class AnalisaSaya extends Component {
         ]
       });
     })
-    console.log("as");
+
   }
   async submitanalisis(){
     await fetch('https://api.stockdio.com/data/financial/prices/v1/getlatestprice?app-key=' + CONFIG.KEY + '&stockExchange=IDX&symbol='+ this.state.kodeSaham,

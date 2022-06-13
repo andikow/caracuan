@@ -3,7 +3,6 @@ import Poto from './../public/assets/img/creator.png';
 import Logo from './../public/assets/img/logo_cover.png';
 import {NavLink} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
-import Post from './post.js';
 
 class Headercreator extends React.Component{
 
