@@ -148,21 +148,21 @@ class CreatorAnalisa extends Component {
           <div className="row">
           <div className="card" style={{width:"500px"}}>
           <div className="card-body">
-          <p className="text-primary" style={{fontSize:"11px"}}>PREDIKSI</p>
-          <h5 className="text-primary card-title">{data.stockCode}<span className="text-secondary" style={{fontSize:"11px"}}>Index Harga Saham Gabungan</span></h5>
-          <h3 className="text-primary card-title">{data.targetPrice} <span className="text-secondary" style={{fontSize:"11px"}}>Target Harga</span></h3>
+          <p className="text-primary" style={{fontSize:"18px"}}>PREDIKSI</p>
+          <h5 className="text-primary card-title">{data.stockCode}<span className="text-secondary" style={{fontSize:"13px"}}> Index Harga Saham Gabungan</span></h5>
+          <h3 className="text-primary card-title">{data.targetPrice} <span className="text-secondary" style={{fontSize:"13px"}}>Target Harga</span></h3>
           <div className="row">
           <div className="col">
-          <p className="text-primary" style={{fontSize:"11px"}}>Harga Awal <br />{data.initialPrice}</p>
+          <p className="text-primary" style={{fontSize:"12px"}}>Harga Awal <br />{data.initialPrice}</p>
           </div>
           <div className="col">
-          <p className="text-primary" style={{fontSize:"11px"}}>Perubahan <br /> <span className="text-success">{this.round((data.targetPrice - data.initialPrice)/data.initialPrice * 100) } %</span></p>
+          <p className="text-primary" style={{fontSize:"12px"}}>Perubahan <br /> <span className="text-success">{this.round((data.targetPrice - data.initialPrice)/data.initialPrice * 100) } %</span></p>
           </div>
           <div className="col">
-          <p className="text-primary" style={{fontSize:"11px"}}>Waktu <br />90 hari (tersisa 90 hari lagi)</p>
+          <p className="text-primary" style={{fontSize:"12px"}}>Waktu <br />90 hari (tersisa 90 hari lagi)</p>
           </div>
           </div>
-          <div className="row">
+          <div className="row py-4">
           <div className="col">
           <a id={data.analysisID} className="disagreed btn btn-outline-danger btn-block text-danger font-weight-bold" onClick={(e) => this.voting(e.target.id, e.target.className)}><i className="fa fa-chevron-circle-down"></i> Tidak Setuju</a>
           </div>
