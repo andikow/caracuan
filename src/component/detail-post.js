@@ -189,6 +189,7 @@ class DetailPost extends Component {
   render() {
     return (
     <>
+    {/*Modal Pembayaran*/}
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -200,17 +201,18 @@ class DetailPost extends Component {
           </div>
           <div class="modal-body m-0 p-0" style={{height:"100vh"}}>
 
-          <Iframe url={this.state.invoice_url}
-          width="100%"
-          height="100%"
-          overflow="auto"
-          display="block"
-          frameBorder="0"
-          />
+            <Iframe url={this.state.invoice_url}
+            width="100%"
+            height="100%"
+            overflow="auto"
+            display="block"
+            frameBorder="0"
+            />
           </div>
         </div>
       </div>
     </div>
+    {/* End Modal Pembayaran*/}
 
     <div class="row">
       {this.state.isPaid ? <div></div> : <div class="col-12 mt-2">
@@ -221,89 +223,90 @@ class DetailPost extends Component {
       <div class="col-12 mb-2">
         <h2>{this.state.kelas.judul}</h2>
       </div>
-        <div class="col-12">
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informasi</a>
-              <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Akademi</a>
-            </div>
-          </nav>
+      <div class="col-12">
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Informasi</a>
+            <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Akademi</a>
+          </div>
+        </nav>
 
-          <div class="tab-content" id="nav-tabContent">
+        <div class="tab-content" id="nav-tabContent">
 
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-              <div class="row col-12 m-auto p-0">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="row col-12 m-auto p-0">
 
-                <div class="card-body card bg-white">
-                  <div class="m-2">
-                    <h5 class="card-title">Deskripsi</h5>
-                    <p style={{color:"black"}}>Memahami bagaimana cara untuk mendapatkan keuntungan dari saham bagi pemula</p>
-                  </div>
-                </div>
-              </div>
-              <div class="row col-12">
-
-                <div class="card-body">
-                  <h5 class="card-title">Tujuan Pembelajaran</h5>
-                  <ul>
-                    <li>Mengetahui Basic Technical Analysis dan Candlestick untuk Trading</li>
-                    <li>Mengetahui bagaimana cara ENTRY hingga menentukan Target Price</li>
-                    <li>Mampu menggunakan TrendLine untuk Trading jangka pendek</li>
-                    <li>Mampu melakukan Prediksi Trend dan membaca Pola harga yang akan terjadi</li>
-                    <li>Pemahaman dasar mengenai Fibonacci Analysis dan Support Resistance</li>
-                    <li>Mengetahui Cara Membuat System Trading yang benar</li>
-                  </ul>
+              <div class="card-body card bg-white">
+                <div class="m-2">
+                  <h5 class="card-title">Deskripsi</h5>
+                  <p style={{color:"black"}}>Memahami bagaimana cara untuk mendapatkan keuntungan dari saham bagi pemula</p>
                 </div>
               </div>
             </div>
+            <div class="row col-12">
 
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-              <div class="row ">
-                <div class="col-12">
+              <div class="card-body">
+                <h5 class="card-title">Tujuan Pembelajaran</h5>
+                <ul>
+                  <li>Mengetahui Basic Technical Analysis dan Candlestick untuk Trading</li>
+                  <li>Mengetahui bagaimana cara ENTRY hingga menentukan Target Price</li>
+                  <li>Mampu menggunakan TrendLine untuk Trading jangka pendek</li>
+                  <li>Mampu melakukan Prediksi Trend dan membaca Pola harga yang akan terjadi</li>
+                  <li>Pemahaman dasar mengenai Fibonacci Analysis dan Support Resistance</li>
+                  <li>Mengetahui Cara Membuat System Trading yang benar</li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-                  <div id="accordion">
-                    {this.state.dataTopik.map((data, index)=>
-                      <div class="card">
-                        <div class="card-header" id={"heading" + index}>
-                          <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
-                              {data.namaTopik}
-                            </button>
-                          </h5>
-                        </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="row ">
+              <div class="col-12">
 
-                        <div id={"collapse" + index} class="collapse show" aria-labelledby={"heading" + index} data-parent="#accordion">
-                          <div class="list-group">
-                            {
-                              data.judul.map((judul, index)=>
-
-                              <a href={"/#/post/" + data.materiID[index]} id = {data.materiID[index]} class={this.state.isPaid ? "list-group-item list-group-item-action border" : "list-group-item list-group-item-action border disabled"}>
-                                <div class="row justify-content-between">
-                                  <div class="col">
-                                    {judul}
-                                  </div>
-                                  {
-                                    this.state.doneDetail.findIndex(done => done.materiID == data.materiID[index]) > -1 ?
-                                    <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
-                                    <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
-                                    }
-
-
-
-                                </div>
-                              </a>
-                              )}
-                          </div>
-                        </div>
-                        </div>
-                        )}
+                <div id="accordion">
+                  {this.state.dataTopik.map((data, index)=>
+                    <div class="card">
+                      <div class="card-header" id={"heading" + index}>
+                        <h5 class="mb-0">
+                          <button class="btn btn-link" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
+                            {data.namaTopik}
+                          </button>
+                        </h5>
                       </div>
 
+                      <div id={"collapse" + index} class="collapse show" aria-labelledby={"heading" + index} data-parent="#accordion">
+                        <div class="list-group">
+                          {
+                            data.judul.map((judul, index)=>
+
+                            <a href={"/#/post/" + data.materiID[index]} id = {data.materiID[index]} class={this.state.isPaid ? "list-group-item list-group-item-action border" : "list-group-item list-group-item-action border disabled"}>
+                              <div class="row justify-content-between">
+                                <div class="col">
+                                  {judul}
+                                </div>
+                                {
+                                  this.state.doneDetail.findIndex(done => done.materiID == data.materiID[index]) > -1 ?
+                                  <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
+                                  <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
+                                }
+
+
+
+                              </div>
+                            </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      )}
                     </div>
+
                   </div>
+
                 </div>
               </div>
-            </div>
+        </div>
+      </div>
 
         </div>
         </>

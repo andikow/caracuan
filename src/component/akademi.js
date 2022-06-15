@@ -10,120 +10,98 @@ import Poto6 from './../public/assets/img/akademi6.jpg';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
 import DetailPost from './detail-post.js';
+import jwt_decode from 'jwt-decode';
 
-class CreatorPost extends Component {
+class Akademi extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      memberID: '',
+      token:'',
+      dataKelasDibeli:[],
+    };
+  }
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        name: decoded.name,
+        memberID:decoded.memberID,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push('/login')
+    })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelasdibeli/${this.state.memberID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data=>{
+        this.setState({
+          dataKelasDibeli: data,
+        });
+        console.log(data);
+      })
+
+  }
   render() {
     return (
-      <div>
-        <h2 className="mx-4 my-4 text-primary">Kelas Yang Dipelajari</h2>
+    <div>
+      <h2 className="mx-4 my-4 text-primary">Kelas Yang Dipelajari</h2>
 
       <div className="row">
-        <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                <div class="card card-inverse card-info">
-                    <img class="card-img-top" src={Poto1} />
-                    <div class="card-block">
-                        <div class="card-text text-primary">
-                          <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Belajar Saham dari Awal untuk Pemula
-                        </div>
-
-                    </div>
-                    <div class="card-footer">
-                      <div class="col">
-                        <button class="btn btn-warning btn-sm">Lulus</button>
-                      </div>
-                    </div>
-                </div>
+        {
+          this.state.dataKelasDibeli.map ((data)=>
+            <div class="col-sm-6 col-md-4 col-lg-3 mx-4" onClick={console.log("s")}>
+            <div class="card card-inverse card-info">
+            <img class="card-img-top" src={'http://localhost:4000/uploads/' + data.thumbnail} alt = {'thumbnail-kelasID-' + data.kelasID}/>
+            <div class="card-block">
+            <div class="card-text text-primary">
+            <span style={{fontSize:11}}> {'Oleh: ' + data.name}</span> <br />  {data.judul}
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                    <div class="card card-inverse card-info">
-                        <img class="card-img-top" src={Poto2} />
-                        <div class="card-block">
-                            <div class="card-text text-primary">
-                              <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Cara Trading di Saham Sideways
-                            </div>
 
-                        </div>
-                        <div class="card-footer">
-                          <div class="col">
-                            <button class="btn btn-warning btn-sm">Lulus</button>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                        <div class="card card-inverse card-info">
-                            <img class="card-img-top" src={Poto3} />
-                            <div class="card-block">
-                                <div class="card-text text-primary">
-                                  <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Ilmu Analisa Teknikal Candle Tahunan Saham
-                                </div>
+            </div>
+            <div class="card-footer">
+            <div class="col">
+            <button class="btn btn-warning btn-sm">Lulus</button>
+            </div>
+            </div>
+            </div>
+            </div>
+          )
+        }
 
-                            </div>
-                            <div class="card-footer">
-                              <div class="col">
-                                <button class="btn btn-warning btn-sm">Lulus</button>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                            <div class="card card-inverse card-info">
-                                <img class="card-img-top" src={Poto4} />
-                                <div class="card-block">
-                                    <div class="card-text text-primary">
-                                      <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Memperkirakan pergerakan harga saham bulan depan
-                                    </div>
 
-                                </div>
-                                <div class="card-footer">
-                                  <div class="col">
-                                    <button class="btn btn-warning btn-sm">Lulus</button>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                                <div class="card card-inverse card-info">
-                                    <img class="card-img-top" src={Poto5} />
-                                    <div class="card-block">
-                                        <div class="card-text text-primary">
-                                          <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Ilmu AVERAGE DOWN yang benar tanpa asalan
-                                        </div>
 
-                                    </div>
-                                    <div class="card-footer">
-                                      <div class="col">
-                                        <button class="btn btn-warning btn-sm">Lulus</button>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-3 mx-4">
-                                    <div class="card card-inverse card-info">
-                                        <img class="card-img-top" src={Poto6} />
-                                        <div class="card-block">
-                                            <div class="card-text text-primary">
-                                              <span style={{fontSize:11}}> Oleh: Kapten Saham</span> <br />  Perbedaan Investor dan Trader Saham
-                                            </div>
-
-                                        </div>
-                                        <div class="card-footer">
-                                          <div class="col">
-                                            <button class="btn btn-warning btn-sm">Lulus</button>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                        <HashRouter>
-                          <Route path="/creator/post/1" component={DetailPost}/>
-                        </HashRouter>
+        <HashRouter>
+          <Route path="/creator/post/1" component={DetailPost}/>
+        </HashRouter>
       </div>
-      <div class="row">
-      </div>
-        </div>
+    </div>
     );
   }
 }
 
-export default CreatorPost;
+export default Akademi;

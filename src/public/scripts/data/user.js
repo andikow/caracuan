@@ -172,6 +172,30 @@ router.get('/member/:memberID', async function(req,res){
     }
 });
 
+router.get('/kelasdibeli/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT memberpurchase.kelasID, member.name, kelas.judul, kelas.thumbnail FROM memberpurchase, kelas, member WHERE member.memberID = kelas.memberID AND kelas.kelasID = memberpurchase.kelasID AND memberpurchase.memberID = "${memberID}"`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.put('/setanalyst', async function (req,res){
+  try {
+    let data = req.body;
+    const sqlQuery = `UPDATE member
+    SET
+    isAnalyst = "1",
+    WHERE memberID = "${data.memberID}"`;
+    const rows = await pool.query(sqlQuery);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+});
 
 // Materi
 

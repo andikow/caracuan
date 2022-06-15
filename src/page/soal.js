@@ -5,8 +5,43 @@ import InnerHTML from 'dangerously-set-html-content'
 
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
+import jwt_decode from 'jwt-decode';
 
 class Soal extends Component {
+
+  async componentDidMount() {
+    if (! localStorage.justOnce) {
+        localStorage.setItem("justOnce", "true");
+        window.location.reload();
+    }
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+      .then(res=>{
+        return res.json()
+      })
+      .then(data=>{
+        this.setState({
+          token: data.accessToken
+        });
+        const decoded = jwt_decode(this.state.token);
+        this.setState({
+          memberID: decoded.memberID,
+          expire:decoded.exp
+        })
+        localStorage.setItem("memberID", decoded.memberID);
+      })
+      .catch((error)=>{
+        this.props.history.push('/login')
+      })
+  }
+
 
   render() {
     const html = `
@@ -15,8 +50,7 @@ class Soal extends Component {
  <html>
      <head>
          <meta charset='utf-8'>
-         <script type="text/javascript" src="scripts/quizlib.1.0.1.min.js"></script>
-         <script type="text/javascript" src="scripts/main.js"></script>
+
      </head>
 
      <body>
@@ -272,18 +306,18 @@ class Soal extends Component {
                  </div>
              </div>
              <!-- Answer buttontesttest. Here, we pass the ID of the quiz element (the parent of this buttontesttest) to the showResults function.  -->
-             <button class="buttontest" onclick="showResults(this.parentNode.id);">Kirim Jawaban</button>
+             <button class="buttontest" onclick="showResults(this.parentNode.id);" data-toggle="modal" data-target="#modalnilai">Kirim Jawaban</button>
 
 
-             <button type="buttontest" class="modal-button" data-toggle="modal" data-target="#myModal">Open Modal</button>
-             <div class="modal fade" id="myModal" role="dialog">
+             <button type="buttontest" class="modal-button" data-toggle="modal" data-target="#modalnilai">Open Modal</button>
+             <div class="modal fade" id="modalnilai" role="dialog">
       				 <div class="modal-dialog">
       					 <div class="cardmodal">
       							<div class="cardmodal-img">
                       <img class ="img-fluid" src='soalsaham/modal.png'>
       							</div>
       							<div class="cardmodal-title">
-      								<p>Nilai Anda : 100</p>
+      								<p>Nilai Anda <span id = "nilaidimodal"></span></p>
       							</div>
       							<div class="cardmodal-text">
       								<p>Selamat! <br>Anda berhasil mendaftar sebagai Analis!</p>
@@ -296,6 +330,8 @@ class Soal extends Component {
          </div>
 
        </div>
+       <script type="text/javascript" src="scripts/quizlib.1.0.1.min.js"></script>
+       <script type="text/javascript" src="scripts/main.js"></script>
      </body>
 
  </html>
