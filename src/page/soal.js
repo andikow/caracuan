@@ -275,7 +275,7 @@ class Soal extends Component {
              <button class="buttontest" onclick="showResults(this.parentNode.id);">Kirim Jawaban</button>
 
 
-             <button type="buttontest" class="modal-button" data-toggle="modal" data-target="#myModal">Open Modal</button>
+             <button class="buttontest modal-button" data-toggle="modal" data-target="#myModal">Open Modal</button>
              <div class="modal fade" id="myModal" role="dialog">
       				 <div class="modal-dialog">
       					 <div class="cardmodal">
