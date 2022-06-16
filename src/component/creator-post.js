@@ -72,7 +72,7 @@ async componentDidMount() {
             <img class="card-img-top" src={data.thumbnail} />
             <div class="card-block">
             <NavLink to={`/creator/${this.state.id}/post/${data.kelasID}`}>
-              <div class="card-text font-weight-bold">
+              <div class="card-text dotswrap font-weight-bold" style={{height:"50px"}}>
                 {data.judul}
               </div>
               </NavLink>

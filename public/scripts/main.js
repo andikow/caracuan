@@ -12,9 +12,7 @@ var quizzes = {};
  * In this example, the same function is being used for every quiz so we pass the ID of the quiz element and
  * retrieve the respective quiz instance from the quiz map we created in the window.onload function.
  */
-function tes(){
-  console.log("aa");
-}
+
 function showResults(quizID) {
     // Retrieve the quiz instance for this quiz element from the map.
     var activeQuiz = quizzes['quiz-1'];
@@ -29,7 +27,7 @@ function showResults(quizID) {
         // Show the result element and add result values.
         quizResultElement.style.display = 'block';
         document.getElementById('quiz-score').innerHTML = activeQuiz.result.score.toString();
-        var nilaidimodal = activeQuiz.result.score * 10;
+        var nilaidimodal = activeQuiz.result.score * 5;
         document.getElementById('nilaidimodal').innerHTML = nilaidimodal.toString();
         document.getElementById('quiz-max-score').innerHTML = activeQuiz.result.totalQuestions.toString();
         document.getElementById('quiz-percent').innerHTML = quizScorePercent.toString();

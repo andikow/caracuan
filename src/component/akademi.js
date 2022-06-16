@@ -78,7 +78,7 @@ class Akademi extends Component {
             <div class="card card-inverse card-info">
             <img class="card-img-top" src={'http://localhost:4000/uploads/' + data.thumbnail} alt = {'thumbnail-kelasID-' + data.kelasID}/>
             <div class="card-block">
-            <div class="card-text text-primary">
+            <div class="card-text dotswrap3 text-primary" style={{height:"75px"}}>
             <span style={{fontSize:11}}> {'Oleh: ' + data.name}</span> <br />  {data.judul}
             </div>
 
