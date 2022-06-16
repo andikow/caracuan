@@ -102,7 +102,7 @@ class Post extends Component {
       body: JSON.stringify(data)
     })
     .then(res => res.json())
-    .then(alert('Postingan berhasil ditayangkan!'))
+    .then(alert('Materi berhasil ditayangkan!'))
 
   }
   simpanTopik(){
@@ -225,7 +225,7 @@ class Post extends Component {
               <div class="row">
                 <h5 class="col-12 my-2">Judul</h5>
                 <div class="col-12 my-2">
-                  <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
+                  <input class="form-control" type="text" placeholder="Judul Materi" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
                 </div>
                 <h5 class="col-12 my-2">Deskripsi</h5>
                 <div class="col-12 my-2">

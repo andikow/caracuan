@@ -249,6 +249,33 @@ router.post('/submitmateri', async function (req,res){
     }
 });
 
+router.put('/ubahmateri', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `
+        UPDATE materi
+        SET
+        judul = IF('${data.judul}' = '', judul, '${data.judul}'),
+        deskripsi = IF('${data.deskripsi}' = '', deskripsi, '${data.deskripsi}'),
+        linkvideo = IF('${data.linkvideo}' = '', linkvideo, '${data.linkvideo}')
+        WHERE materiID = ${data.materiID}`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.delete('/hapusmateri', async function (req,res){
+    try {
+      const sqlQuery = `DELETE FROM materi WHERE materiID='${req.body.materiID}'`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
 router.post('/simpantopik', async function (req,res){
     try {
       let data = req.body;

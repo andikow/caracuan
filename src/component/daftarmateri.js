@@ -149,7 +149,7 @@ class DaftarMateri extends Component {
                                   <div class="col">
                                     {judul}
                                   </div>
-                                  <a href={"/#/ubahmateri/" + data.materiID[index]} id = {data.materiID[index]}><div class="col-1 p-0"> <i class="fas fa-edit fa-fw mr-2"></i></div></a>
+                                  <a href={"/#/dashboardcreator/ubahmateri/" + data.materiID[index]} id = {data.materiID[index]}><div class="col-1 p-0"> <i class="fas fa-edit fa-fw mr-2"></i></div></a>
                                 </div>
                               </a>
                               )}

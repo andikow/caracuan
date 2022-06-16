@@ -1,17 +1,27 @@
 import React, { Component } from "react";
 import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import './../public/assets/css/react-draft-wysiwyg.css';
 
 class UbahMateri extends Component {
-  async componentDidMount(){
+  constructor(props) {
+    super(props);
+    this.state = {
+      token:'',
+      editorState: EditorState.createEmpty(),
+      memberID:'',
+      materiID : this.props.location.pathname.split("/")[3],
+      dataMateri:{},
+      judul:'',
+      deskripsi:'',
+      linkvideo:'',
+    };
+  }
 
-    $('input[name="jenisPostingan"]').change(function(){
-      $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ? true:false);
-    });
+  async componentDidMount(){
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
@@ -38,7 +48,7 @@ class UbahMateri extends Component {
       this.props.history.push('/login')
     })
 
-    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelas/${this.state.memberID}`,
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/materi/id/${this.state.materiID}`,
         {
           method: 'GET',
           headers: {
@@ -52,28 +62,15 @@ class UbahMateri extends Component {
         })
       .then(data=>{
           this.setState({
-            dataKelas: data
+            dataMateri: data[0],
+            editorState: EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(data[0].deskripsi)
+              )
+            ),
+
           });
       })
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      token:'',
-      editorState: EditorState.createEmpty(),
-      memberID:'',
-      judul:'',
-      deskripsi:'',
-      linkvideo:'',
-      jenispostingan:false,
-      price:'',
-      dataKelas:[],
-      namaTopik:'',
-      kelasID:'',
-      dataTopik:[],
-      topikID:'',
-    };
   }
 
   onEditorStateChange: Function = (editorState) => {
@@ -82,6 +79,46 @@ class UbahMateri extends Component {
       deskripsi: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
+
+  ubahmateri(){
+    var data = {
+      materiID:this.state.materiID,
+      judul:this.state.judul,
+      deskripsi:this.state.deskripsi,
+      linkvideo:this.state.linkvideo,
+    }
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/ubahmateri`,
+    {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(alert('Materi berhasil diubah!'))
+
+  }
+
+  hapusMateri(){
+    var data = {
+      materiID:this.props.location.pathname.split("/")[3],
+    }
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/hapusmateri`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(alert('Materi berhasil dihapus!'))
+        .then(window.location.reload())
+      }
+
 
   render() {
     const { editorState } = this.state;
@@ -97,7 +134,7 @@ class UbahMateri extends Component {
               <div class="row">
                 <h5 class="col-12 my-2">Judul</h5>
                 <div class="col-12 my-2">
-                  <input class="form-control" type="text" placeholder="Judul Postingan" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })}/>
+                  <input class="form-control" type="text" placeholder="Judul Materi" aria-label="post-title" onChange={ev => this.setState({ judul: ev.target.value })} value={this.state.dataMateri.judul}/>
                 </div>
                 <h5 class="col-12 my-2">Deskripsi</h5>
                 <div class="col-12 my-2">
@@ -114,10 +151,11 @@ class UbahMateri extends Component {
                   />*/}
                   <h5 class = "col-12 my-2">Link Video</h5>
                   <div class="col-12 my-2">
-                    <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })}/>
+                    <input class="form-control" type="text" placeholder="Link Video" aria-label="post-title" onChange={ev => this.setState({ linkvideo: ev.target.value })} value={this.state.dataMateri.linkvideo}/>
                   </div>
                   <div class="col-12 my-2">
-                    <button type="button" class="btn btn-primary my-2 d-block" onClick={() => this.submitmateri()}>Tayangkan</button>
+                    <button type="button" class="btn btn-primary my-2 d-inline" onClick={() => this.ubahmateri()}>Simpan Perubahan</button>
+                    <button type="button" class="btn btn-danger d-inline float-right" onClick={() => this.hapusMateri()}>Hapus</button>
                   </div>
               </div>
             </div>
