@@ -17,28 +17,14 @@ class Sidebar extends Component {
     return (
     <>
     <div class="wrapper">
-      <nav id="sidebar">
+      <nav id="sidebar" style={{height:"100vh"}}>
 
         <ul class="list-unstyled components">
           <NavLink to="/dashboardcreator/">
-            <li class ="active">
+            <li>
               <a href="#">Dashboard</a>
             </li>
           </NavLink>
-          <li>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Halaman</a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-              <li>
-                <a href="#">Page 1</a>
-              </li>
-              <li>
-                <a href="#">Page 2</a>
-              </li>
-              <li>
-                <a href="#">Page 3</a>
-              </li>
-            </ul>
-          </li>
           <NavLink to="/dashboardcreator/saldo">
             <li>
               <a href="#">Saldo</a>

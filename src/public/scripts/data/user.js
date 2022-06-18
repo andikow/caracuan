@@ -183,6 +183,27 @@ router.get('/kelasdibeli/:memberID', async function(req,res){
     }
 });
 
+router.get('/mengikuti/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT following.followedID, member.Name, member.profilephoto FROM member, following WHERE following.followedID = member.memberID AND following.memberID = '${memberID}';`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/diikuti/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT following.memberID, member.Name, member.profilephoto FROM member, following WHERE following.memberID = member.memberID AND following.followedID = '${memberID}';`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
 router.put('/setanalyst', async function (req,res){
   try {
     let data = req.body;
@@ -196,6 +217,49 @@ router.put('/setanalyst', async function (req,res){
     res.status(400).send(error.message)
   }
 });
+
+router.get('/pengikut/:followedID', async function(req,res){
+  try {
+    let followedID = req.params.followedID;
+    const sqlQuery = `SELECT Count(*) AS pengikut from following WHERE followedID = '${followedID}';`;
+    const rows = await pool.query(sqlQuery);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }});
+
+router.get('/mengikuti/:memberID/:followedID', async function(req,res){
+  try {
+    let memberID = req.params.memberID;
+    let followedID = req.params.followedID;
+    const sqlQuery = `SELECT followingID from following WHERE memberID = '${memberID}' AND followedID = '${followedID}'`;
+    const rows = await pool.query(sqlQuery);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }});
+
+router.post('/mengikuti', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `INSERT INTO following VALUES ('','${data.memberID}','${data.followedID}')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+      res.status(400).send(error.message)
+    }
+  });
+
+router.delete('/mengikuti', async function (req,res){
+      try {
+        let data = req.body;
+        const sqlQuery = `DELETE from following WHERE memberID = ${data.memberID} AND followedID = ${data.followedID}`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+      } catch (error) {
+        res.status(400).send(error.message)
+      }
+    });
 
 // Materi
 
@@ -429,16 +493,6 @@ router.get('/tampilkanMateri/:topikID', async function(req,res){
         res.status(400).send(error.message)
     }});
 
-router.get('/mengikuti/:memberID', async function(req,res){
-    try {
-        let memberID = req.params.memberID
-        const sqlQuery = `SELECT following.followedID, member.Name FROM member, following WHERE following.followedID = member.memberID AND following.memberID = '${memberID}';`;
-        const rows = await pool.query(sqlQuery);
-        res.status(200).json(rows);
-    } catch (error) {
-        res.status(400).send(error.message)
-    }
-});
 
 router.get('/creator/:name', async function(req,res){
     try {

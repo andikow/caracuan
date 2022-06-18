@@ -70,11 +70,11 @@ class Sidebarmember extends Component {
     return (
       <>
       <div class="wrapper">
-              <nav id="sidebar">
+              <nav id="sidebar" style={{height:"100vh"}}>
 
                   <ul class="list-unstyled components">
                     <NavLink to="/dashboard/akademi">
-                      <li class ="active">
+                      <li>
                           <a href="#">Kelas</a>
                       </li>
                     </NavLink>

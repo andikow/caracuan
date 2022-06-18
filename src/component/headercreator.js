@@ -11,14 +11,15 @@ constructor(props) {
   this.state = {
     name : '',
     memberID:'',
+    profilImage:'',
     token: '',
     expire:'',
     users:[]
   };
 }
 
-componentDidMount() {
-  fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+async componentDidMount() {
+  await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
   {
     method: 'GET',
     headers: {
@@ -44,6 +45,28 @@ componentDidMount() {
   .catch((error)=>{
     this.props.history.push('/login')
   })
+
+  var data = {
+    memberID : this.state.memberID,
+  }
+
+  await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/memberphoto`,
+  {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res=>{
+    return res.json()
+  })
+  .then(data=>{
+      this.setState({
+      profilImage: data[0].profilephoto,
+    })
+  })
 }
 
   render(){
@@ -60,7 +83,7 @@ componentDidMount() {
             <button className="btn btn-outline-primary btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm fa-fw font-weight-bold"></i></button>
             <button className="btn btn-sm my-auto"><a className="nav-item nav-link" href="#"  style={{paddingLeft:"20px", paddingRight:"20px"}}><i className="fa fa-bell-on fa-fw text-primary fa-lg"></i></a></button>
             <div className="d-flex align-content-center flex-wrap">
-              <img src={Poto} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+              <img src={this.state.profilImage} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
             </div>
 
             <div className="row ml-2">

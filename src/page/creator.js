@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, NavLink } from "react-router-dom";
-import 'dotenv/config'
+import 'dotenv/config';
+import jwt_decode from 'jwt-decode';
 
 import Header from './../component/header.js';
 import Footer from './../component/footer.js';
@@ -18,13 +19,43 @@ class Creator extends React.Component{
     super(props);
     this.state = {
       data:{},
+      token:'',
       id : this.props.location.pathname.split("/")[2],
       profilImage:'',
       coverImage:'',
+      memberID:'',
+      isLogin:false,
+      isFollowed:false,
+      pengikut:0,
     };
   }
 
   async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+    .then(res=>{
+        return res.json()
+      })
+    .then(data=>{
+        this.setState({token: data.accessToken});
+        const decoded = jwt_decode(this.state.token);
+        this.setState({
+          name: decoded.name,
+          memberID:decoded.memberID,
+          expire:decoded.exp,
+          isLogin:true,
+        })
+        this.cekmengikuti();
+      })
+    .catch((error)=>{this.cekmengikuti()})
+
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.id + '/',
     {
       method: 'GET',
@@ -69,7 +100,98 @@ class Creator extends React.Component{
       })
     })
 
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/pengikut/${this.state.id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+      .then(res=>{
+        return res.json();
+      })
+      .then(data=>{
+        this.setState({
+          pengikut:data[0].pengikut,
+        });
+      })
+      .catch((err) =>{
+        this.setState({ msg: err.msg })
+      })
+
   }
+
+  async cekmengikuti(){
+    if (this.state.isLogin) {
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/mengikuti/${this.state.memberID}/${this.state.id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include'
+        })
+        .then(res=>{
+          return res.json();
+        })
+        .then(data=>{
+          if (data) this.setState({isFollowed:true});
+          else if(!data) this.setState({isFollowed:false});
+        })
+        .catch((err) =>{
+          this.setState({ msg: err.msg })
+        })
+      }
+    else{
+        this.setState({
+          isLogin: false,
+          isFollowed:false,
+        });
+      }
+    }
+  async mengikuti(){
+    if(!this.state.isLogin){
+      this.props.history.push({
+        pathname:"/login",
+        state: this.props.location.pathname
+      })
+    }
+    else{
+      var data = {
+        memberID:this.state.memberID,
+        followedID:this.state.id,
+      }
+      if(!this.state.isFollowed){
+        await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/mengikuti`,
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+          .then(res => res.json())
+          .then(data =>{this.setState({isFollowed:true});})
+        }
+        else if(this.state.isFollowed){
+          await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/mengikuti`,
+            {
+              method: 'DELETE',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data =>{this.setState({isFollowed:false});})
+        }
+      }
+    }
 
   render(){
     return(
@@ -81,7 +203,7 @@ class Creator extends React.Component{
         <div style={{textAlign:'center'}}>
         <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
         <p>@vandarinarisca</p>
-         <h6 className="font-weight-bold">Pengikut : 100</h6>
+         <h6 className="font-weight-bold">{'Pengikut : ' + this.state.pengikut}</h6>
          <h6 className="font-weight-bold">Performa : 85%</h6>
          <p>
          <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
@@ -111,9 +233,9 @@ class Creator extends React.Component{
 
         </div>
         <div className="col py-2" style={{textAlign: 'right'}}>
-          <a className="btn btn-outline-primary mx-2 text-primary text-center font-weight-bold" href="#"><i className="fa fa-user-plus"></i> Ikuti</a>
-          <a className="btn btn-outline-primary text-primary text-center font-weight-bold" href="#"><i className="fa fa-share"></i> Bagikan</a>
-          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i> Laporkan</a>
+          <button className="btn btn-outline-primary mx-2 text-center font-weight-bold" onClick={() => this.mengikuti()}>{this.state.isFollowed ? <span><i className="fa fa-user-minus"></i> Batal Ikuti</span>: <span><i className="fa fa-user-plus"></i> Ikuti</span>}</button>
+          <button className="btn btn-outline-primary text-center font-weight-bold" href="#"><i className="fa fa-share"></i> Bagikan</button>
+          <button className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i> Laporkan</button>
         </div>
       </div>
 

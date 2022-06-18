@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import { Route, NavLink, HashRouter } from "react-router-dom";
-import Poto1 from './../public/assets/img/analis1.jpg';
-import Poto2 from './../public/assets/img/analis2.jpg';
-import Poto3 from './../public/assets/img/analis3.jpg';
-import Poto4 from './../public/assets/img/analis4.jpg';
-import Poto5 from './../public/assets/img/analis5.png';
-import Poto6 from './../public/assets/img/analis6.png';
-import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
-import DetailPost from './detail-post.js';
 import jwt_decode from 'jwt-decode';
 
 class Mengikuti extends Component {
@@ -63,7 +54,7 @@ class Mengikuti extends Component {
       this.setState({
         data: res
       });
-      console.log(this.state.data);
+      console.log(this.state.data[0].name);
     })
     .catch((err) =>{
       this.setState({ msg: err.msg })
@@ -105,7 +96,7 @@ class Mengikuti extends Component {
               <div class="card" style={{height:70}}>
                 <div class="row">
                     <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                      <img src={Poto1} alt="Poto" height="40" style={{borderRadius: "100%"}} />
+                      <img src={'http://localhost:' + process.env.REACT_APP_REQ_PORT + '/uploads/profil/' + data.profilephoto} alt="Poto" height="40" style={{borderRadius: "100%"}} />
                     </div>
                     <div class="col">
                     <div class="row mr-auto">
