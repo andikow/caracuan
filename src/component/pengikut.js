@@ -64,7 +64,7 @@ class Pengikut extends Component {
   render() {
     return (
     <>
-    <div class="container">
+    <div class="container overflow-auto" style={{height:'90vh'}}>
       <div className="row">
         <h2 className="col-12 m-1 mb-4 text-primary">Pengikut</h2>
         <div class="row ml-2">

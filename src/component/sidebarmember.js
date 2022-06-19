@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import './../public/assets/css/sidebar.css';
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Akademi from './akademi.js';
+import DetailKelas from './detail-kelas.js';
 import Mengikuti from './mengikuti.js';
 import Transaksi from './transaksi.js';
 import Pengaturan from './pengaturan.js';
@@ -70,7 +71,7 @@ class Sidebarmember extends Component {
     return (
       <>
       <div class="wrapper">
-              <nav id="sidebar" style={{height:"100vh"}}>
+              <nav id="sidebar" style={{height:"90vh"}}>
 
                   <ul class="list-unstyled components">
                     <NavLink to="/dashboard/akademi">
@@ -106,6 +107,7 @@ class Sidebarmember extends Component {
               </nav>
               <HashRouter>
               <Route exact path="/dashboard/akademi" component={Akademi}/>
+              <Route exact path="/dashboard/akademi/:kelasID" component={DetailKelas}/>
               <Route path="/dashboard/mengikuti" component={Mengikuti}/>
               <Route path="/dashboard/transaksi" component={Transaksi}/>
               <Route path="/dashboard/pengaturan" component={Pengaturan}/>

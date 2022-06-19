@@ -336,42 +336,44 @@ class Kelas extends Component {
       {/*Akhir Modal Ubah Kelas*/}
 
       {/*Tabel Kelas*/}
-      <div class="m-4 col-9">
-        <div class="row">
-          <div class="col-12">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltambahkelas">+ Tambah Kelas</button>
+      <div class="container overflow-auto" style={{height:'90vh'}}>
+        <div class="m-4">
+          <div class="row">
+            <div class="col-12">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modaltambahkelas">+ Tambah Kelas</button>
+            </div>
+            <h2 class = "col-12 my-2">Daftar Kelas</h2>
+
+            <div class="ml-4 text-primary" style={{width:"100%"}}>
+              <table id="transaksi" class="display" style={{width:"100%"}}>
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Judul</th>
+                    <th>Thumbnail</th>
+                    <th>Jenis Kelas</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    this.state.datakelas.map(data=>
+                    <tr>
+                      <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
+                      <td>{data.judul}</td>
+                      <td><img src={data.thumbnail} width="100px"/></td>
+                      <td>{data.jenisKelas}</td>
+                      <td>{data.harga}</td>
+                      <td><button class="btn btn-light" id={data.kelasID} onClick = {e => this.ambilDataKelas(e.target.id)} data-toggle="modal" data-target="#modalubahkelas"><i className="fa fa-edit fa-sm  font-weight-bold pr-2"></i> Ubah</button></td>
+                    </tr>)
+                  }
+                </tbody>
+              </table>
+
+            </div>
+
           </div>
-          <h2 class = "col-12 my-2">Daftar Kelas</h2>
-
-          <div class="ml-4 text-primary" style={{width:"100%"}}>
-            <table id="transaksi" class="display" style={{width:"100%"}}>
-              <thead>
-                <tr>
-                  <th>Tanggal</th>
-                  <th>Judul</th>
-                  <th>Thumbnail</th>
-                  <th>Jenis Kelas</th>
-                  <th>Harga</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                this.state.datakelas.map(data=>
-                <tr>
-                <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
-                <td>{data.judul}</td>
-                <td><img src={data.thumbnail} width="100px"/></td>
-                <td>{data.jenisKelas}</td>
-                <td>{data.harga}</td>
-                <td><button class="btn btn-light" id={data.kelasID} onClick = {e => this.ambilDataKelas(e.target.id)} data-toggle="modal" data-target="#modalubahkelas"><i className="fa fa-edit fa-sm  font-weight-bold pr-2"></i> Ubah</button></td>
-                </tr>)
-              }
-              </tbody>
-            </table>
-
-          </div>
-
         </div>
       </div>
       {/*Akhir Tabel Kelas*/}

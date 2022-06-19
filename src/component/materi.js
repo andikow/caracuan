@@ -140,7 +140,7 @@ class Post extends Component {
   render() {
     const { editorState } = this.state;
     return (
-    <div class="container">
+    <div class="container overflow-auto" style={{height:'90vh'}}>
       <div class="row">
         <h2 class = "col-12 my-2">Buat Materi</h2>
         {/*Kelas*/}

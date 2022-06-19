@@ -85,7 +85,7 @@ class Pengaturan extends Component {
           coverImageName:this.state.coverImageName,
           profilImageName:this.state.profilImageName,
       }
-      
+
       await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/updatemember`,
           {
             method: 'POST',
@@ -106,7 +106,7 @@ class Pengaturan extends Component {
   render() {
     return (
       <>
-      <div class="container">
+      <div class="container overflow-auto" style={{height:'90vh'}}>
         <div class="row">
           <h2 className="col-12 px-4 my-4 text-primary">Pengaturan</h2>
         </div>

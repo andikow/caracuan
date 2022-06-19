@@ -258,7 +258,7 @@ class Saldo extends Component {
           </div>
       </div>
 
-        <div class="container">
+        <div class="container overflow-auto" style={{height:'90vh'}}>
           <div class="row">
             <div class="col-12 mt-4">
               <nav>

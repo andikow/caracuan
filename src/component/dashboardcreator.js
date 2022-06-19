@@ -43,47 +43,49 @@ class Dashboardcreator extends Component {
   }
   render() {
     return (
-      <div id="content">
+      <div class="container overflow-auto" style={{height:'90vh'}}>
+        <div id="content">
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <div class="container-fluid">
-                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <i class="fas fa-align-justify"></i>
-                  </button>
-                  <h3>Dashboard</h3>
-              </div>
+            <div class="container-fluid">
+              <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-align-justify"></i>
+              </button>
+              <h3>Dashboard</h3>
+            </div>
           </nav>
           <div class="d-flex flex-row justify-content-center bd-highlight mb-3">
             <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar navbar-light"><i class="fas fa-2x fa-wallet"></i>
-            <div class="d-flex flex-column">
-              <div class="">
-                Jumlah Saldo Saat Ini
-              </div>
-              <div class="">
-                Rp
-              </div>
-            </div></div>
-            <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-donate"></i>
-            <div class="d-flex flex-column">
-              <div class="">
-                Dukungan Bulan Ini
-              </div>
-              <div class="">
-                Rp
-              </div>
-            </div></div>
-            <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-money-bill-wave"></i>
-            <div class="d-flex flex-column">
-            <div class="">
-              Jumlah Dicairkan
-            </div>
-            <div class="">
-              Rp
-            </div>
-            </div></div>
-          </div>
-            <canvas id="Chart" width="800vw" class="m-auto"></canvas>
+              <div class="d-flex flex-column">
+                <div class="">
+                  Jumlah Saldo Saat Ini
+                </div>
+                <div class="">
+                  Rp
+                </div>
+              </div></div>
+              <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-donate"></i>
+                <div class="d-flex flex-column">
+                  <div class="">
+                    Dukungan Bulan Ini
+                  </div>
+                  <div class="">
+                    Rp
+                  </div>
+                </div></div>
+                <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-money-bill-wave"></i>
+                  <div class="d-flex flex-column">
+                    <div class="">
+                      Jumlah Dicairkan
+                    </div>
+                    <div class="">
+                      Rp
+                    </div>
+                  </div></div>
+                </div>
+                <canvas id="Chart" width="800vw" class="m-auto"></canvas>
 
-          <div class="line"></div>
+                <div class="line"></div>
+              </div>
       </div>
     );
   }

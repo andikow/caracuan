@@ -17,7 +17,7 @@ class Sidebar extends Component {
     return (
     <>
     <div class="wrapper">
-      <nav id="sidebar" style={{height:"100vh"}}>
+      <nav id="sidebar" style={{height:"90vh"}}>
 
         <ul class="list-unstyled components">
           <NavLink to="/dashboardcreator/">

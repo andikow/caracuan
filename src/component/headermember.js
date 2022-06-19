@@ -72,7 +72,7 @@ async componentDidMount() {
 
     return(
     <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{height:'10vh'}}>
     <div className="col-lg-3 d-flex">
     <NavLink to="/"><img src={Logo} alt="Logo" height="50px" />
     </NavLink>

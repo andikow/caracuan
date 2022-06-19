@@ -143,7 +143,7 @@ class AnalisaSaya extends Component {
 
   render() {
     return (
-      <div class="container m-3">
+      <div class="container p-3 overflow-auto" style={{height:'90vh'}}>
         <div class="row">
           <div class="col">
             <h2>Analisa Saya</h2>

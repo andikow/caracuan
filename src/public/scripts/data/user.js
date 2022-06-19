@@ -175,7 +175,30 @@ router.get('/member/:memberID', async function(req,res){
 router.get('/kelasdibeli/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        const sqlQuery = `SELECT memberpurchase.kelasID, member.name, kelas.judul, kelas.thumbnail FROM memberpurchase, kelas, member WHERE member.memberID = kelas.memberID AND kelas.kelasID = memberpurchase.kelasID AND memberpurchase.memberID = "${memberID}"`;
+        const sqlQuery = `
+        SELECT memberpurchase.kelasID, member.name, kelas.judul, kelas.thumbnail, q3.materiselesai, q3.jumlahmateri
+        FROM memberpurchase, kelas, member, (
+          SELECT memberpurchase.kelasID, q2.materiselesai, q2.jumlahmateri
+          FROM memberpurchase
+          LEFT JOIN (
+            SELECT materiselesaibaca.kelasID, COUNT(materiselesaibaca.kelasID) AS materiselesai, q1.jumlahmateri
+            FROM (
+              SELECT COUNT(materi.materiID) AS jumlahmateri, topik.kelasID
+              FROM materi, topik
+              WHERE topik.topikID = materi.topikID
+              GROUP BY topik.kelasID
+            ) AS q1, materiselesaibaca
+            WHERE
+            q1.kelasID = materiselesaibaca.kelasID AND
+            memberID = '${memberID}'
+          ) AS q2
+          ON memberpurchase.kelasID = q2.kelasID
+        ) AS q3
+        WHERE
+        member.memberID = kelas.memberID AND 
+        kelas.kelasID = memberpurchase.kelasID AND
+        q3.kelasID = memberpurchase.kelasID AND
+        memberpurchase.memberID = '${memberID}';`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -204,6 +227,7 @@ router.get('/diikuti/:memberID', async function(req,res){
         res.status(400).send(error.message)
     }
 });
+
 router.put('/setanalyst', async function (req,res){
   try {
     let data = req.body;
@@ -493,6 +517,15 @@ router.get('/tampilkanMateri/:topikID', async function(req,res){
         res.status(400).send(error.message)
     }});
 
+router.get('/kelaslulus/:memberID', async function(req,res){
+    try {
+        let memberID = req.params.memberID
+        const sqlQuery = `SELECT materiselesaibaca.kelasID, COUNT(materiselesaibaca.kelasID) AS materiselesai, q1.jumlahmateri FROM (SELECT COUNT(materi.materiID) AS jumlahmateri, topik.kelasID FROM materi, topik WHERE topik.topikID = materi.topikID GROUP BY topik.kelasID) AS q1, materiselesaibaca WHERE q1.kelasID = materiselesaibaca.kelasID AND memberID = ${memberID};`;
+        const rows = await pool.query(sqlQuery);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }});
 
 router.get('/creator/:name', async function(req,res){
     try {

@@ -19,6 +19,7 @@ class Akademi extends Component {
       memberID: '',
       token:'',
       dataKelasDibeli:[],
+      datalulus:[],
     };
   }
   async componentDidMount() {
@@ -65,6 +66,22 @@ class Akademi extends Component {
         console.log(data);
       })
 
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelaslulus/${this.state.memberID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data=>{
+        this.setState({
+          datalulus: data,
+        });
+        console.log(this.state.datalulus);
+      })
+
   }
   render() {
     return (
@@ -73,23 +90,29 @@ class Akademi extends Component {
 
       <div className="row">
         {
-          this.state.dataKelasDibeli.map ((data)=>
-            <div class="col-sm-6 col-md-4 col-lg-3 mx-4" onClick={console.log("s")}>
+          this.state.dataKelasDibeli.map ((data, index)=>
+          <div class="col-sm-6 col-md-4 col-lg-3 mx-4" onClick={console.log("s")}>
             <div class="card card-inverse card-info">
-            <img class="card-img-top" src={'http://localhost:4000/uploads/' + data.thumbnail} alt = {'thumbnail-kelasID-' + data.kelasID}/>
-            <div class="card-block">
-            <div class="card-text dotswrap3 text-primary" style={{height:"75px"}}>
-            <span style={{fontSize:11}}> {'Oleh: ' + data.name}</span> <br />  {data.judul}
-            </div>
+              <img class="card-img-top" src={'http://localhost:4000/uploads/' + data.thumbnail} alt = {'thumbnail-kelasID-' + data.kelasID}/>
+              <div class="card-block">
+                <div class="card-text dotswrap3 text-primary" style={{height:"75px"}}>
+                  <span style={{fontSize:11}}> {'Oleh: ' + data.name}</span> <br />  <a href={"/#/dashboard/akademi/" + data.kelasID}>{data.judul}</a>
+                </div>
+              </div>
 
+              <div class="card-footer">
+              <span class="align-middle float-left text-primary font-weight-bold">
+              {((data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0)) ?
+                (data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0) * 100 : 0} %
+              </span>
+              <span class="align-middle float-left text-primary font-weight-bold"></span>
+                <button class="btn btn-warning btn-sm float-right">
+                {(((data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0)) ?
+                  (data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0) * 100 : 0) == 100 ?
+                  "Lulus" : "Belum Lulus"}</button>
+              </div>
             </div>
-            <div class="card-footer">
-            <div class="col">
-            <button class="btn btn-warning btn-sm">Lulus</button>
-            </div>
-            </div>
-            </div>
-            </div>
+          </div>
           )
         }
 
