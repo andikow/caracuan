@@ -39,7 +39,6 @@ class Dashboardcreator extends Component {
         }
     });
 
-
   }
   render() {
     return (

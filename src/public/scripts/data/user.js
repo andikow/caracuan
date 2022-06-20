@@ -195,7 +195,7 @@ router.get('/kelasdibeli/:memberID', async function(req,res){
           ON memberpurchase.kelasID = q2.kelasID
         ) AS q3
         WHERE
-        member.memberID = kelas.memberID AND 
+        member.memberID = kelas.memberID AND
         kelas.kelasID = memberpurchase.kelasID AND
         q3.kelasID = memberpurchase.kelasID AND
         memberpurchase.memberID = '${memberID}';`;
@@ -676,6 +676,25 @@ router.get('/available_banks', async function(req,res){
 
 });
 
+router.get('/transaksi/:memberID', async function(req,res){
+  try {
+    let memberID = req.params.memberID
+    const sqlQuery = `SELECT * FROM memberpurchase WHERE memberID = "${memberID}"`;
+    const rows = await pool.query(sqlQuery);
+    const { Invoice } = x;
+    const i = new Invoice({});
+
+    for (var j = 0; j < rows.length; j++) {
+      let invoice = await i.getInvoice({ invoiceID: rows[j].invoiceID });
+      rows[j]["dataInvoice"] = invoice;
+    }
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+
+
+});
 
 // router.post('/login', async function(req,res) {
 //     try {

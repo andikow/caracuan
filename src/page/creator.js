@@ -138,8 +138,10 @@ class Creator extends React.Component{
           return res.json();
         })
         .then(data=>{
-          if (data) this.setState({isFollowed:true});
-          else if(!data) this.setState({isFollowed:false});
+          if (data == undefined) {
+            this.setState({isFollowed:true})
+          }
+          else this.setState({isFollowed:false});
         })
         .catch((err) =>{
           this.setState({ msg: err.msg })

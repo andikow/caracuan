@@ -74,7 +74,7 @@ class Kelas extends Component {
           this.setState({
             datakelas: data
           });
-          $('#transaksi').DataTable();
+          $('#kelas').DataTable();
       })
   }
 
@@ -345,7 +345,7 @@ class Kelas extends Component {
             <h2 class = "col-12 my-2">Daftar Kelas</h2>
 
             <div class="ml-4 text-primary" style={{width:"100%"}}>
-              <table id="transaksi" class="display" style={{width:"100%"}}>
+              <table id="kelas" class="display" style={{width:"100%"}}>
                 <thead>
                   <tr>
                     <th>Tanggal</th>
