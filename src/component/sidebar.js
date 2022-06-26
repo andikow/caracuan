@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import $ from "jquery";
 import './../public/assets/css/sidebar.css';
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Dashboardcreator from './dashboardcreator.js';
@@ -10,6 +9,7 @@ import Materi from './materi.js';
 import Kelas from './kelas.js';
 import AnalisaSaya from './analisasaya.js';
 import Pengikut from './pengikut.js';
+import Pengaturan from './pengaturan.js';
 
 class Sidebar extends Component {
 
@@ -57,9 +57,11 @@ class Sidebar extends Component {
               <a href="#">Pengikut</a>
             </li>
           </NavLink>
+          <NavLink to="/dashboardcreator/pengaturan">
           <li>
             <a href="#">Pengaturan</a>
           </li>
+          </NavLink>
         </ul>
 
         <ul class="list-unstyled CTAs">
@@ -80,6 +82,7 @@ class Sidebar extends Component {
         <Route path="/dashboardcreator/daftarmateri" component={DaftarMateri}/>
         <Route path="/dashboardcreator/analisasaya" component={AnalisaSaya}/>
         <Route path="/dashboardcreator/pengikut" component={Pengikut}/>
+        <Route path="/dashboardcreator/pengaturan" component={Pengaturan}/>
       </HashRouter>
 
     </div>

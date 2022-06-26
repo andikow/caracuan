@@ -16,8 +16,8 @@ class Sidebarmember extends Component {
       isAnalyst:'',
     };
   }
-  cekAnalis(){
-    console.log("");
+  hapusSessionStorage(){
+    sessionStorage.removeItem("justOnce", "true");
   }
 
   async componentDidMount() {
@@ -98,7 +98,7 @@ class Sidebarmember extends Component {
 
                   <ul class="list-unstyled CTAs">
                       <li>
-                          <a href={this.state.isAnalyst ? "#/dashboardcreator":"#/soal"} class="download">Masuk Sebagai Analis</a>
+                          <a onClick={this.hapusSessionStorage} href={this.state.isAnalyst ? "#/dashboardcreator":"#/soal"} class="download">Masuk Sebagai Analis</a>
                       </li>
                       <li>
                           <a href="#" class="article">Keluar</a>

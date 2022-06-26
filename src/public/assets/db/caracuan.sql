@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2022 at 03:10 PM
+-- Generation Time: Jun 26, 2022 at 10:46 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -68,6 +68,7 @@ CREATE TABLE `analysis` (
   `stockCode` varchar(4) NOT NULL,
   `targetPrice` int(11) NOT NULL,
   `initialPrice` int(11) NOT NULL,
+  `days` int(11) NOT NULL,
   `isHit` varchar(10) NOT NULL DEFAULT 'Hold',
   `agreed` int(11) NOT NULL,
   `disagreed` int(11) NOT NULL
@@ -77,27 +78,27 @@ CREATE TABLE `analysis` (
 -- Dumping data for table `analysis`
 --
 
-INSERT INTO `analysis` (`analysisID`, `memberID`, `date`, `description`, `stockCode`, `targetPrice`, `initialPrice`, `isHit`, `agreed`, `disagreed`) VALUES
-(1, 41, '2022-04-05', 'Secara fundamental masih cukup menarik', 'BBCA', 8000, 7500, 'Hold', 355, 253),
-(2, 41, '2022-04-06', 'Secara teknikal ada potensi rebound', 'EKAD', 1800, 1200, 'Hold', 2, 2),
-(14, 41, '2022-06-06', 'yakin', 'bbca', 8000, 7600, 'Hold', 0, 0);
+INSERT INTO `analysis` (`analysisID`, `memberID`, `date`, `description`, `stockCode`, `targetPrice`, `initialPrice`, `days`, `isHit`, `agreed`, `disagreed`) VALUES
+(1, 41, '2022-04-05', 'Secara fundamental masih cukup menarik', 'BBCA', 8000, 7500, 9, 'Hold', 356, 253),
+(2, 41, '2022-04-06', 'Secara teknikal ada potensi rebound', 'EKAD', 1800, 1200, 15, 'Hold', 2, 2),
+(14, 41, '2022-06-06', 'yakin', 'ICBP', 8000, 7600, 180, 'Hold', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `balancedetail`
+-- Table structure for table `balance`
 --
 
-CREATE TABLE `balancedetail` (
+CREATE TABLE `balance` (
   `memberID` int(11) NOT NULL,
   `balance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `balancedetail`
+-- Dumping data for table `balance`
 --
 
-INSERT INTO `balancedetail` (`memberID`, `balance`) VALUES
+INSERT INTO `balance` (`memberID`, `balance`) VALUES
 (41, 50500);
 
 -- --------------------------------------------------------
@@ -129,12 +130,11 @@ CREATE TABLE `following` (
 --
 
 INSERT INTO `following` (`followingID`, `memberID`, `followedID`) VALUES
-(1, 41, 47),
 (2, 41, 48),
-(3, 52, 41),
-(4, 52, 47),
-(5, 52, 49),
-(6, 52, 51);
+(3, 51, 41),
+(4, 51, 47),
+(5, 41, 50),
+(6, 49, 41);
 
 -- --------------------------------------------------------
 
@@ -147,6 +147,11 @@ CREATE TABLE `kelas` (
   `memberID` int(11) NOT NULL,
   `judul` varchar(600) NOT NULL,
   `thumbnail` varchar(600) NOT NULL,
+  `deskripsi` varchar(3000) NOT NULL,
+  `tujuan1` varchar(300) NOT NULL,
+  `tujuan2` varchar(300) NOT NULL,
+  `tujuan3` varchar(300) NOT NULL,
+  `tujuan4` varchar(300) NOT NULL,
   `jenisKelas` varchar(9) NOT NULL,
   `harga` int(11) NOT NULL,
   `createdAt` date NOT NULL
@@ -156,16 +161,16 @@ CREATE TABLE `kelas` (
 -- Dumping data for table `kelas`
 --
 
-INSERT INTO `kelas` (`kelasID`, `memberID`, `judul`, `thumbnail`, `jenisKelas`, `harga`, `createdAt`) VALUES
-(16, 41, 'Cara Trading di Saham Sideways', 'akademi2.jpg', 'Berbayar', 30500, '2022-02-02'),
-(18, 41, 'Belajar Saham untuk Pemula', 'Belajar Saham untuk Pemula-1646840363536.jpg', 'Gratis', 0, '2022-03-09'),
-(19, 41, 'Rumus Average Down Saham', 'Average Down-1646842892641.jpg', 'Berbayar', 20000, '2022-03-09'),
-(21, 47, 'Money Management dalam Trading Saham', '3274120626-1647176297676.jpg', 'Berbayar', 25000, '2022-03-13'),
-(22, 47, 'Membaca Grafik Saham Batang', 'grafik candlestick saham-1647177073518.jpg', 'Berbayar', 25000, '2022-03-13'),
-(23, 48, 'Saham Bluechip', 'Ciri_Saham_Blue_Chip-1647272101263.jpg', 'Gratis', 0, '2022-03-14'),
-(24, 48, 'Saham LQ45', 'Saham-1647272283925.jpg', 'Berbayar', 10000, '2022-03-14'),
-(25, 49, 'Belajar TrendLine Harga Saham', 'Apa-Itu-Sideways-1647443772712.png', 'Berbayar', 20000, '2022-03-16'),
-(26, 49, 'Dividen Saham', 'definisi-dividen-1647444021447.jpeg', 'Gratis', 0, '2022-03-16');
+INSERT INTO `kelas` (`kelasID`, `memberID`, `judul`, `thumbnail`, `deskripsi`, `tujuan1`, `tujuan2`, `tujuan3`, `tujuan4`, `jenisKelas`, `harga`, `createdAt`) VALUES
+(16, 41, 'Cara Trading di Saham Sideways', 'akademi2.jpg', '', '', '', '', '', 'Berbayar', 30500, '2022-06-13'),
+(18, 41, 'Belajar Saham untuk Pemula', 'Belajar Saham untuk Pemula-1646840363536.jpg', '', '', '', '', '', 'Gratis', 0, '2022-03-09'),
+(19, 41, 'Rumus Average Down Saham', 'Average Down-1646842892641.jpg', '', '', '', '', '', 'Berbayar', 20000, '2022-03-09'),
+(21, 47, 'Money Management dalam Trading Saham', '3274120626-1647176297676.jpg', '', '', '', '', '', 'Berbayar', 25000, '2022-03-13'),
+(22, 47, 'Membaca Grafik Saham Batang', 'grafik candlestick saham-1647177073518.jpg', '', '', '', '', '', 'Berbayar', 25000, '2022-03-13'),
+(23, 48, 'Saham Bluechip', 'Ciri_Saham_Blue_Chip-1647272101263.jpg', '', '', '', '', '', 'Gratis', 0, '2022-03-14'),
+(24, 48, 'Saham LQ45', 'Saham-1647272283925.jpg', '', '', '', '', '', 'Berbayar', 10000, '2022-03-14'),
+(25, 49, 'Belajar TrendLine Harga Saham', 'Apa-Itu-Sideways-1647443772712.png', '', '', '', '', '', 'Berbayar', 20000, '2022-03-16'),
+(26, 49, 'Dividen Saham', 'definisi-dividen-1647444021447.jpeg', '', '', '', '', '', 'Gratis', 0, '2022-03-16');
 
 -- --------------------------------------------------------
 
@@ -187,7 +192,7 @@ CREATE TABLE `materi` (
 
 INSERT INTO `materi` (`materiID`, `topikID`, `judul`, `deskripsi`, `linkvideo`) VALUES
 (11, 9, 'Belajar Saham untuk Pemula', '<p>Menurut Bursa Efek Indonesia (BEI), saham adalah tanda penyertaan modal dalam suatu perusahaan atau perseroan terbatas. Orang yang menanamkan modal di sebuah perusahaan disebut pemegang saham dan memiliki klaim atas pendapatan perusahaan, aset perusahaan, dan berhak mengikuti Rapat Umum Pemegang Saham (RUPS).&nbsp;</p>\n<p>Dari hal di atas, saham merupakan bukti kepemilikan seseorang atas sebuah perusahaan/badan usaha. Kalau punya saham, kamu menjadi<br>bagian dari pemilik sebuah perusahaan. Itu sebabnya saham tergolong suratberharga karena menjadi bukti sah kepemilikan seseorang atas sebuah perusahaan. Semakin besar saham yang dimiliki, maka semakin besar kekuasaan seseorang di perusahaan itu.&nbsp;</p>\n<p>Untuk pemula yang masih belajar saham tentu harus mengetahui berbagai jenis saham. Saham memiliki berbagai jenis dilihat dari segi kemampuan dalam hak tagih atau klaim, cara peralihannya, dan kinerja perdagangan.&nbsp;</p>\n<p>Jenis Saham dari Segi Kemampuan dalam Hak Tagih atau Klaim&nbsp;</p>\n<p>1. Saham biasa&nbsp;</p>\n<p>Saham biasa merupakan surat berharga yang berguna sebagai bukti kepemilikan suatu perusahaan. Pemilik saham akan menerima sebagian<br>pendapatan (dividen) dari perusahaan dan bersedia menanggung risiko kerugian yang diderita perusahaan. Pemilik modal yang memiliki saham perusahaan berhak ambil bagian terhadap pengelolaan perusahaan. Besarnya porsi hak pengelolaan tergantung dari jumlah saham yang dimiliki. Semakin besar saham yang dimiliki semak besar wewenang terhadap pengelolaan perusahaan itu. Saat perusahaan untung, pihak yang memiliki persentase saham besar akan menerima porsi keuntungan yang besar. Sebaliknya, mereka harus bersiap menderita kerugian bila perusahaan itu gagal memperoleh pendapatan.&nbsp;</p>\n<p>2. Saham preferen&nbsp;</p>\n<p>Saham preferen merupakan surat berharga yang merupakan gabungan antara obligasi dan saham biasa. Banyak investor yang menyukai jenis<br>saham ini karena bisa menghasilkan pendapatan tetap (seperti bunga obligasi). Karakteristik saham preferen sama seperti saham biasa yang bisa mewakili kepemilikan ekuitas dan diterbitkan tanpa tanggal jatuh tempo yang tertulis di atas lembaran saham tersebut, dan membayar dividen.&nbsp;</p>\n<p>Jenis Saham dari Segi Cara Peralihannya&nbsp;</p>\n<p>1. Saham Atas Unjuk (Bearer Stocks)&nbsp;</p>\n<p>Pada saham jenis ini tidak tertulis nama pemiliknya secara fisik. Tujuannya agar mudah dipindahtangankan dari satu investor satu ke<br>investor lainnya. Pasalnya, banyak investor yang memiliki saham ini dengan tujuan untuk diperjualbelikan. Jadi, investor tidak perlu khawatir karena secara hukum siapapun yang memegang saham itu, maka dialah diakui sebagai pemiliknya dan berhak untuk ikut hadir dalam Rapat Umum Pemegang Saham (RUPS).&nbsp;</p>\n<p>2. Saham Atas Nama (Registered Stocks)&nbsp;</p>\n<p>Saham ini merupakan kebalikan dari saham unjuk karena memiliki nama pemegang saham dan tertulis jelas namanya di dalam kertas saham. Cara peralihannya juga harus melalui prosedur tertentu.&nbsp;</p>\n<p>Jenis Saham dari Segi Kinerja Perdagangan&nbsp;</p>\n<p>1. Blue Chip Stocks&nbsp;</p>\n<p>Blue Chip Stocks banyak diburu investor karena berasal dari perusahaan besar, pemimpin perusahaan bereputasi tinggi, dan memiliki<br>pendapatan yang stabil dan konsisten dalam membayar dividen. Contohnya PT Bank Mandiri Tbk. (BMRI), PT Indofood Sukses Makmur Tbk. (INDF), PT Astra International,Tbk. (ASII), dan PT Unilever, Tbk. (UNVR).&nbsp;</p>\n<p>2. Income Stocks&nbsp;</p>\n<p>Income Stocks memiliki keunggulan dalam kemampuan membayar dividen lebih tinggi dari rata-rata dividen yang dibayarkan pada tahun<br>sebelumnya. Kemampuan menciptakan pendapatan yang lebih tinggi dan secara teratur membagikan dividen tunai menjadi daya tarik tersendiri bagi investor.&nbsp;</p>\n<p>3. Growth Stocks&nbsp;</p>\n<p>Growth Stocks hampir mirip dengan blue chip karena memiliki pertumbuhan pendapatan yang tinggi. Selain itu saham ini berada di jajaran<br>depan dalam industri yang digelutinya dan dikenal sebagai perusahaan yang mempunyai reputasi tinggi.&nbsp;</p>\n<p>4. Lesser-Known&nbsp;</p>\n<p>Saham ini berasal dari perusahaan yang tetap memiliki ciri growth stock, walau bukan berada dalam garde depan dalam sebuah industri. Saham<br>ini biasanya berasal dari perusahaan daerah dan kurang populer di kalangan emiten.&nbsp;</p>\n<p>5. Speculative Stocks&nbsp;</p>\n<p>Investor yang menyukai investasi saham dengan resiko tinggi tentu bisa mencoba saham jenis ini. Saham ini berpotensi menghasilkan laba<br>tinggi di masa depan, tapi tidak bisa secara konsisten memperoleh penghasilan dari tahun ke tahun.&nbsp;</p>\n<p>6. Counter Cyclical Stocks&nbsp;</p>\n<p>Jenis saham terakhir, ada Counter Cyclical Stocks yang paling stabil saat kondisi ekonomi bergejolak karena tidak terpengaruh oleh<br>kondisi ekonomi makro maupun situasi bisnis secara umum. Ilustrasinya bila terjadi resesi ekonomi, maka harga saham ini tetap tinggi dan emitennya mampu memberikan dividen yang tinggi. Hal ini mungkin terjadi karena kemampuan emiten dalam memperoleh penghasilan yang tinggi pada masa resesi.&nbsp;</p>\n<p>Berikut cara belajar saham untuk pemula secara mudah.&nbsp;</p>\n<p>1. Mulai dari nominal kecil&nbsp;</p>\n<p>Walau trading saham merupakan salah satu investasi berisiko tinggi, kamu tetap bisa menggunakan modal kecil untuk menghindari kerugian besar. Kamu bisa mencoba apakah investasi melalui saham cocok untuk kamu atau tidak. Bila merasa cocok dan bisa mendapatkan keuntungan di tahap awal, kamu bisa melanjutkan dengan membeli lebih banyak saham. Tapi jika mengalami kerugian, tak ada salahnya mencoba terlebih dengan modal kecil.&nbsp;</p>\n<p>2. Pengetahuan adalah modal utama&nbsp;</p>\n<p>Untuk bisa mendapatkan keuntungan dalam investasi saham dibutuhkan kemampuan membaca simbol chart dan membaca tren. akan lebih bagus jika kamu bisa mengetahui nilai intrinsik atau analisis fundamental perusahaan.&nbsp;</p>\n<p>3. Memilih perusahaan sekuritas&nbsp;</p>\n<p>Setelah memiliki uang, kamu bisa mempelajari analisis buat trading. Kamu bisa cari perusahaan sekuritas tempat menanamkan uang. Memilih<br>broker saham kadang tricky supaya kamu gak merasa dirugikan. Terlebih jika kamu termasuk orang yang sering melakukan transaksi.&nbsp;</p>\n<p>4. Menghindari saham gorengan&nbsp;</p>\n<p>Saham gorengan kurang cocok dimainkan pleh para pemula karena sangat susah dibaca dari sisi analisis teknikal, apalagi fundamental. Pasalnya pergerakannya tak bisa diprediksi dan sentimen serta pompomers menjadi faktor paling dominan dalam menggerakkan harga saham ini.  Selain itu, gerakan yang amat random tak cocok sebagai media pembelajaran bagi trader pemula. Akan lebih mudah jika kamu belajar dari saham yang gerakannya cenderung normal, blue chip, atau second liner.&nbsp;</p>\n<p>5. Ketimpangan order jual dan beli&nbsp;</p>\n<p>Sebelum membeli saham, kamu harus memperhatikan saham-saham yang ketimpangannya sangat tinggi, yang mana order beli jauh lebih banyak daripada yang jual. Selanjutnya kamu bisa mulai belajar di titik kritis yakni saat awal dan akhir perdagangan, serta menjelang istirahat (jam 11-12).  Mengapa harus memperhatikan order beli yang jauh lebih banyak? Karena itu merupakan tanda indikasi kenaikan kuat saham alias ada “sesuatu” yang membuat saham itu menarik.&nbsp;</p>\n<p>6. Pemula jangan gunakan semua modal ke satu transaksi&nbsp;</p>\n<p>Pemula tidak disarankan menggunakan seluruh modal hanya untuk satu transaksi. Kamu bisa membeli beberapa saham potensial dengan nilai<br>yang sedikit dibanding membeli satu saham dengan seluruh modal. Hal ini untuk menghindari kerugian di satu titik sehingga kamu bisa memberdayakan modal lainnya pada saham yang berbeda&nbsp;&nbsp;</p>\n', 'DBgDj3tEDNg'),
-(12, 7, 'Cara Trading di Saham Sideways', '<p>Musim window dressing menjelang akhir tahun menjadi moment istimewa bagi pelaku pasar saham melakukan trading. Trading adalah jual-beli saham untuk mendapatkan keuntungan atau cuan saham dalam waktu singkat.&nbsp;</p>\n<p>Window dressing menjadi menarik untuk trading karena ada kecenderungan saham-saham menggeliat naik menjelang akhir tahun karena langkah Manajer Investasi yang mempercantik diri dengan meramu portofolio baru biar keliatan kece dan menarik di mata investor.&nbsp;</p>\n<p>MI membuang saham-saham yang merugi dan memborong saham-saham yang sedang memberikan keuntungan. Hal ini dilakukan agar portofolio akhir tahunnya terlihat elok. Hal lain yang dilakukan MI yakni mempercantik laporan keuangannya agar makin memikat investor. Pasar saham pun menjadi semarak.&nbsp;</p>\n<p>Namun tengah kondisi apa pun tetap ada saham yang kondisinya sedang sidesways. Sideways adalah kondisi saham yang berada dalam kegalauan karena pergerakannya tanpa arah atau choppy.&nbsp;</p>\n<p>Sideways adalah kondisi ketika harga saham yang diperdagangkan di pasar bergerak relatif horizontal alias datar-satar saja akibat penawaran dan permintaan yang sama-sama kuat dalam periode waktu tertentu.&nbsp;</p>\n<p>Kondisi ini biasanya terjadi selama tahap konsolidasi, sebelum harga melanjutkan tren sebelumnya atau justru berbalik ke tren yang baru. Nah, dihadapkan pada saham-saham yang sedang sideways, apa yang sebaiknya dilakukan investor atau trader? Berikut ini 3 tip menghadapi saham-saham yang dalam kondisi sideways:&nbsp;</p>\n<p>1. Analisis Mendalam&nbsp;</p>\n<p>Langkah pertama yang wajib dilakukan yakni melakukan analisis secara komprehensif saham sideways sebelum mentradingkannya. Analisis dilakukan untuk melihat time frame pergerakan harganya apakah valuasinya benar-benar sudah murah atau belum, lalu perhatikan trend sektornya dan cermati berbagai sentimen positif yang berpotensi menggerakkan saham tersebut sehingga bisa buy dan sentimen negatif yang berpotensi menumbangkan saham sehingga bisa sell.&nbsp;</p>\n<p>2. Cermati Arah Market&nbsp;</p>\n<p>Pergerakan market wajib dipantau, khususnya dengan berpatokan pada IHSG. Jika market sedang lesu sehingga IHSG cenderung flat karena tidak ada sentimen positif maka saham ada kemungkinan sulit untuk bangkit, tetapi jika IHSG sedang bullist maka ada peluang ikut terkerek apalagi ada sentimen positifnya. Toh, investasi saham saat ini sudah sangat mudah berbasis aplikasi, semisal dengan aplikasi IPOT besutan Indo Premier Sekuritas. Buy atau sell bisa dilakukan dengan mudah dan cepat dengan semartphone di genggaman tangan.&nbsp;</p>\n<p>3. Analisis dengan Price Action&nbsp;</p>\n<p>Analisis price action merujuk pada analisa teknikal berdasarkan pergerakan harga di masa lampau. Dalam hal ini trader bisa melihat pola tertentu pergerakan harga di masa lampau. Kendati ada pola tertentu, tetap harus dilakukan analisis fundamental dan teknikal, jadi bukan sekadar percaya dengan pola yang ditemukan. Jika hanya percaya begitu saja dengan pola yang ditemukan dan meyakini itu maka jatuh-jatuhnya menjadi spekulasi. So, analisis fundamental dan teknikal wajib dilakukan.&nbsp;&nbsp;</p>\n', 'b7c0IEWQfuo'),
+(12, 7, 'Cara Trading di Saham Sideways', '<p>Musim window dressing menjelang akhir tahun menjadi moment istimewa bagi pelaku pasar saham melakukan trading. Trading adalah jual-beli saham untuk mendapatkan keuntungan atau cuan saham dalam waktu singkat.</p>\n<p></p>\n<p>Window dressing menjadi menarik untuk trading karena ada kecenderungan saham-saham menggeliat naik menjelang akhir tahun karena langkah Manajer Investasi yang mempercantik diri dengan meramu portofolio baru biar keliatan kece dan menarik di mata investor.</p>\n<p></p>\n<p>MI membuang saham-saham yang merugi dan memborong saham-saham yang sedang memberikan keuntungan. Hal ini dilakukan agar portofolio akhir tahunnya terlihat elok. Hal lain yang dilakukan MI yakni mempercantik laporan keuangannya agar makin memikat investor. Pasar saham pun menjadi semarak.</p>\n<p></p>\n<p>Namun tengah kondisi apa pun tetap ada saham yang kondisinya sedang sidesways. Sideways adalah kondisi saham yang berada dalam kegalauan karena pergerakannya tanpa arah atau choppy.</p>\n<p></p>\n<p>Sideways adalah kondisi ketika harga saham yang diperdagangkan di pasar bergerak relatif horizontal alias datar-satar saja akibat penawaran dan permintaan yang sama-sama kuat dalam periode waktu tertentu.</p>\n<p></p>\n<p>Kondisi ini biasanya terjadi selama tahap konsolidasi, sebelum harga melanjutkan tren sebelumnya atau justru berbalik ke tren yang baru. Nah, dihadapkan pada saham-saham yang sedang sideways, apa yang sebaiknya dilakukan investor atau trader? Berikut ini 3 tip menghadapi saham-saham yang dalam kondisi sideways:</p>\n<p></p>\n<p>1. Analisis Mendalam</p>\n<p></p>\n<p>Langkah pertama yang wajib dilakukan yakni melakukan analisis secara komprehensif saham sideways sebelum mentradingkannya. Analisis dilakukan untuk melihat time frame pergerakan harganya apakah valuasinya benar-benar sudah murah atau belum, lalu perhatikan trend sektornya dan cermati berbagai sentimen positif yang berpotensi menggerakkan saham tersebut sehingga bisa buy dan sentimen negatif yang berpotensi menumbangkan saham sehingga bisa sell.</p>\n<p></p>\n<p>2. Cermati Arah Market</p>\n<p></p>\n<p>Pergerakan market wajib dipantau, khususnya dengan berpatokan pada IHSG. Jika market sedang lesu sehingga IHSG cenderung flat karena tidak ada sentimen positif maka saham ada kemungkinan sulit untuk bangkit, tetapi jika IHSG sedang bullist maka ada peluang ikut terkerek apalagi ada sentimen positifnya. Toh, investasi saham saat ini sudah sangat mudah berbasis aplikasi, semisal dengan aplikasi IPOT besutan Indo Premier Sekuritas. Buy atau sell bisa dilakukan dengan mudah dan cepat dengan semartphone di genggaman tangan.</p>\n<p></p>\n<p>3. Analisis dengan Price Action</p>\n<p></p>\n<p>Analisis price action merujuk pada analisa teknikal berdasarkan pergerakan harga di masa lampau. Dalam hal ini trader bisa melihat pola tertentu pergerakan harga di masa lampau. Kendati ada pola tertentu, tetap harus dilakukan analisis fundamental dan teknikal, jadi bukan sekadar percaya dengan pola yang ditemukan. Jika hanya percaya begitu saja dengan pola yang ditemukan dan meyakini itu maka jatuh-jatuhnya menjadi spekulasi. So, analisis fundamental dan teknikal wajib dilakukan.&nbsp;</p>\n', 'b7c0IEWQfuo'),
 (13, 10, 'Rumus Average Down Saham', '<p>Average down adalah strategi averaging yang diberlakukan dengan membeli sebuah saham secara bertahap ketika harga saham tersebut turun.<br>Sebaliknya, average up adalah strategi pembelian saham ketika harga saham tersebut perlahan-lahan naik.&nbsp;&nbsp;</p>\r\n<p>Seperti yang telah tertulis di atas, secara umum strategi ini diterapkan untuk menghasilkan keuntungan maksimal dengan biaya minimal.<br>Selain itu, strategi ini diberlakukan untuk memudahkan investor dalam menghitung keuntungan.&nbsp;</p>\r\n<p>Selain pada saham, Anda juga bisa menerapkan strategi ini pada instrumen lain yang tentunya pergerakan harganya fluktuatif dan bisa Anda amati seperti, reksa dana, ETF dan lain sebagainya.&nbsp;</p>\r\n<p>Rumus average down saham adalah:&nbsp;</p>\r\n<p>Average down = ((harga1 x lot1)+(harga2 x lot2)+ (harga3 x lot3)+…. (hargaN x lot N)) : Total lot Dimana nilai harga1 lebih tinggi daripada harga2 dan seterusnya.&nbsp;&nbsp;</p>', 'O44OrMitps0'),
 (14, 11, 'Cara Menerapkan Strategi Average Down', '<p>Strategi average down tidak bisa diterapkan sembarangan. Untuk menerapkan strategi ini, Anda harus melakukan empat hal yaitu:&nbsp;</p>\n<p>1. Mengamati pergerakan harga saham selama beberapa waktu&nbsp;</p>\n<p>Tujuannya adalah supaya Anda memiliki gambaran umum kira-kira saham yang Anda incar bisa naik atau turun berapa persen. Dengan<br>melakukan hal ini, Anda bisa menetapkan kira-kira Anda akan membeli sebuah saham ketika harganya turun berapa persen dan akan tahu apakah harga saham tersebut berpotensi untuk naik kembali atau tidak dan kalaupun naik kira-kira sampai berapa. Tahap ini penting untuk dilakukan agar penerapan strategi ini bisa tepat sesuai keinginan Anda.&nbsp;&nbsp;</p>\n<p>2. Menerapkan strategi average down ketika harga tidak jatuh terlalu banyak&nbsp;</p>\n<p>Tujuannya adalah agar potensi keuntungan yang bisa dimaksimalkan semakin tinggi. Sebaliknya, jangan menerapkan strategi ini dengan<br>membeli saham yang selisih penurunan harganya rendah sebab itu artinya potensi keuntungan yang bisa Anda peroleh akan mengecil.&nbsp;&nbsp;</p>\n<p>3. Memastikan bahwa harga saham tersebut bisa kembali naik&nbsp;</p>\n<p>Tentu Anda akan merugi jika Anda terus membeli saham yang harganya terus menurun menggunakan sistem average down. Sebab ini justru akan membuat investasi Anda merugi.&nbsp;&nbsp;</p>\n<p>4. Tentukan jumlah lot maksimum dan harga minimum&nbsp;</p>\n<p>Ini bertujuan untuk membatasi pembelian saham Anda. Memang, jika harganya terus turun Anda bisa membeli saham dalam jumlah yang lebih<br>banyak. Namun Anda perlu ingat bahwa penurunan harga saham ini bisa terjadi cukup lama, sehingga alih-alih membeli Anda harus tahu kapan harus berhenti membeli.&nbsp;&nbsp;</p>\n<p>Singkatnya, penerapan strategi average down dan average up harus disiapkan secara matang dan tidak bisa simultan. Agar penghitungan average down atau average up yang Anda lakukan bisa lebih akurat, Anda bisa menggunakan aplikasi kalkulator saham yang saat ini banyak tersedia di internet.&nbsp;&nbsp;</p>\n<p>Setelah melakukan strategi ini dengan tepat, Anda bisa menentukan harga jual saham tersebut dan menunggu sampai akhirnya harga saham<br>tersebut naik ke level yang Anda inginkan.&nbsp;&nbsp;</p>\n', 'O44OrMitps0'),
 (15, 10, 'Contoh Perhitungan Average Down', '<p>&nbsp;&lt;p&gt;Perusahaan X memiliki saham dengan harga per lembar<br>sebagai&lt;br&gt;berikut:&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Harga1 = 500&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Harga2 = 450&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Harga3 = 400&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;M, adalah seorang investor yang percaya bahwa<br>permintaan saham perusahaan X akan naik lagi sehingga dia membeli saham<br>perusahaan&lt;br&gt;tersebut meskipun saat ini harga saham itu sedang mengalami<br>penurunan. Untuk mengatasinya, M memberlakukan strategi average down sebagai<br>berikut:&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Lot1 = 100 lembar&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Lot2 = 200 lembar&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Lot 3 = 300 lembar&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Dengan demikian, nilai average down yang diterapkan<br>x adalah:&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Average down = ((500 x 100)+ (450 x 200) + (400 x<br>300)): 100+200+300&amp;nbsp;&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;= (50.000+90.000+12.000) : 600&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;= 152.000 : 600&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;= 253.&amp;nbsp;&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Jadi, rata-rata biaya yang harus dikeluarkan oleh M<br>untuk membeli 1 lembar saham perusahaan X adalah sebesar 253 rupiah. Tentu<br>harga ini jauh lebih rendah daripada harga<br>aslinya.&amp;nbsp;&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Katakanlah, perkiraan M tentang kenaikan harga<br>saham X benar. Beberapa saat kemudian harga saham perusahaan tersebut naik<br>menjadi 600&lt;br&gt;rupiah per lembar. Maka, keuntungan yang diperoleh X<br>adalah:&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Keuntungan X = (600 x 600) – (253 x 600) = 360.000-<br>152.000= 208.000&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Bayangkan jika M telah membeli saham perusahaan ini<br>ketika harga 500 rupiah per lembar. Maka, keuntungan yang didapatkan<br>hanyalah:&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Keuntungan X = (600 x 600) – (500 x 600) = 360.000<br>-300.000 = 60.000&amp;nbsp;&lt;/p&gt;&nbsp;</p>\n<p>&lt;p&gt;Dari contoh di atas dapat disimpulkan bahwa, untuk<br>melakukan strategi average down, Anda harus mengamati dan mencatat setiap<br>pergerakan&lt;br&gt;harga dari saham yang Anda ingin beli. Untungnya saat ini<br>ada Microsoft Excel dan aplikasi spreadsheet yang lain yang bisa Anda gunakan<br>untuk menghitungnilai ini secara otomatis.&amp;nbsp;&lt;/p&gt;&nbsp;&nbsp;</p>\n', 'O44OrMitps0'),
@@ -237,7 +242,7 @@ CREATE TABLE `materiselesaibaca` (
 
 INSERT INTO `materiselesaibaca` (`doneID`, `memberID`, `kelasID`, `materiID`) VALUES
 (1, 41, 16, 12),
-(2, 41, 16, 17);
+(2, 41, 16, 16);
 
 -- --------------------------------------------------------
 
@@ -263,7 +268,7 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Password`, `refresh_token`, `isAnalyst`, `profilephoto`, `coverphoto`) VALUES
-(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjU0OTYzMTE5LCJleHAiOjE2NTUwNDk1MTl9.9I0he0_4H02vngFaRRZFLhi03tkDT1_UQgARX-AO7ig', 1, 'andikatama.jpg', 'andikatama.jpg'),
+(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjU2MjA5Njk4LCJleHAiOjE2NTYyOTYwOTh9.Us3BvgpaLxg_tmJT77IU6suDnlLupv7Er7rkvHCG1Tk', 1, 'andikatama.jpg', 'andikatama.jpg'),
 (47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ3LCJuYW1lIjoiS2FwdGVuIFNhaGFtIiwiZW1haWwiOiJhbmR5a2F0YW1hQGdtYWlsLmNvbWEiLCJpYXQiOjE2NDcxNzkyNDMsImV4cCI6MTY0NzI2NTY0M30.lMWSEVcbFBvewOJYwfoiDrGrSCyK-Y0K43g2wErlD_M', 0, 'kapten.jpg', 'kapten.jpg'),
 (48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIFJpc2NhIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjQ3MjcxOTEzLCJleHAiOjE2NDczNTgzMTN9.HR_1vYRRQ6dZ_T4ptsoaFokyxeEmZKe_2vZh1C81Ngw', 0, 'vandarina.jpg', 'vandarina.jpg'),
 (49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoiTHlsaWEiLCJlbWFpbCI6Imx5bGlhODhAZ21haWwuY29tIiwiaWF0IjoxNjQ3NDQwMzUyLCJleHAiOjE2NDc1MjY3NTJ9.53JoiEKjYwq8ipUbh6wQybQ_UhHcMp-3K0zqyGFgrb0', 0, 'lylia.jpg', 'lylia.jpg'),
@@ -287,8 +292,8 @@ CREATE TABLE `memberpurchase` (
 --
 
 INSERT INTO `memberpurchase` (`memberID`, `kelasID`, `invoiceID`) VALUES
-(41, 16, '6294e140c7343d641ff2c2d6'),
-(41, 19, '624dbbcc50492b6ad2737905'),
+(41, 16, '62b0766cc8d34314a5a0eea9'),
+(41, 19, '62b07a6bc8d3433c20a0efe9'),
 (41, 21, '');
 
 -- --------------------------------------------------------
@@ -301,7 +306,9 @@ CREATE TABLE `payout` (
   `payoutID` varchar(40) NOT NULL,
   `memberID` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL,
-  `status` varchar(20) NOT NULL
+  `status` varchar(20) NOT NULL,
+  `createdAt` date NOT NULL,
+  `updatedAt` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -372,9 +379,9 @@ ALTER TABLE `analysis`
   ADD PRIMARY KEY (`analysisID`);
 
 --
--- Indexes for table `balancedetail`
+-- Indexes for table `balance`
 --
-ALTER TABLE `balancedetail`
+ALTER TABLE `balance`
   ADD PRIMARY KEY (`memberID`);
 
 --
@@ -453,13 +460,13 @@ ALTER TABLE `analysis`
 -- AUTO_INCREMENT for table `following`
 --
 ALTER TABLE `following`
-  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `kelasID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `kelasID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `materi`
@@ -477,7 +484,7 @@ ALTER TABLE `materiselesaibaca`
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `topik`

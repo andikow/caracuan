@@ -66,7 +66,7 @@ export default class CariAnalis extends React.Component{
               </div>
               <h5 class="desc">@vandarinarisca</h5>
               <h5 class="desc">Swing Trader</h5>
-              <h5 className="desc">Pengikut : 100</h5>
+              <h5 className="desc">Pengikut : {data.pengikut}</h5>
               <p className="py-2">
                 <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
                 <i style={{color:"#F5C60D"}} className="fas fa-star"></i>

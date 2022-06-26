@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
+const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
+var moment = require('moment');
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -25,8 +27,6 @@ router.get('/', verifyToken, async function(req,res){
     } catch (error) {
         res.status(400).send(error.message)
     }
-
-
 });
 
 // Akun
@@ -35,7 +35,7 @@ router.post('/register', async function (req,res){
       let data = req.body;
       const salt = await bcrypt.genSalt();
       const hashPassword = await bcrypt.hash(data.password, salt);
-      const sqlQuery = `INSERT INTO member VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${hashPassword}','','0')`;
+      const sqlQuery = `INSERT INTO member VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${hashPassword}','','0','','')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -290,7 +290,7 @@ router.delete('/mengikuti', async function (req,res){
 router.post('/submitkelas', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
+      const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.deskripsi}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -305,6 +305,11 @@ router.put('/ubahkelas', async function (req,res){
       SET
       judul = "${data.judul}",
       thumbnail = IF(thumbnail = "${data.thumbnail}", thumbnail, "${data.thumbnail}"),
+      deskripsi = "${data.deskripsi}",
+      tujuan1 = "${data.tujuan1}",
+      tujuan2 = "${data.tujuan2}",
+      tujuan3 = "${data.tujuan3}",
+      tujuan4 = "${data.tujuan4}",
       jenisKelas = "${data.jenisKelas}",
       harga = "${data.harga}",
       createdAt = CURRENT_DATE()
@@ -402,7 +407,17 @@ router.post('/setselesai', async function (req,res){
 
 router.get('/carianalis', async function(req,res){
     try {
-        const sqlQuery = `SELECT memberID, Name, refresh_token, isAnalyst, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto, CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto FROM member`;
+        const sqlQuery = `
+        SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut,
+        CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto,
+        CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto
+        FROM member, (
+          SELECT member.memberID, COUNT(followedID) AS pengikut
+          FROM member
+          LEFT JOIN following
+          ON member.memberID = following.followedID
+          GROUP BY memberID) as q1
+        WHERE member.memberID = q1.memberID`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -544,9 +559,71 @@ router.get('/creator/:name', async function(req,res){
 
 router.get('/analisa/:memberID', async function(req,res){
   try {
+    let startdate = "2022-06-06";
+    var new_date = moment(startdate, "YYYY-MM-DD").add(65, 'days');
+    var day = new_date.format('DD');
+    var month = new_date.format('MM');
+    var year = new_date.format('YYYY');
+    console.log(moment(startdate, "YYYY-MM-DD").add(65, 'days').format('YYYY-M-DD'));
+    console.log(day + '.' + month + '.' + year);
+
     let memberID = req.params.memberID
     const sqlQuery = `SELECT * FROM analysis WHERE memberID = "${memberID}"`;
     const rows = await pool.query(sqlQuery);
+    for (var i = 0; i < rows.length; i++) {
+      let stockName = await fetch('https://api.stockdio.com/data/financial/info/v1/GetCompanyInfo?app-key=' + process.env.REACT_STOCKDIO_KEY + '&stockExchange=IDX&symbol=' + rows[i].stockCode,
+            {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              credentials:'include'
+            })
+            .then(res=>{
+              return res.json()
+            })
+            .then(data=>{
+              return data.data.company;
+            });
+
+      rows[i]["namaSaham"] = stockName;
+      let isHit = await fetch('https://api.stockdio.com/data/financial/prices/v1/GetHistoricalPrices?app-key='+ process.env.REACT_STOCKDIO_KEY + '&stockExchange=IDX&symbol=' + rows[i].stockCode + '&from=' + moment(rows[i].date).format("YYYY-M-DD") + '&to=' + moment(rows[i].date, "YYYY-MM-DD").add(rows[i].days, 'days').format('YYYY-M-DD'),
+            {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              credentials:'include'
+            })
+            .then(res=>{
+              return res.json()
+            })
+            .then(data=>{
+              return data.data.prices;
+            })
+
+      rows[i]["price"] = isHit;
+
+            let tes = await fetch('https://api.stockdio.com/data/financial/info/v1/GetCompanyInfo?app-key=' + process.env.REACT_STOCKDIO_KEY + '&stockExchange=IDX&symbol=' + rows[i].stockCode,
+                  {
+                    method: 'GET',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    credentials:'include'
+                  })
+                  .then(res=>{
+                    return res.json()
+                  })
+                  .then(data=>{
+                    return data.data.company;
+                  });
+                  console.log(tes + 'a');
+            console.log(isHit + 'b');
+    }
     res.status(200).json(rows);
   } catch (error) {
     res.status(400).send(error.message)
@@ -558,7 +635,7 @@ router.get('/analisa/:memberID', async function(req,res){
 router.post('/submitanalisis', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO analysis VALUES ('','${data.memberID}',CURRENT_DATE(),'${data.deskripsi}','${data.kodeSaham}','${data.targetHarga}','${data.hargaAwal}','Hold','0','0')`;
+      const sqlQuery = `INSERT INTO analysis VALUES ('','${data.memberID}',CURRENT_DATE(),'${data.deskripsi}','${data.kodeSaham}','${data.targetHarga}','${data.hargaAwal}','${data.days}','Hold','0','0')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -631,7 +708,7 @@ router.post('/cekinvoice', async function (req,res){
 router.post('/ceksaldo', async function (req,res){
   try {
     let data = req.body;
-    const sqlQuery = `SELECT * from balancedetail WHERE memberID = '${data.memberID}' `;
+    const sqlQuery = `SELECT * from balance WHERE memberID = '${data.memberID}' `;
     const rows = await pool.query(sqlQuery);
     res.status(200).json(rows);
   } catch (error) {
@@ -693,6 +770,25 @@ router.get('/transaksi/:memberID', async function(req,res){
     res.status(400).send(error.message)
   }
 
+
+});
+
+// Callback
+router.post('/reimbursestatus', async function (req,res){
+  (async function() {
+    try {
+      let data = req.body;
+      console.log(data);
+      const sqlQuery = `UPDATE payout
+      SET
+      isAnalyst = "1",
+      WHERE payoutID = "${data.memberID}"`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (e) {
+      res.status(400).send(e.message)
+    }
+  })();
 
 });
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import jwt_decode from 'jwt-decode';
 import Poto from './../public/assets/img/creator.png';
 import Poto1 from './../public/assets/img/creatorpost1.jpg';
@@ -42,6 +41,14 @@ class CreatorAnalisa extends Component {
   }
 
   async componentDidMount() {
+    let startdate = "2022-06-06";
+    var new_date = moment(startdate, "YYYY-MM-DD").add(65, 'days');
+    var day = new_date.format('DD');
+    var month = new_date.format('MM');
+    var year = new_date.format('YYYY');
+    console.log(new_date.format('YYYY-MM-DD'));
+    console.log(day + '.' + month + '.' + year);
+
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
         method: 'GET',
@@ -123,10 +130,12 @@ class CreatorAnalisa extends Component {
             this.setState({
               name: data[0].name
             });
-        })
+        });
 
   }
   render() {
+
+    let today = new Date();
     return (
       <>
       {
@@ -148,8 +157,13 @@ class CreatorAnalisa extends Component {
           <div className="row">
           <div className="card" style={{width:"500px"}}>
           <div className="card-body">
-          <p className="text-primary" style={{fontSize:"18px"}}>PREDIKSI</p>
-          <h5 className="text-primary card-title">{data.stockCode}<span className="text-secondary" style={{fontSize:"13px"}}> Index Harga Saham Gabungan</span></h5>
+            <div class="row">
+              <div class="col">
+                <p className="text-primary" style={{fontSize:"18px"}}>PREDIKSI</p>
+              </div>
+              <div class="col text-right"><h4 class= "font-weight-bold text-success">Berhasil</h4></div>
+            </div>
+          <h5 className="text-primary card-title">{data.stockCode + ' '}<span className="text-secondary" style={{fontSize:"13px"}}>{data.namaSaham}</span></h5>
           <h3 className="text-primary card-title">{data.targetPrice} <span className="text-secondary" style={{fontSize:"13px"}}>Target Harga</span></h3>
           <div className="row">
           <div className="col">
@@ -159,7 +173,7 @@ class CreatorAnalisa extends Component {
           <p className="text-primary" style={{fontSize:"12px"}}>Perubahan <br /> <span className="text-success">{this.round((data.targetPrice - data.initialPrice)/data.initialPrice * 100) } %</span></p>
           </div>
           <div className="col">
-          <p className="text-primary" style={{fontSize:"12px"}}>Waktu <br />90 hari (tersisa 90 hari lagi)</p>
+          <p className="text-primary" style={{fontSize:"12px"}}>Waktu <br />{data.days + ' hari (tersisa ' + ((data.days - moment(today).diff(data.date, "days")) < 0 ? "0":(data.days - moment(today).diff(data.date, "days"))) + ' hari lagi)'}</p>
           </div>
           </div>
           <div className="row py-4">

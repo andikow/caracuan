@@ -31,14 +31,19 @@ function showResults(quizID) {
         document.getElementById('nilaidimodal').innerHTML = nilaidimodal.toString();
         document.getElementById('quiz-max-score').innerHTML = activeQuiz.result.totalQuestions.toString();
         document.getElementById('quiz-percent').innerHTML = quizScorePercent.toString();
-
+        if(quizScorePercent){
+          $('#modalnilai').modal('toggle')
+          $('#modalnilai').modal({backdrop: 'static', keyboard: false})
+        }
         // Change background colour of results div according to score percent
         if (quizScorePercent >= 70) {
           document.getElementById('nilaidimodal').style.color = '#4caf50';
-          var data = {
-            memberID:localStorage.getItem('memberID'),
-          }
-
+          $("#deskripsi-nilai").html("Selamat! <br>Anda berhasil mendaftar sebagai Analis!");
+          $("#animasi-hasilanalis").attr("src","soalsaham/lulus.png");
+          $(".cardmodal").append("<button id = 'btn-masukanalis' type='button' onclick='' class='btn btn-primary btnmodal'>Masuk Halaman Analis</button>");
+          $("#btn-masukanalis").attr("onclick","location.href='#/dashboardcreator'");
+          $("#btn-masukanalis").val("Masuk Halaman Analis!");
+          var data = {memberID:localStorage.getItem('memberID')}
           fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/setanalyst`,
             {
               method: 'PUT',
@@ -49,7 +54,16 @@ function showResults(quizID) {
               body: JSON.stringify(data)
             })
         }
-        else if (quizScorePercent >= 0) document.getElementById('nilaidimodal').style.color = '#f44336';
+        else if (quizScorePercent >= 0) {
+          sessionStorage.removeItem("justOnce", "true");
+          document.getElementById('nilaidimodal').style.color = '#f44336'};
+          $("#animasi-hasilanalis").attr("src","soalsaham/gagal.png");
+          $("#deskripsi-nilai").html("Yah! <br>Nilai Anda belum mencukupi kualifikasi sebagai Analis!");
+          $(".cardmodal").append("<button id = 'btn-cobalagi' type='button' onclick='' class='btn btn-danger btnmodal mb-2'>Coba Lagi!</button>");
+          $(".cardmodal").append("<button id = 'btn-masukmember' type='button' onclick='' class='btn btn-primary btnmodal'>Kembali Halaman Member</button>");
+          $("#btn-cobalagi").click(function(){window.location.reload();});
+          $("#btn-masukmember").attr("onclick","location.href='#/dashboard/akademi'");
+
 
         // Change background colour of results div according to score percent
         if (quizScorePercent >= 70) quizResultElement.style.backgroundColor = '#4caf50';

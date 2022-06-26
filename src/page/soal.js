@@ -10,10 +10,11 @@ import jwt_decode from 'jwt-decode';
 class Soal extends Component {
 
   async componentDidMount() {
-    if (! localStorage.justOnce) {
-        localStorage.setItem("justOnce", "true");
+    if (! sessionStorage.justOnce) {
+        sessionStorage.setItem("justOnce", "true");
         window.location.reload();
     }
+
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
         method: 'GET',
@@ -50,7 +51,6 @@ class Soal extends Component {
  <html>
      <head>
          <meta charset='utf-8'>
-
      </head>
 
      <body>
@@ -306,24 +306,23 @@ class Soal extends Component {
                  </div>
              </div>
              <!-- Answer buttontesttest. Here, we pass the ID of the quiz element (the parent of this buttontesttest) to the showResults function.  -->
-             <button class="buttontest" onclick="showResults(this.parentNode.id);" data-toggle="modal" data-target="#modalnilai">Kirim Jawaban</button>
+             <button class="buttontest" onclick="showResults(this.parentNode.id);  ">Kirim Jawaban</button>
 
-
-             <button type="buttontest" class="modal-button" data-toggle="modal" data-target="#modalnilai">Open Modal</button>
-             <div class="modal fade" id="modalnilai" role="dialog">
-      				 <div class="modal-dialog">
-      					 <div class="cardmodal">
-      							<div class="cardmodal-img">
-                      <img class ="img-fluid" src='soalsaham/modal.png'>
-      							</div>
-      							<div class="cardmodal-title">
-      								<p>Nilai Anda <span id = "nilaidimodal"></span></p>
-      							</div>
-      							<div class="cardmodal-text">
-      								<p>Selamat! <br>Anda berhasil mendaftar sebagai Analis!</p>
-      							</div>
-      							<button class="btnmodal">Masuk</button>
-      						</div>
+             <div class="modal fade" id="modalnilai" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      				 <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                   <div class="cardmodal">
+                     <div class="cardmodal-img">
+                       <img id="animasi-hasilanalis" class ="img-fluid" src=''>
+                     </div>
+                     <div class="cardmodal-title">
+                       <p>Nilai Anda <span id = "nilaidimodal"></span></p>
+                     </div>
+                     <div class="cardmodal-text">
+                       <p id="deskripsi-nilai"></p>
+                     </div>
+                   </div>
+                 </div>
       				 </div>
       			 </div>
 

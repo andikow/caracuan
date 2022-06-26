@@ -1,8 +1,45 @@
 import React, { Component } from "react";
+import jwt_decode from 'jwt-decode';
 import Chart from 'chart.js/auto';
 
 class Dashboardcreator extends Component {
-  componentDidMount(){
+  constructor(props) {
+    super(props);
+    this.state = {
+      memberID:'',
+      saldoSekarang:'',
+    };
+  }
+  async componentDidMount(){
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      this.setState({
+        token: data.accessToken
+      });
+      const decoded = jwt_decode(this.state.token);
+      this.setState({
+        name: decoded.name,
+        memberID:decoded.memberID,
+        expire:decoded.exp
+      })
+    })
+    .catch((error)=>{
+      this.props.history.push({
+        pathname:"/login",
+        state: this.props.location.pathname
+      })
+    })
     const ctx = document.getElementById('Chart');
     const myChart = new Chart(ctx, {
         type: 'bar',
@@ -39,6 +76,27 @@ class Dashboardcreator extends Component {
         }
     });
 
+    var data = {
+      memberID : this.state.memberID,
+    }
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/ceksaldo`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+        this.setState({
+        saldoSekarang: data[0].balance,
+      })
+    })
   }
   render() {
     return (
@@ -59,7 +117,7 @@ class Dashboardcreator extends Component {
                   Jumlah Saldo Saat Ini
                 </div>
                 <div class="">
-                  Rp
+                  Rp {this.state.saldoSekarang}
                 </div>
               </div></div>
               <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-donate"></i>

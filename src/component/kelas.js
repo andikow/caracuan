@@ -14,6 +14,11 @@ class Kelas extends Component {
       memberID:'',
       judul:'',
       thumbnail:'',
+      deskripsi:'',
+      tujuan1:'',
+      tujuan2:'',
+      tujuan3:'',
+      tujuan4:'',
       jenisKelas:'',
       harga:'',
       image:"https://fakeimg.pl/350x200/",
@@ -146,6 +151,11 @@ class Kelas extends Component {
             kelasID: e,
             judul:data[0].judul,
             thumbnail:data[0].thumbnail,
+            deskripsi:data[0].deskripsi,
+            tujuan1:data[0].tujuan1,
+            tujuan2:data[0].tujuan2,
+            tujuan3:data[0].tujuan3,
+            tujuan4:data[0].tujuan4,
             jenisKelas:data[0].jenisKelas,
             harga:data[0].harga,
             rinciankelas: data[0],
@@ -185,6 +195,11 @@ class Kelas extends Component {
         kelasID:this.state.kelasID,
         judul:this.state.judul,
         thumbnail:this.state.thumbnail,
+        deskripsi:this.state.deskripsi,
+        tujuan1:this.state.tujuan1,
+        tujuan2:this.state.tujuan2,
+        tujuan3:this.state.tujuan3,
+        tujuan4:this.state.tujuan4,
         jenisKelas:this.state.jenisKelas,
         harga:this.state.harga,
       }
@@ -256,6 +271,17 @@ class Kelas extends Component {
                   />
                 </div>
                 <div class="row">
+                  <label for="deskripsikelas">Deskripsi Kelas</label>
+                  <input type="text" class="form-control" id="deskripsikelas" placeholder="Deskripsi Kelas" onChange={ev => this.setState({ deskripsi: ev.target.value })}/>
+                </div>
+                <div class="row">
+                  <label for="tujuan">Tujuan Pembelajaran <small>(maksimal 4)</small></label>
+                  <input type="text" class="form-control" id="tujuan1" placeholder="Tujuan ke-1" onChange={ev => this.setState({ tujuan1: ev.target.value })}/>
+                  <input type="text" class="form-control" id="tujuan2" placeholder="Tujuan ke-2" onChange={ev => this.setState({ tujuan2: ev.target.value })}/>
+                  <input type="text" class="form-control" id="tujuan3" placeholder="Tujuan ke-3" onChange={ev => this.setState({ tujuan3: ev.target.value })}/>
+                  <input type="text" class="form-control" id="tujuan4" placeholder="Tujuan ke-4" onChange={ev => this.setState({ tujuan4: ev.target.value })}/>
+                </div>
+                <div class="row">
                   <label for="jenisKelas">Jenis Kelas</label>
                   <div class="">
                     <div class="form-check-inline">
@@ -308,6 +334,17 @@ class Kelas extends Component {
                   type="file"
                   id="formFile"
                   />
+                </div>
+                <div class="row">
+                  <label for="deskripsikelas">Deskripsi Kelas</label>
+                  <input type="text" class="form-control" id="deskripsikelas" placeholder="Deskripsi Kelas" onChange={ev => this.setState({ deskripsi: ev.target.value })}/>
+                </div>
+                <div class="row">
+                  <label for="tujuan">Tujuan Pembelajaran <small>(maksimal 4)</small></label>
+                  <input type="text" class="form-control" id="tujuan1" placeholder="Tujuan ke-1" onChange={ev => this.setState({ tujuan1: ev.target.value })} defaultValue={this.state.rinciankelas.tujuan1}/>
+                  <input type="text" class="form-control" id="tujuan2" placeholder="Tujuan ke-2" onChange={ev => this.setState({ tujuan2: ev.target.value })} defaultValue={this.state.rinciankelas.tujuan2}/>
+                  <input type="text" class="form-control" id="tujuan3" placeholder="Tujuan ke-3" onChange={ev => this.setState({ tujuan3: ev.target.value })} defaultValue={this.state.rinciankelas.tujuan3}/>
+                  <input type="text" class="form-control" id="tujuan4" placeholder="Tujuan ke-4" onChange={ev => this.setState({ tujuan4: ev.target.value })} defaultValue={this.state.rinciankelas.tujuan4}/>
                 </div>
                 <div class="row">
                   <label for="jenisKelas">Jenis Kelas</label>

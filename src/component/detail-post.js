@@ -239,7 +239,7 @@ class DetailPost extends Component {
               <div class="card-body card bg-white">
                 <div class="m-2">
                   <h5 class="card-title">Deskripsi</h5>
-                  <p style={{color:"black"}}>Memahami bagaimana cara untuk mendapatkan keuntungan dari saham bagi pemula</p>
+                  <p style={{color:"black"}}>{this.state.kelas.deskripsi}</p>
                 </div>
               </div>
             </div>
@@ -248,12 +248,10 @@ class DetailPost extends Component {
               <div class="card-body">
                 <h5 class="card-title">Tujuan Pembelajaran</h5>
                 <ul>
-                  <li>Mengetahui Basic Technical Analysis dan Candlestick untuk Trading</li>
-                  <li>Mengetahui bagaimana cara ENTRY hingga menentukan Target Price</li>
-                  <li>Mampu menggunakan TrendLine untuk Trading jangka pendek</li>
-                  <li>Mampu melakukan Prediksi Trend dan membaca Pola harga yang akan terjadi</li>
-                  <li>Pemahaman dasar mengenai Fibonacci Analysis dan Support Resistance</li>
-                  <li>Mengetahui Cara Membuat System Trading yang benar</li>
+                  {this.state.kelas.tujuan1 ? <li>{this.state.kelas.tujuan1}</li> : ''}
+                  {this.state.kelas.tujuan2 ? <li>{this.state.kelas.tujuan2}</li> : ''}
+                  {this.state.kelas.tujuan3 ? <li>{this.state.kelas.tujuan3}</li> : ''}
+                  {this.state.kelas.tujuan4 ? <li>{this.state.kelas.tujuan4}</li> : ''}
                 </ul>
               </div>
             </div>
