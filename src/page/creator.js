@@ -27,6 +27,7 @@ class Creator extends React.Component{
       isLogin:false,
       isFollowed:false,
       pengikut:0,
+      name:'',
     };
   }
 
@@ -236,8 +237,27 @@ class Creator extends React.Component{
         </div>
         <div className="col py-2" style={{textAlign: 'right'}}>
           <button className="btn btn-outline-primary mx-2 text-center font-weight-bold" onClick={() => this.mengikuti()}>{this.state.isFollowed ? <span><i className="fa fa-user-minus"></i> Batal Ikuti</span>: <span><i className="fa fa-user-plus"></i> Ikuti</span>}</button>
-          <button className="btn btn-outline-primary text-center font-weight-bold" href="#"><i className="fa fa-share"></i> Bagikan</button>
-          <button className="btn btn-outline-danger mx-2 text-center font-weight-bold" href="#"><i className="fa fa-exclamation-triangle"></i> Laporkan</button>
+          <button type="button" className="btn btn-outline-primary text-center font-weight-bold" data-toggle="modal" data-target="#myModal"><i className="fa fa-share"></i> Bagikan</button>
+          <div class="modal fade" id="myModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="cardmodal">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="cardmodal-title">
+                    <p>Bagikan</p>
+                  </div>
+                  <div class="cardmodal-text">
+                    <a className="btn btn-outline-success btn-block text-success text-center font-weight-bold mt-2 p-2" href={'https://web.whatsapp.com/send?text=Ayo%20belajar%20saham%20dengan%20'+this.state.name+'%20@CaraCuan%20https://Caracuan/' + this.state.name}><i className="fab fa-whatsapp"></i> Whatsapp</a> <br />
+                    <a className="btn btn-outline-primary text-primary btn-block text-center font-weight-bold p-2" href={'https://telegram.me/share/url?text=Ayo%belajar%20saham%20dengan%20'+this.state.name+'%20@CaraCuan&url=https://Caracuan/' + this.state.name}><i className="fab fa-telegram"></i> Telegram</a> <br />
+                    <a className="btn btn-outline-info text-info btn-block text-center font-weight-bold p-2" href={'https://twitter.com/intent/tweet/?text=Ayo%20belajar%20saham%20dengan%20'+this.state.name+'%20@CaraCuan&url=https://Caracuan/' + this.state.name}><i className="fab fa-twitter"></i> Twitter</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a className="btn btn-outline-danger mx-2 text-center font-weight-bold" href={'mailto:help@support.caracuan.id?subject=Laporkan Pengguna&body=Halo caracuan, saya ingin melaporkan pengguna ini karena ...'}><i className="fa fa-exclamation-triangle"></i> Laporkan</a>
         </div>
       </div>
 
