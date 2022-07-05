@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Poto from './../public/assets/img/creator.png';
 import jwt_decode from 'jwt-decode';
+var moment = require('moment');
 
 class Pengaturan extends Component {
   constructor(){
@@ -14,6 +15,7 @@ class Pengaturan extends Component {
       coverImageName:'',
       profilImageName:'',
       expire:'',
+      dataMember:{},
     }
   }
   async componentDidMount() {
@@ -42,6 +44,28 @@ class Pengaturan extends Component {
       .catch((error)=>{
         this.props.history.push('/login')
       })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kreator/` + this.state.memberID + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        dataMember: res[0]
+      });
+      console.log(this.state.dataMember);
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
   }
 
   handleUploadCoverChange(e) {
@@ -146,33 +170,64 @@ class Pengaturan extends Component {
                 id="formFile"
                 />
               </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="far fa-fw fa-at"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" defaultValue={this.state.dataMember.username}/>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fab fa-fw fa-instagram"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Instagram" aria-label="instagram" aria-describedby="basic-addon1" defaultValue={this.state.dataMember.instagram}/>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fab fa-fw fa-twitter"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Twitter" aria-label="twitter" aria-describedby="basic-addon1" defaultValue={this.state.dataMember.twitter}/>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fab fa-fw fa-youtube"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Youtube" aria-label="youtube" aria-describedby="basic-addon1" defaultValue={this.state.dataMember.youtube}/>
+              </div>
+
+              <div class="form-group">
+                <label class="text-primary">Shortbio</label>
+                <textarea  type="text" class="form-control my-2" style={{resize: "none"}}placeholder="Shortbio" defaultValue={this.state.dataMember.shortbio}/>
+              </div>
             </div>
           </div>
 
           <div class="col-8">
             <div class="form-group">
                <label class="text-primary">Nama</label>
-               <input  type="text" class="form-control my-2" placeholder="Vandarina Risca" />
+               <input  type="text" class="form-control my-2" placeholder="Nama" defaultValue={this.state.dataMember.Name}/>
             </div>
             <div class="form-group">
                <label class="text-primary">Tanggal Lahir</label>
-               <input  type="date" class="form-control my-2" />
+               <input  type="date" class="form-control my-2" value={moment(this.state.dataMember.BirthDate).format("YYYY-MM-DD").toString()}/>
             </div>
             <div class="form-group">
                <label class="text-primary">No. Handphone</label>
-               <input type="text" class="form-control my-2" placeholder="085624742052" />
+               <input type="text" class="form-control my-2" placeholder="Nomor Handphone" defaultValue={this.state.dataMember.Phone} />
             </div>
             <div class="form-group">
                <label class="text-primary">Email</label>
-               <input type="text" class="form-control my-2" placeholder="vandarina.risca@gmail.com" />
+               <input type="text" class="form-control my-2" placeholder="johndoe@johndoe.com" defaultValue={this.state.dataMember.Email}/>
             </div>
             <div class="pt-4 form-group">
               <p class="pt-4 text-primary">Ganti Password</p>
                <label class="text-primary">Password Baru</label>
                <input type="password" class="form-control my-2" placeholder="Password" />
                <label class="text-primary">Konfirmasi Password Baru</label>
-               <input type="password" class="form-control my-2" placeholder="Password" />
-               <p className="text-primary" style={{fontSize:14}}>Lupa Password?</p>
+               <input type="password" class="form-control my-2" placeholder="Konfirmasi Password" />
             </div>
             <div class="d-flex my-2">
               <button onClick={(e)=>{e.preventDefault();this.handleSave()}} className="btn btn-primary text-center text-white ml-auto font-weight-bold" href="#" style={{width:"150px"}}>Simpan</button>

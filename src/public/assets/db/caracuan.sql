@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2022 at 10:46 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.11
+-- Generation Time: 29 Jun 2022 pada 15.59
+-- Versi Server: 10.1.24-MariaDB
+-- PHP Version: 7.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -23,7 +24,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Functions
+-- Fungsi
 --
 CREATE DEFINER=`root`@`localhost` FUNCTION `CalcIncome` (`starting_value` INT) RETURNS INT(11) BEGIN
 
@@ -57,7 +58,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `analysis`
+-- Struktur dari tabel `analysis`
 --
 
 CREATE TABLE `analysis` (
@@ -75,7 +76,7 @@ CREATE TABLE `analysis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `analysis`
+-- Dumping data untuk tabel `analysis`
 --
 
 INSERT INTO `analysis` (`analysisID`, `memberID`, `date`, `description`, `stockCode`, `targetPrice`, `initialPrice`, `days`, `isHit`, `agreed`, `disagreed`) VALUES
@@ -86,7 +87,7 @@ INSERT INTO `analysis` (`analysisID`, `memberID`, `date`, `description`, `stockC
 -- --------------------------------------------------------
 
 --
--- Table structure for table `balance`
+-- Struktur dari tabel `balance`
 --
 
 CREATE TABLE `balance` (
@@ -95,7 +96,7 @@ CREATE TABLE `balance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `balance`
+-- Dumping data untuk tabel `balance`
 --
 
 INSERT INTO `balance` (`memberID`, `balance`) VALUES
@@ -104,7 +105,7 @@ INSERT INTO `balance` (`memberID`, `balance`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `creator`
+-- Struktur dari tabel `creator`
 --
 
 CREATE TABLE `creator` (
@@ -116,7 +117,7 @@ CREATE TABLE `creator` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `following`
+-- Struktur dari tabel `following`
 --
 
 CREATE TABLE `following` (
@@ -126,7 +127,7 @@ CREATE TABLE `following` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `following`
+-- Dumping data untuk tabel `following`
 --
 
 INSERT INTO `following` (`followingID`, `memberID`, `followedID`) VALUES
@@ -139,7 +140,7 @@ INSERT INTO `following` (`followingID`, `memberID`, `followedID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kelas`
+-- Struktur dari tabel `kelas`
 --
 
 CREATE TABLE `kelas` (
@@ -158,24 +159,24 @@ CREATE TABLE `kelas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `kelas`
+-- Dumping data untuk tabel `kelas`
 --
 
 INSERT INTO `kelas` (`kelasID`, `memberID`, `judul`, `thumbnail`, `deskripsi`, `tujuan1`, `tujuan2`, `tujuan3`, `tujuan4`, `jenisKelas`, `harga`, `createdAt`) VALUES
-(16, 41, 'Cara Trading di Saham Sideways', 'akademi2.jpg', '', '', '', '', '', 'Berbayar', 30500, '2022-06-13'),
-(18, 41, 'Belajar Saham untuk Pemula', 'Belajar Saham untuk Pemula-1646840363536.jpg', '', '', '', '', '', 'Gratis', 0, '2022-03-09'),
-(19, 41, 'Rumus Average Down Saham', 'Average Down-1646842892641.jpg', '', '', '', '', '', 'Berbayar', 20000, '2022-03-09'),
-(21, 47, 'Money Management dalam Trading Saham', '3274120626-1647176297676.jpg', '', '', '', '', '', 'Berbayar', 25000, '2022-03-13'),
-(22, 47, 'Membaca Grafik Saham Batang', 'grafik candlestick saham-1647177073518.jpg', '', '', '', '', '', 'Berbayar', 25000, '2022-03-13'),
-(23, 48, 'Saham Bluechip', 'Ciri_Saham_Blue_Chip-1647272101263.jpg', '', '', '', '', '', 'Gratis', 0, '2022-03-14'),
-(24, 48, 'Saham LQ45', 'Saham-1647272283925.jpg', '', '', '', '', '', 'Berbayar', 10000, '2022-03-14'),
-(25, 49, 'Belajar TrendLine Harga Saham', 'Apa-Itu-Sideways-1647443772712.png', '', '', '', '', '', 'Berbayar', 20000, '2022-03-16'),
-(26, 49, 'Dividen Saham', 'definisi-dividen-1647444021447.jpeg', '', '', '', '', '', 'Gratis', 0, '2022-03-16');
+(16, 41, 'Cara Trading di Saham Sideways', 'akademi2.jpg', 'Kelas ini membahas tentang trading di saham sideways', 'Memahami cara trading di saham sideways', 'Memahami kelebihan, resiko, dan kontrol trading di saham sideways', '', '', 'Berbayar', 30500, '2022-06-26'),
+(18, 41, 'Belajar Saham untuk Pemula', 'Belajar Saham untuk Pemula-1646840363536.jpg', 'Kelas ini akan membahas mengenai pengertian saham dan dividen.', 'Memahami apa itu saham dan jenisnya', 'Memahami apa itu dividen dan jenisnya', 'Memahami perbedaan dividen dan capital gain', '', 'Gratis', 0, '2022-06-26'),
+(19, 41, 'Rumus Average Down Saham', 'Average Down-1646842892641.jpg', 'Kelas ini mempelajari cara menghitung average down saham', 'Memahami rumus average down saham ', 'Mempelajari contoh average down saham', 'Memahami cara average down saham', '', 'Berbayar', 20000, '2022-06-26'),
+(21, 47, 'Money Management dalam Trading Saham', '3274120626-1647176297676.jpg', 'Kelas ini mempelajari tentang pengertian dan perhitungan money management dalam trading saham', 'Memahami apa itu money management', 'Mengevaluasi money management', 'Memahami rumus menghitung transaksi trading saham', '', 'Berbayar', 25000, '2022-06-26'),
+(22, 47, 'Membaca Grafik Saham Batang', 'grafik candlestick saham-1647177073518.jpg', 'Kelas ini mempelajari tentang jenis grafik saham batang dan cara membacanya', 'Memahami jenis-jenis grafik saham', 'Memahami cara membaca grafik saham batang', '', '', 'Berbayar', 25000, '2022-06-27'),
+(23, 48, 'Saham Bluechip', 'Ciri_Saham_Blue_Chip-1647272101263.jpg', 'Kelas ini mempelajari saham bluechip secara rinci serta list saham yang tergolong dalam saham bluechip', 'Memahami pengertian saham bluechip dan list saham yang tergolong dalam saham bluechip', 'Memahami karakteristik saham bluechip', 'Memahami perbedaan saham bluechip dengan saham lapis dua dan lapis tiga', 'Memahami waktu yang tepat untuk membeli saham bluechip', 'Gratis', 0, '2022-06-27'),
+(24, 48, 'Saham LQ45', 'Saham-1647272283925.jpg', 'Kelas ini mempelajari saham LQ45 beserta kriterianya', 'Memahami pengertian saham LQ45', 'Memahami kriteria saham LQ45', 'Mengevaluasi indeks dan penggantian saham LQ45', '', 'Berbayar', 10000, '2022-06-27'),
+(25, 49, 'Belajar TrendLine Harga Saham', 'Apa-Itu-Sideways-1647443772712.png', 'Kelas ini mempelajari trendline harga saham yakni uptrend, downtrend, dan sideways', 'Memahami pengertian dan tindakan yang harus dilakukan pada saat uptrend saham', 'Memahami pengertian dan tindakan yang harus dilakukan pada saat downtrend saham', 'Memahami pengertian dan ciri-ciri sideways saham', '', 'Berbayar', 20000, '2022-06-27'),
+(26, 49, 'Dividen Saham', 'definisi-dividen-1647444021447.jpeg', 'Kelas ini mempelajari pengertian dan cara menghitung dividen', 'Memahami pengertian dividen saham', 'Memahami cara menghitung dividen saham', '', '', 'Gratis', 0, '2022-06-27');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materi`
+-- Struktur dari tabel `materi`
 --
 
 CREATE TABLE `materi` (
@@ -187,7 +188,7 @@ CREATE TABLE `materi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `materi`
+-- Dumping data untuk tabel `materi`
 --
 
 INSERT INTO `materi` (`materiID`, `topikID`, `judul`, `deskripsi`, `linkvideo`) VALUES
@@ -226,7 +227,7 @@ INSERT INTO `materi` (`materiID`, `topikID`, `judul`, `deskripsi`, `linkvideo`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materiselesaibaca`
+-- Struktur dari tabel `materiselesaibaca`
 --
 
 CREATE TABLE `materiselesaibaca` (
@@ -237,7 +238,7 @@ CREATE TABLE `materiselesaibaca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `materiselesaibaca`
+-- Dumping data untuk tabel `materiselesaibaca`
 --
 
 INSERT INTO `materiselesaibaca` (`doneID`, `memberID`, `kelasID`, `materiID`) VALUES
@@ -247,7 +248,7 @@ INSERT INTO `materiselesaibaca` (`doneID`, `memberID`, `kelasID`, `materiID`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `member`
+-- Struktur dari tabel `member`
 --
 
 CREATE TABLE `member` (
@@ -257,28 +258,28 @@ CREATE TABLE `member` (
   `Phone` varchar(15) NOT NULL,
   `Email` varchar(60) NOT NULL,
   `Password` varchar(60) NOT NULL,
-  `refresh_token` text DEFAULT NULL,
-  `isAnalyst` tinyint(1) NOT NULL DEFAULT 0,
+  `refresh_token` text,
+  `isAnalyst` tinyint(1) NOT NULL DEFAULT '0',
   `profilephoto` varchar(50) NOT NULL,
   `coverphoto` varchar(59) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `member`
+-- Dumping data untuk tabel `member`
 --
 
 INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Password`, `refresh_token`, `isAnalyst`, `profilephoto`, `coverphoto`) VALUES
-(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjU2MjA5Njk4LCJleHAiOjE2NTYyOTYwOTh9.Us3BvgpaLxg_tmJT77IU6suDnlLupv7Er7rkvHCG1Tk', 1, 'andikatama.jpg', 'andikatama.jpg'),
-(47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ3LCJuYW1lIjoiS2FwdGVuIFNhaGFtIiwiZW1haWwiOiJhbmR5a2F0YW1hQGdtYWlsLmNvbWEiLCJpYXQiOjE2NDcxNzkyNDMsImV4cCI6MTY0NzI2NTY0M30.lMWSEVcbFBvewOJYwfoiDrGrSCyK-Y0K43g2wErlD_M', 0, 'kapten.jpg', 'kapten.jpg'),
-(48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIFJpc2NhIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjQ3MjcxOTEzLCJleHAiOjE2NDczNTgzMTN9.HR_1vYRRQ6dZ_T4ptsoaFokyxeEmZKe_2vZh1C81Ngw', 0, 'vandarina.jpg', 'vandarina.jpg'),
-(49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoiTHlsaWEiLCJlbWFpbCI6Imx5bGlhODhAZ21haWwuY29tIiwiaWF0IjoxNjQ3NDQwMzUyLCJleHAiOjE2NDc1MjY3NTJ9.53JoiEKjYwq8ipUbh6wQybQ_UhHcMp-3K0zqyGFgrb0', 0, 'lylia.jpg', 'lylia.jpg'),
-(50, 'Kagura', '1945-08-17', '081266577899', 'balmond@gmail.com', '$2b$10$c92lts7Vtor8zZECGsqIJu.sCt8PKw4HXICqrM8H1ahTB3eKPywPa', '', 0, 'kagura.jpg', 'kagura.jpg'),
-(51, 'Gatot', '1977-08-08', '082154468791', 'gatotkaca@gmail.com', '$2b$10$6M9e/FTvq8RX1glSri01FerOwOLuvNFdPqvgGUaDovzhkJh/4Ddsi', '', 0, 'gatot.jpg', 'gatot.jpg');
+(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjU2MjQ2NTg0LCJleHAiOjE2NTYzMzI5ODR9.LV57J5pK04V6T81yoXofdXPbswdL_bI1Ufch_h_Ne_w', 1, 'andikatama.jpg', 'andikatama.jpg'),
+(47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ3LCJuYW1lIjoiS2FwdGVuIFNhaGFtIiwiZW1haWwiOiJhbmR5a2F0YW1hQGdtYWlsLmNvbWEiLCJpYXQiOjE2NTYzMzY0NTYsImV4cCI6MTY1NjQyMjg1Nn0.TixwNCk1Dfo_FeqkuejUCvFkLSWj8bteF8bRlLlTcWo', 1, 'kapten.jpg', 'kapten.jpg'),
+(48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIFJpc2NhIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjU2MzM2ODkyLCJleHAiOjE2NTY0MjMyOTJ9.doHXMeyTod5qcdyx6XNk_l2vWa1UATRr3r7ZJeR5gbc', 1, 'vandarina.jpg', 'vandarina.jpg'),
+(49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoiTHlsaWEiLCJlbWFpbCI6Imx5bGlhODhAZ21haWwuY29tIiwiaWF0IjoxNjU2MzM3NDgwLCJleHAiOjE2NTY0MjM4ODB9.cpJgT0fJs1qWOjPRTtXZwXwbLZrsGS1nLj8DLRYqy4Y', 1, 'lylia.jpg', 'lylia.jpg'),
+(50, 'Kagura', '1945-08-17', '081266577899', 'balmond@gmail.com', '$2b$10$c92lts7Vtor8zZECGsqIJu.sCt8PKw4HXICqrM8H1ahTB3eKPywPa', '', 1, 'kagura.jpg', 'kagura.jpg'),
+(51, 'Gatot', '1977-08-08', '082154468791', 'gatotkaca@gmail.com', '$2b$10$6M9e/FTvq8RX1glSri01FerOwOLuvNFdPqvgGUaDovzhkJh/4Ddsi', '', 1, 'gatot.jpg', 'gatot.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `memberpurchase`
+-- Struktur dari tabel `memberpurchase`
 --
 
 CREATE TABLE `memberpurchase` (
@@ -288,7 +289,7 @@ CREATE TABLE `memberpurchase` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `memberpurchase`
+-- Dumping data untuk tabel `memberpurchase`
 --
 
 INSERT INTO `memberpurchase` (`memberID`, `kelasID`, `invoiceID`) VALUES
@@ -299,7 +300,7 @@ INSERT INTO `memberpurchase` (`memberID`, `kelasID`, `invoiceID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payout`
+-- Struktur dari tabel `payout`
 --
 
 CREATE TABLE `payout` (
@@ -314,7 +315,7 @@ CREATE TABLE `payout` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payoutaddress`
+-- Struktur dari tabel `payoutaddress`
 --
 
 CREATE TABLE `payoutaddress` (
@@ -326,7 +327,7 @@ CREATE TABLE `payoutaddress` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `payoutaddress`
+-- Dumping data untuk tabel `payoutaddress`
 --
 
 INSERT INTO `payoutaddress` (`memberID`, `bankCode`, `bankName`, `namaPemilik`, `nomorRekening`) VALUES
@@ -335,7 +336,7 @@ INSERT INTO `payoutaddress` (`memberID`, `bankCode`, `bankName`, `namaPemilik`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `topik`
+-- Struktur dari tabel `topik`
 --
 
 CREATE TABLE `topik` (
@@ -345,7 +346,7 @@ CREATE TABLE `topik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `topik`
+-- Dumping data untuk tabel `topik`
 --
 
 INSERT INTO `topik` (`topikID`, `kelasID`, `namaTopik`) VALUES
@@ -455,43 +456,36 @@ ALTER TABLE `topik`
 --
 ALTER TABLE `analysis`
   MODIFY `analysisID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
 --
 -- AUTO_INCREMENT for table `following`
 --
 ALTER TABLE `following`
-  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
+  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `kelasID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-
+  MODIFY `kelasID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `materi`
 --
 ALTER TABLE `materi`
-  MODIFY `materiID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
-
+  MODIFY `materiID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT for table `materiselesaibaca`
 --
 ALTER TABLE `materiselesaibaca`
-  MODIFY `doneID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
+  MODIFY `doneID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
-
+  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `topik`
 --
 ALTER TABLE `topik`
-  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-COMMIT;
+  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

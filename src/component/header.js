@@ -1,13 +1,66 @@
 import React from 'react';
 import Logo from './../public/assets/img/logo_cover_white.png';
 import { NavLink } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
-import Home from './../page/home.js';
+class Header extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      memberID:'',
+      isLogin:false,
+    };
+  }
+  async componentDidMount() {
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials:'include'
+      })
+    .then(res=>{
+        return res.json()
+      })
+    .then(data=>{
+        this.setState({token: data.accessToken});
+        const decoded = jwt_decode(this.state.token);
+        this.setState({
+          name: decoded.name,
+          memberID:decoded.memberID,
+          expire:decoded.exp,
+          isLogin:true,
+        })
+      })
+    .catch((error)=>{console.log(error.message)})
 
-import Login from './../page/login.js';
+    var data = {
+      memberID : this.state.memberID,
+    }
 
-export default class Header extends React.Component{
+    if(this.state.memberID){
+      await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/memberphoto`,
+        {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+        .then(res=>{
+          return res.json()
+        })
+        .then(data=>{
+          this.setState({
+            profilImage: data[0].profilephoto,
+          })
+        })
 
+    }
+  }
   render(){
 
     return(
@@ -36,8 +89,15 @@ export default class Header extends React.Component{
               </a>
             </NavLink>
             <NavLink to="/login">
+            {
+              this.state.isLogin ?
+              <NavLink to="/dashboard/akademi">
+              <div className="d-flex align-content-center flex-wrap ml-2">
+              <img src={this.state.profilImage} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+              </div></NavLink>:
               <a className="nav-item nav-link text-white" href="" style={{paddingLeft:"20px"}}>Jadi Analis
               </a>
+            }
             </NavLink>
           </div>
         </div>
@@ -46,3 +106,5 @@ export default class Header extends React.Component{
     )
   }
 }
+
+export default Header;

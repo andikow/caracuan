@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
 import 'datatables.net';
+var moment = require('moment');
 
 class Saldo extends Component {
   constructor(props) {
@@ -12,13 +13,14 @@ class Saldo extends Component {
       expire:'',
       saldoSekarang:'',
       jumlahTarik:0,
-      dataRekening:[],
+      dataRekening:{},
+      riwayatPenarikan:[],
       dataBank:[],
       bankCode:'',
       bankName:'',
       namaPemilik:'',
       nomorRekening:'',
-
+      objectblank:{a:1},
     };
   }
 
@@ -87,6 +89,30 @@ class Saldo extends Component {
         this.setState({ dataBank:data })
     })
 
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/payout/by/` + this.state.memberID + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        riwayatPenarikan: res
+      });
+      console.log(this.state.riwayatPenarikan);
+      $('#transaksi').DataTable();
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+
+    this.dataRekening()
   }
 
   submitRekening(){
@@ -111,6 +137,7 @@ class Saldo extends Component {
       })
       .then(res => res.json())
       .then(alert('Rekening berhasil disimpan!'))
+      .then(this.dataRekening())
       .then($( "button.close" ).trigger( "click" ))
 
   }
@@ -142,13 +169,13 @@ class Saldo extends Component {
 
   }
 
-  dataRekening(){
+  async dataRekening(){
 
     var data = {
       memberID:this.state.memberID,
     }
 
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/datarekening`,
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/datarekening`,
       {
         method: 'POST',
         headers: {
@@ -158,7 +185,21 @@ class Saldo extends Component {
         body: JSON.stringify(data)
       })
       .then(res => res.json())
-      .then(res => this.setState({dataRekening: res[0]}))
+      .then(res => {
+        if(Object.keys(this.state.objectblank).length > 0 && res[0]){
+            this.setState({
+              dataRekening: res[0],
+              bankCode:res[0].bankCode,
+              bankName:res[0].bankName,
+              namaPemilik:res[0].namaPemilik,
+              nomorRekening:res[0].nomorRekening,
+            })
+            $(`#daftarbank option[value='${this.state.dataRekening.bankCode}']`).prop('selected', true);
+            $(`#namaPemilik`).val(`${this.state.dataRekening.namaPemilik}`);
+            $(`#nomorRekening`).val(`${this.state.dataRekening.nomorRekening}`);
+        }
+
+      })
 
   }
 
@@ -227,7 +268,7 @@ class Saldo extends Component {
               <div class="container">
                 <div class="row my-2">
                   <label for="bank">Bank</label>
-                  <select id="bank" class="custom-select" id="inputGroupSelect01" onChange={ev => {this.setState({ bankCode: ev.target.value, bankName: ev.target[ev.target.selectedIndex].text })}}>
+                  <select id="daftarbank" class="custom-select" onChange={ev => {this.setState({ bankCode: ev.target.value, bankName: ev.target[ev.target.selectedIndex].text })}}>
                     <option selected>Pilih Bank...</option>
                     {
                       this.state.dataBank.map(data=>
@@ -290,34 +331,24 @@ class Saldo extends Component {
                     <div class="row">
                       <div class="col mt-4 table-responsive">
                         <h5><strong>Riwayat Transaksi</strong></h5>
-                        <table class="table table-striped display" style={{width:"100%"}}>
-                          <thead class="thead-light">
+                        <table id="transaksi" class="display" style={{width:"100%"}}>
+                          <thead>
                             <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Tanggal</th>
-                              <th scope="col">Jumlah</th>
-                              <th scope="col">Deskripsi</th>
+                              <th>Tanggal Penarikan</th>
+                              <th>Nominal</th>
+                              <th>Tanggal Status Selesai</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
                           <tbody>
+                          {this.state.riwayatPenarikan.map(data =>
                             <tr>
-                              <th scope="row">1</th>
-                              <td>10 Jul</td>
-                              <td>20.000</td>
-                              <td>Dukungan Member</td>
+                            <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
+                            <td>{data.jumlah}</td>
+                            <td>{moment(data.updatedAt).format("DD MMM YYYY")}</td>
+                            <td>{data.status}</td>
                             </tr>
-                            <tr>
-                              <th scope="row">2</th>
-                              <td>11 Jul</td>
-                              <td>25.000</td>
-                              <td>Dukungan Member</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">3</th>
-                              <td>12 Jul</td>
-                              <td>15.000</td>
-                              <td>Penarikan</td>
-                            </tr>
+                          )}
                           </tbody>
                         </table>
                       </div>
@@ -327,12 +358,16 @@ class Saldo extends Component {
 
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                   <div class="row">
-                    <div class="col-auto my-auto mx-2">
+                    <div class="col-auto m-2">
                       <h4 class="my-auto">Daftar Rekening Penarikan</h4>
                     </div>
+
                     <div class="col m-2">
-                      <button class="btn btn-primary" data-toggle="modal" data-target="#modalakunbank">+ Tambah Akun Bank</button>
+                      {
+                        Object.keys(this.state.dataRekening).length > 0 ? '' : <button class="btn btn-primary" data-toggle="modal" data-target="#modalakunbank">+ Tambah Akun Bank</button>
+                      }
                     </div>
+
                     <div class="col-12">
                       <div class="alert alert-info py-2" role="alert">
                         <ul class="my-auto">
@@ -342,6 +377,21 @@ class Saldo extends Component {
                         </ul>
                       </div>
                     </div>
+
+                      {
+                        Object.keys(this.state.dataRekening).length > 0 ?
+                        <div class="col-4">
+                        <div class="card">
+                        <div class="card-body p-2 m-0">
+                        <h5 class="card-title">{this.state.dataRekening.bankName}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{this.state.dataRekening.namaPemilik}</h6>
+                        <p class="card-text">{this.state.dataRekening.nomorRekening}</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalakunbank">Ubah Akun Bank</button>
+                        </div>
+                        </div>
+                        </div> : ""
+                      }
+
                   </div>
                 </div>
 

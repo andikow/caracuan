@@ -85,7 +85,7 @@ class Akademi extends Component {
   }
   render() {
     return (
-    <div>
+    <div class="container overflow-auto" style={{height:'90vh'}}>
       <h2 className="mx-4 my-4 text-primary">Kelas Yang Dipelajari</h2>
 
       <div className="row">
@@ -115,12 +115,6 @@ class Akademi extends Component {
           </div>
           )
         }
-
-
-
-        <HashRouter>
-          <Route path="/creator/post/1" component={DetailPost}/>
-        </HashRouter>
       </div>
     </div>
     );

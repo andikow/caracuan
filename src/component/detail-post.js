@@ -15,6 +15,7 @@ class DetailPost extends Component {
       doneDetail:[],
       data:[],
       invoice_url:'',
+      sudahLangganan:false,
       isPaid:false,
     };
   }
@@ -151,6 +152,26 @@ class DetailPost extends Component {
       })
       .catch((err) =>{})
 
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cekkelas/${this.state.memberID}/${this.state.kelasID}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include'
+        })
+      .then(res=>{
+          return res.json()
+        })
+      .then(data=>{
+        if(data.length > 0){
+          this.setState({
+            sudahLangganan: true,
+            isPaid:true,
+          });
+        }
+      })
     console.log(this.state.dataTopik);
     console.log(this.state.kelas);
     console.log(this.state.doneDetail);
@@ -186,6 +207,30 @@ class DetailPost extends Component {
 
     }
 
+  langgananKelasGratis(){
+    var data = {
+      kelasID:this.state.kelasID,
+      memberID:this.state.memberID,
+    }
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/kelasgratis`,
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res=>{
+      this.setState({
+        sudahLangganan: true,
+        isPaid:true,
+      });
+    })
+  }
+
+
   render() {
     return (
     <>
@@ -214,12 +259,42 @@ class DetailPost extends Component {
     </div>
     {/* End Modal Pembayaran*/}
 
-    <div class="row">
-      {this.state.isPaid ? <div></div> : <div class="col-12 mt-2">
-        <div class="alert alert-warning" role="alert">
-          Anda belum berlangganan kelas ini! Traktir <button onClick={() => this.checkout()} type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#paymentModal">1 <i className="far fa-ice-cream" style={{color:"white"}}></i></button> untuk berlangganan.
+    {/*Modal Kelas Gratis*/}
+    <div class="modal fade" id="modalKelasGratis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title m-auto">Selamat!</h3>
+          </div>
+          <div class="modal-body m-auto">
+            <h5>Anda sudah bisa mulai belajar kelas ini.</h5>
+          </div>
+          <div class="modal-footer">
+            <button onClick={() => this.langgananKelasGratis()} type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+          </div>
         </div>
-      </div>}
+      </div>
+    </div>
+    {/* End Modal Kelas Gratis*/}
+
+    <div class="row">
+      {
+        this.state.kelas.jenisKelas == "Gratis" ?
+        this.state.sudahLangganan ?
+        <div></div> :
+        <div class="col-12 mt-2">
+          <div class="alert alert-warning" role="alert">
+            Anda belum memulai kelas ini! Klik <a href="#" data-toggle="modal" data-target="#modalKelasGratis"><u>disini</u></a>  untuk mulai belajar.
+          </div>
+        </div> :
+        this.state.isPaid ?
+        <div></div> :
+        <div class="col-12 mt-2">
+          <div class="alert alert-warning" role="alert">
+            Anda belum berlangganan kelas ini! Traktir <button onClick={() => this.checkout()} type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#paymentModal">1 <i className="far fa-ice-cream" style={{color:"white"}}></i></button> untuk berlangganan.
+          </div>
+        </div>
+      }
       <div class="col-12 mb-2">
         <h2>{this.state.kelas.judul}</h2>
       </div>
@@ -287,9 +362,6 @@ class DetailPost extends Component {
                                   <div class="col-2 p-0"> <i class="fas fa-check fa-fw mr-2"></i>Sudah Selesai</div>:
                                   <div class="col-2 p-0"> <i class="fas fa-times fa-fw mr-2"></i>Belum Selesai</div>
                                 }
-
-
-
                               </div>
                             </a>
                             )}

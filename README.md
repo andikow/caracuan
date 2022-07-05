@@ -5,6 +5,9 @@ Install caracuan with npm
 ```bash
   npm install
 ```
+
+Import DB Caracuan
+
 running frontend with npm
 
 ```bash

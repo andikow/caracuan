@@ -36,7 +36,7 @@ function showResults(quizID) {
           $('#modalnilai').modal({backdrop: 'static', keyboard: false})
         }
         // Change background colour of results div according to score percent
-        if (quizScorePercent >= 70) {
+        if (quizScorePercent >= 20) {
           document.getElementById('nilaidimodal').style.color = '#4caf50';
           $("#deskripsi-nilai").html("Selamat! <br>Anda berhasil mendaftar sebagai Analis!");
           $("#animasi-hasilanalis").attr("src","soalsaham/lulus.png");
@@ -44,7 +44,7 @@ function showResults(quizID) {
           $("#btn-masukanalis").attr("onclick","location.href='#/dashboardcreator'");
           $("#btn-masukanalis").val("Masuk Halaman Analis!");
           var data = {memberID:localStorage.getItem('memberID')}
-          fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/setanalyst`,
+          fetch(`http://localhost:4000/user/setanalyst`,
             {
               method: 'PUT',
               headers: {
@@ -53,16 +53,20 @@ function showResults(quizID) {
               },
               body: JSON.stringify(data)
             })
+            .then(res=>{
+              return res.json()
+            })
         }
-        else if (quizScorePercent >= 0) {
+        else if (quizScorePercent >= 0 && quizScorePercent <= 20) {
           sessionStorage.removeItem("justOnce", "true");
-          document.getElementById('nilaidimodal').style.color = '#f44336'};
+          document.getElementById('nilaidimodal').style.color = '#f44336'
           $("#animasi-hasilanalis").attr("src","soalsaham/gagal.png");
           $("#deskripsi-nilai").html("Yah! <br>Nilai Anda belum mencukupi kualifikasi sebagai Analis!");
           $(".cardmodal").append("<button id = 'btn-cobalagi' type='button' onclick='' class='btn btn-danger btnmodal mb-2'>Coba Lagi!</button>");
           $(".cardmodal").append("<button id = 'btn-masukmember' type='button' onclick='' class='btn btn-primary btnmodal'>Kembali Halaman Member</button>");
           $("#btn-cobalagi").click(function(){window.location.reload();});
           $("#btn-masukmember").attr("onclick","location.href='#/dashboard/akademi'");
+        };
 
 
         // Change background colour of results div according to score percent

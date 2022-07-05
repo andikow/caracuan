@@ -10,8 +10,29 @@ import Kelas from './kelas.js';
 import AnalisaSaya from './analisasaya.js';
 import Pengikut from './pengikut.js';
 import Pengaturan from './pengaturan.js';
+import $ from 'jquery';
 
 class Sidebar extends Component {
+  componentDidMount() {
+    $('#logout').click(function(){
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/logout`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include',
+          redirect: 'follow'
+        })
+        .then(data=>{
+          if(data.status == 200){
+            this.props.history.push({
+              pathname:"/",
+            })
+          }
+        })}.bind(this));
+  }
 
   render(){
     return (
@@ -69,7 +90,7 @@ class Sidebar extends Component {
             <a href="#/dashboard/akademi" class="download">Masuk Sebagai Member</a>
           </li>
           <li>
-            <a href="#" class="article">Keluar</a>
+            <button id="logout" class="btn btn-danger btn-block">Keluar</button>
           </li>
         </ul>
       </nav>

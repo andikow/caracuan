@@ -142,7 +142,7 @@ router.post('/datarekening', async function (req,res){
 router.post('/simpanrekening', async function (req,res){
   try {
     let data = req.body;
-    const sqlQuery = `INSERT INTO payoutaddress VALUES ('${data.memberID}','${data.bankCode}','${data.bankName}','${data.namaPemilik}','${data.nomorRekening}')`;
+    const sqlQuery = `INSERT INTO payoutaddress (memberID, bankCode, bankName, namaPemilik, nomorRekening) values ('${data.memberID}','${data.bankCode}','${data.bankName}','${data.namaPemilik}','${data.nomorRekening}') ON DUPLICATE KEY UPDATE bankCode = '${data.bankCode}', bankName = '${data.bankName}', namaPemilik = '${data.namaPemilik}', nomorRekening = '${data.nomorRekening}'`;
     const rows = await pool.query(sqlQuery);
     res.status(200).json(rows);
   } catch (error) {
@@ -233,7 +233,7 @@ router.put('/setanalyst', async function (req,res){
     let data = req.body;
     const sqlQuery = `UPDATE member
     SET
-    isAnalyst = "1",
+    isAnalyst = 1
     WHERE memberID = "${data.memberID}"`;
     const rows = await pool.query(sqlQuery);
     res.status(200).json(rows);
@@ -385,8 +385,15 @@ router.post('/updatemember', async function (req,res){
       let data = req.body;
       const sqlQuery = `
         UPDATE member
-        SET profilephoto = '${data.profilImageName}', coverphoto = '${data.coverImageName}'
-        WHERE memberID = ${data.memberID}`;
+        INNER JOIN creator
+        ON member.memberID = creator.memberID AND member.memberID = ${data.memberID}
+        SET
+        profilephoto = IF(profilephoto = "${data.profilImageName}", profilephoto, "${data.profilImageName}"),
+        coverphoto = IF(coverphoto = "${data.coverImageName}", coverphoto, "${data.coverImageName}"),
+        shortbio = '${data.shortbio}',
+        instagram = '${data.instagram}',
+        twitter = '${data.twitter}',
+        youtube = '${data.youtube}',`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -405,20 +412,23 @@ router.post('/setselesai', async function (req,res){
     }
 });
 
-router.get('/carianalis', async function(req,res){
+router.get('/carianalis/:name', async function(req,res){
     try {
+      var name = req.params.name;
         const sqlQuery = `
-        SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut,
+        SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut, username, shortbio,
         CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto,
         CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto
-        FROM member, (
+        FROM member, creator, (
           SELECT member.memberID, COUNT(followedID) AS pengikut
           FROM member
           LEFT JOIN following
           ON member.memberID = following.followedID
           GROUP BY memberID) as q1
-        WHERE member.memberID = q1.memberID`;
+        WHERE member.memberID = q1.memberID AND
+        member.memberID = creator.memberID AND isAnalyst = 1 AND member.name LIKE '${name}'`;
         const rows = await pool.query(sqlQuery);
+        console.log(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
         res.status(400).send(error.message)
@@ -430,7 +440,7 @@ router.get('/carianalis', async function(req,res){
 router.get('/kreator/:id', async function(req,res){
     try {
         var id = req.params.id
-        const sqlQuery = `SELECT * FROM member WHERE memberID = ${id}`;
+        const sqlQuery = `SELECT member.memberID, Name, BirthDate, Phone, Email, profilephoto, coverphoto, username, shortbio, instagram, twitter, youtube FROM member, creator WHERE creator.memberID = member.memberID AND member.memberID = ${id};`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -552,6 +562,30 @@ router.get('/creator/:name', async function(req,res){
         res.status(400).send(error.message)
     }
 
+
+});
+
+router.post('/kelasgratis', async function (req,res){
+    try {
+      let data = req.body;
+      const sqlQuery = `INSERT INTO memberpurchase VALUES ('${data.memberID}','${data.kelasID}','')`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+});
+
+router.get('/cekkelas/:memberID/:kelasID', async function(req,res){
+  try {
+      let memberID = req.params.memberID;
+      let kelasID = req.params.kelasID;
+      const sqlQuery = `SELECT memberpurchase.kelasID, jenisKelas FROM memberpurchase, kelas WHERE kelas.kelasID = memberpurchase.kelasID AND kelas.kelasID = '${kelasID}' AND memberpurchase.memberID = '${memberID}';`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+  } catch (error) {
+      res.status(400).send(error.message)
+  }
 
 });
 
@@ -731,6 +765,8 @@ router.post('/submitpenarikan', async function (req,res){
       description: `Penarikan dana`,
       amount: `${data.jumlahTarik}`,
     });
+    const sqlQuery = `INSERT INTO payout VALUES ('${disb.id}','${data.memberID}','${data.jumlahTarik}', '${disb.status}', '', '')`;
+    await pool.query(sqlQuery);
       res.status(200).json(disb)
     } catch (error) {
         res.status(400).send(error.message)
@@ -750,6 +786,18 @@ router.get('/available_banks', async function(req,res){
           }
         })();
 
+
+});
+
+router.get('/payout/by/:memberID', async function(req,res){
+  try {
+      let memberID = req.params.memberID
+      const sqlQuery = `SELECT * FROM payout WHERE memberID = "${memberID}"`;
+      const rows = await pool.query(sqlQuery);
+      res.status(200).json(rows);
+  } catch (error) {
+      res.status(400).send(error.message)
+  }
 
 });
 
@@ -774,22 +822,26 @@ router.get('/transaksi/:memberID', async function(req,res){
 });
 
 // Callback
-router.post('/reimbursestatus', async function (req,res){
+router.post('/updatereimbursestatus', async function (req,res){
   (async function() {
     try {
       let data = req.body;
-      console.log(data);
-      const sqlQuery = `UPDATE payout
-      SET
-      isAnalyst = "1",
-      WHERE payoutID = "${data.memberID}"`;
+      const sqlQuery = `
+        UPDATE balance
+        LEFT JOIN payout
+        ON payout.memberID = balance.memberID
+        SET
+          status = "${data.status}",
+          balance = IF("${data.status}" = "SUCCESS", balance - ${data.amount}, balance),
+          createdAt = '${data.created}',
+          updatedAt = '${data.updated}'
+        WHERE payoutID = "${data.id}";`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (e) {
       res.status(400).send(e.message)
     }
   })();
-
 });
 
 // router.post('/login', async function(req,res) {

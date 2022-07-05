@@ -19,7 +19,6 @@ class DetailKelas extends Component {
     };
   }
   async componentDidMount() {
-    console.log(this.props.location.pathname.split("/")[3]);
     this.setState({
       isPaid: false
     });
@@ -152,9 +151,26 @@ class DetailKelas extends Component {
       })
       .catch((err) =>{})
 
-    console.log(this.state.dataTopik);
-    console.log(this.state.kelas);
-    console.log(this.state.doneDetail);
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/cekkelas/${this.state.memberID}/${this.state.kelasID}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include'
+        })
+      .then(res=>{
+          return res.json()
+        })
+      .then(data=>{
+        if(data.length > 0){
+          this.setState({
+            sudahLangganan: true,
+            isPaid:true,
+          });
+        }
+      })    
     }
 
   async checkout(){

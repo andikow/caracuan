@@ -7,6 +7,7 @@ import Mengikuti from './mengikuti.js';
 import Transaksi from './transaksi.js';
 import Pengaturan from './pengaturan.js';
 import jwt_decode from 'jwt-decode';
+import $ from 'jquery';
 
 class Sidebarmember extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Sidebarmember extends Component {
     this.state = {
       memberID:'',
       isAnalyst:'',
+      location : this.props.location.pathname.split("/")[2],
     };
   }
   hapusSessionStorage(){
@@ -21,6 +23,12 @@ class Sidebarmember extends Component {
   }
 
   async componentDidMount() {
+    if (this.state.location == "akademi") {
+      $("#kelas").addClass("active");
+    }
+    else if(this.state.location == "mengikuti"){
+      $("#mengikuti").addClass("active");
+    }
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
@@ -66,6 +74,23 @@ class Sidebarmember extends Component {
           });
       })
 
+    $('#logout').click(function(){
+      fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/logout`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials:'include',
+          redirect: 'follow'
+        })
+        .then(data=>{
+          if(data.status == 200){
+            this.props.history.push({pathname:"/"})
+          }
+        })}.bind(this));
+        
   }
   render(){
     return (
@@ -75,12 +100,12 @@ class Sidebarmember extends Component {
 
                   <ul class="list-unstyled components">
                     <NavLink to="/dashboard/akademi">
-                      <li>
+                      <li id="kelas">
                           <a href="#">Kelas</a>
                       </li>
                     </NavLink>
                     <NavLink to="/dashboard/mengikuti">
-                      <li>
+                      <li id="mengikuti">
                         <a href="#">Mengikuti</a>
                       </li>
                     </NavLink>
@@ -101,7 +126,7 @@ class Sidebarmember extends Component {
                           <a onClick={this.hapusSessionStorage} href={this.state.isAnalyst ? "#/dashboardcreator":"#/soal"} class="download">Masuk Sebagai Analis</a>
                       </li>
                       <li>
-                          <a href="#" class="article">Keluar</a>
+                          <button id="logout" class="btn btn-danger btn-block">Keluar</button>
                       </li>
                   </ul>
               </nav>

@@ -4,6 +4,13 @@ import Poto from './../public/assets/img/creator.png';
 import Poto1 from './../public/assets/img/creatorpost1.jpg';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
+import HashLoader from "react-spinners/HashLoader";
+
+const override: React.CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 var moment = require('moment');
 
 class CreatorAnalisa extends Component {
@@ -14,6 +21,7 @@ class CreatorAnalisa extends Component {
       dataAnalisis:[],
       profilImage:'',
       name:'',
+      loading: true,
     };
   }
   voting(id, e) {
@@ -90,6 +98,7 @@ class CreatorAnalisa extends Component {
         .then(data=>{
           this.setState({
             dataAnalisis: data,
+            loading:false,
           });
       })
 
@@ -138,6 +147,15 @@ class CreatorAnalisa extends Component {
     let today = new Date();
     return (
       <>
+      <div className="sweet-loading p-3">
+      <HashLoader
+      cssOverride={override}
+      size={150}
+      color={"#217691"}
+      loading={this.state.loading}
+      speedMultiplier={1.5}
+      />
+      </div>
       {
         this.state.dataAnalisis.map(data=>
           <div className="row">

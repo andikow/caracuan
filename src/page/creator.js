@@ -204,7 +204,7 @@ class Creator extends React.Component{
         <img src={this.state.profilImage} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
         <div style={{textAlign:'center'}}>
         <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
-        <p>@vandarinarisca</p>
+        <p>@{this.state.data.username}</p>
          <h6 className="font-weight-bold">{'Pengikut : ' + this.state.pengikut}</h6>
          <h6 className="font-weight-bold">Performa : 85%</h6>
          <p>

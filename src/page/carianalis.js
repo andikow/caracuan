@@ -12,7 +12,11 @@ export default class CariAnalis extends React.Component{
     }
   }
   componentDidMount() {
-    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/carianalis`,
+    this.listanalis('%25%25')
+  }
+
+  listanalis(ev){
+    fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/carianalis/%25${ev}%25`,
     {
       method: 'GET',
       headers: {
@@ -33,7 +37,6 @@ export default class CariAnalis extends React.Component{
     .catch((err) =>{
       this.setState({ msg: err.msg })
     })
-
   }
   render(){
 
@@ -43,7 +46,7 @@ export default class CariAnalis extends React.Component{
     <Header/>
     <h1 class="text-primary py-2" style={{textAlign:"center"}}>Cari Analis</h1>
     <div class="input-group mx-auto" style={{width:"500px"}}>
-      <input type="text" class="form-control" placeholder="Cari Analis" />
+      <input type="text" onChange={ev => this.listanalis(ev.target.value)} class="form-control" placeholder="Cari Analis" />
       <div class="input-group-append">
         <button class="btn btn-primary btn-link" type="button">
           <i class="fa fa-search text-white"></i>
@@ -64,8 +67,8 @@ export default class CariAnalis extends React.Component{
               <div class="title">
                 <a href={"/#/creator/" + data.memberID + "/beranda/"}><h4 className="text-primary">{data.Name}</h4></a>
               </div>
-              <h5 class="desc">@vandarinarisca</h5>
-              <h5 class="desc">Swing Trader</h5>
+              <h5 class="desc">@{data.username}</h5>
+              <h5 class="desc">{data.shortbio}</h5>
               <h5 className="desc">Pengikut : {data.pengikut}</h5>
               <p className="py-2">
                 <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
