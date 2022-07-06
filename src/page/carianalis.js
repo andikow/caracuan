@@ -68,7 +68,7 @@ export default class CariAnalis extends React.Component{
                 <a href={"/#/creator/" + data.memberID + "/beranda/"}><h4 className="text-primary">{data.Name}</h4></a>
               </div>
               <h5 class="desc">@{data.username}</h5>
-              <h5 class="desc">{data.shortbio}</h5>
+              <span class="dotswrap" style={{height:"50px"}}><h5 class="desc" >{data.shortbio}</h5></span>
               <h5 className="desc">Pengikut : {data.pengikut}</h5>
               <p className="py-2">
                 <i style={{color:"#F5C60D"}} className="fas fa-star"></i>

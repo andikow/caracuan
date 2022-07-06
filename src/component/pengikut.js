@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./../public/assets/css/creatorpost.css";
 import jwt_decode from 'jwt-decode';
-
+import DefaultAvatar from './../public/assets/img/default_avatar.png';
 class Pengikut extends Component {
   constructor(){
     super();
@@ -96,14 +96,14 @@ class Pengikut extends Component {
               <div class="card" style={{height:70}}>
                 <div class="row">
                     <div className="col-3 my-2 ml-2 d-flex align-content-center flex-wrap">
-                      <img src={'http://localhost:' + process.env.REACT_APP_REQ_PORT + '/uploads/profil/' + data.profilephoto} alt="Poto" width="40" height="40" style={{borderRadius: "100%"}} />
+                      <img src={data.profilephoto ? 'http://localhost:' + process.env.REACT_APP_REQ_PORT + '/uploads/profil/' + data.profilephoto : DefaultAvatar} alt="Poto" width="40" height="40" style={{borderRadius: "100%"}} />
                     </div>
                     <div class="col">
                     <div class="row mr-auto">
                       <a href={"/#/creator/" + data.memberID + "/beranda/"}><p className="text-primary font-weight-bold mb-0">{data.Name}</p></a>
                     </div>
                     <div class="row mr-auto">
-                      <p  class="text-info font-weight-bold mb-2" style={{fontSize:12}}>username</p>
+                      <p class="text-info font-weight-bold mb-2" style={{fontSize:12}}>{data.username}</p>
                     </div>
 
                     </div>

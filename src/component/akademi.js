@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import { Route , HashRouter } from "react-router-dom";
 import Poto from './../public/assets/img/creator.png';
-import Poto1 from './../public/assets/img/akademi1.jpg';
-import Poto2 from './../public/assets/img/akademi2.jpg';
-import Poto3 from './../public/assets/img/akademi3.jpg';
-import Poto4 from './../public/assets/img/akademi4.jpg';
-import Poto5 from './../public/assets/img/akademi5.jpg';
-import Poto6 from './../public/assets/img/akademi6.jpg';
 import Potobg from './../public/assets/img/bgcreator.jpg';
 import "./../public/assets/css/creatorpost.css";
-import DetailPost from './detail-post.js';
 import jwt_decode from 'jwt-decode';
 
 class Akademi extends Component {

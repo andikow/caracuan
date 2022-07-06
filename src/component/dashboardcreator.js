@@ -7,7 +7,9 @@ class Dashboardcreator extends Component {
     super(props);
     this.state = {
       memberID:'',
-      saldoSekarang:'',
+      saldoSekarang:0,
+      TotalPencairanBulanIni:0,
+      TotalTraktiranBulanIni:0,
     };
   }
   async componentDidMount(){
@@ -97,6 +99,53 @@ class Dashboardcreator extends Component {
         saldoSekarang: data[0].balance,
       })
     })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/payout/by/month/${this.state.memberID}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        TotalPencairanBulanIni: res[0].TotalPencairanBulanIni
+      });
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/traktiran/by/month/${this.state.memberID}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{      
+      let jumlahTarik = 0;
+      for(let i=0; i<res.length; i++){
+        jumlahTarik += res[0].dataInvoice.amount;
+      }
+      console.log(jumlahTarik);
+      this.setState({
+        TotalTraktiranBulanIni:jumlahTarik
+      });
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
   }
   render() {
     return (
@@ -126,16 +175,16 @@ class Dashboardcreator extends Component {
                     Dukungan Bulan Ini
                   </div>
                   <div class="">
-                    Rp
+                    Rp {this.state.TotalTraktiranBulanIni}
                   </div>
                 </div></div>
                 <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-money-bill-wave"></i>
                   <div class="d-flex flex-column">
                     <div class="">
-                      Jumlah Dicairkan
+                      Jumlah Pencairan Bulan Ini
                     </div>
                     <div class="">
-                      Rp
+                      Rp {this.state.TotalPencairanBulanIni}
                     </div>
                   </div></div>
                 </div>
