@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 29 Jun 2022 pada 15.59
--- Versi Server: 10.1.24-MariaDB
--- PHP Version: 7.1.6
+-- Generation Time: Jul 06, 2022 at 04:11 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +23,7 @@ SET time_zone = "+00:00";
 
 DELIMITER $$
 --
--- Fungsi
+-- Functions
 --
 CREATE DEFINER=`root`@`localhost` FUNCTION `CalcIncome` (`starting_value` INT) RETURNS INT(11) BEGIN
 
@@ -58,7 +57,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `analysis`
+-- Table structure for table `analysis`
 --
 
 CREATE TABLE `analysis` (
@@ -76,18 +75,31 @@ CREATE TABLE `analysis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `analysis`
+-- Dumping data for table `analysis`
 --
 
 INSERT INTO `analysis` (`analysisID`, `memberID`, `date`, `description`, `stockCode`, `targetPrice`, `initialPrice`, `days`, `isHit`, `agreed`, `disagreed`) VALUES
 (1, 41, '2022-04-05', 'Secara fundamental masih cukup menarik', 'BBCA', 8000, 7500, 9, 'Hold', 356, 253),
 (2, 41, '2022-04-06', 'Secara teknikal ada potensi rebound', 'EKAD', 1800, 1200, 15, 'Hold', 2, 2),
-(14, 41, '2022-06-06', 'yakin', 'ICBP', 8000, 7600, 180, 'Hold', 0, 0);
+(15, 41, '2022-07-05', '$ASII\r\n\r\nMarket sedang tidak baik baik saja..\r\nLebih baik wait n see dulu,\r\nakankah IHSG kita terkoreksi sampe sini? atau lebih dalam? 🤔🤔\r\n\r\nTag saham sejuta umat di Bei\r\n$SMDR $BBCA $BSSR $JPFA', 'IHSG', 6299, 6641, 30, 'Hold', 21, 26),
+(16, 47, '2022-06-29', '$IHSG $BBRI kalau ARB 35% bakal nyentuh 3500', 'BBRI', 3850, 4180, 90, 'Hold', 36, 44),
+(17, 47, '2022-07-05', '$BUMI setelah dihitung-hitung\r\nTags: $SMDR $PTBA $ITMG $BBCA', 'BUMI', 125, 70, 365, 'Hold', 41, 33),
+(18, 47, '2022-06-24', '$ACES downtrend parah, karena big fund asing ada yg keluar...mirip2 ama $UNVR dan $TLKM kemaren... tapi tetep potential karena siapa tahu ada big fund lain yg nyerok nanti...\r\ndr segi dividen sangat lumayan, payout ratio ~50%, dgn yield 2.6%... meman', 'ACES', 1200, 770, 365, 'Hold', 15, 36),
+(19, 48, '2022-06-02', '$COCO pengendali baru semangat baru untuk menggenjot revenue serta laba dengan mengakuisisi PT. Dlanier Gaya Indonesia, Perseroan juga telah merencakan akan membeli mesin baru dari eropa tahun lalu namun tertunda pertengahan tahun ini dan juga perser', 'COCO', 500, 208, 365, 'Hold', 47, 39),
+(20, 48, '2022-06-09', '$TMAS\r\n\r\nAlon alon mase..🔥\r\nSemoga RUPS nya bawa angin segar..\r\n\r\n$BSSR $BBRI $SMDR $ADMR', 'TMAS', 2870, 2720, 26, 'Hold', 23, 27),
+(21, 48, '2022-05-12', '$BBRI\r\n\r\nsemoga kejemput klo rejeki 👍\r\nSambil wait n see WL yang lagi diskon gede2an 🤔🤔\r\n\r\nRandom tag $BBCA $BBNI $ADRO $BSSR', 'BBRI', 4000, 4320, 7, 'Hit', 62, 47),
+(22, 49, '2022-07-05', '$BUMI setelah dihitung-hitung\r\nTags: $SMDR $PTBA $ITMG $BBCA', 'BUMI', 125, 70, 60, 'Hold', 18, 33),
+(23, 49, '2022-06-29', '$IHSG $BBRI kalau ARB 35% bakal nyentuh 3500', 'BBRI', 3850, 4180, 36, 'Hold', 23, 33),
+(24, 50, '2022-07-05', '$SGER FALLING WEDGE ? ', 'SGER', 1540, 1390, 7, 'Hold', 22, 41),
+(25, 50, '2022-07-04', '$ANTM KALAH LAWAN CRAZY RICH SURABAYA 1,1 TON EMAS\r\nBEARISH TREND HINGGA KE LEVEL 1500-an ?\r\n\r\nBANDAR DISTRIBUSI : CS KZ AK BB ', 'ANTM', 1650, 1750, 30, 'Hold', 22, 26),
+(26, 51, '2022-06-02', '$COCO pengendali baru semangat baru untuk menggenjot revenue serta laba dengan mengakuisisi PT. Dlanier Gaya Indonesia, Perseroan juga telah merencakan akan membeli mesin baru dari eropa tahun lalu namun tertunda pertengahan tahun ini dan juga perser', 'COCO', 500, 208, 365, 'Hold', 22, 13),
+(27, 51, '2022-01-11', 'waktu $BUKA IPO lgsg ARA, saya prediksi harganya bakal turun separo ke 425 perak dan sudah hit bbrp waktu yg lalu.\r\n\r\nSekararang saya mau prediksi lagi harganya turun ke 250 perak dalam jangka waktu 1 taun, apakah yg ini bakal hit jg?\r\n\r\nSaya bukan t', 'BUKA', 250, 448, 365, 'Hit', 32, 48),
+(28, 51, '2022-04-19', 'Update peta jalan $AVIA : Paint My Love\r\n\r\nsetelah kita BoW AVIA sesuai postingan di tautan https://stockbit.com/post/8308082, saatnya kita ambil untung di area sesuai gambar berikut:\r\n\r\nkita jual bertahap dengan target terdekat di 830, 860 dan saya ', 'AVIA', 910, 820, 30, 'Loss', 25, 29);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `balance`
+-- Table structure for table `balance`
 --
 
 CREATE TABLE `balance` (
@@ -96,28 +108,48 @@ CREATE TABLE `balance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `balance`
+-- Dumping data for table `balance`
 --
 
 INSERT INTO `balance` (`memberID`, `balance`) VALUES
-(41, 50500);
+(41, 35000);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `creator`
+-- Table structure for table `creator`
 --
 
 CREATE TABLE `creator` (
   `memberID` int(11) NOT NULL,
   `username` varchar(60) NOT NULL,
-  `shortbio` varchar(250) NOT NULL
+  `shortbio` varchar(250) NOT NULL,
+  `instagram` varchar(50) NOT NULL,
+  `twitter` varchar(50) NOT NULL,
+  `youtube` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `creator`
+--
+
+INSERT INTO `creator` (`memberID`, `username`, `shortbio`, `instagram`, `twitter`, `youtube`) VALUES
+(41, 'andy_katama', 'Ex pro-trader & financial analyst. Foreign bankers veteran (MUFG , Allianz, and BNP Paribas). Just the old man with craving passion in stock market and teaching. Lonewolf investor who are secluded from the crowd.', '', '', ''),
+(47, 'capt.saham707', 'Investor saham yang menganalisis kinerja dan keuangan perusahaan', '', '', ''),
+(48, 'vandarina.risca', 'Cheap stocks, conviction, and tailwinds are the perfect combination to compound wealth.', '', '', ''),
+(49, 'lylia88', 'Penguji Conviction Anda. Tangan Kiri Bandar.', '', '', ''),
+(50, 'kagura.mlbb', 'Knowledge philanthropy, stockthusiasm', '', '', ''),
+(51, 'gatotkaca_', 'Independent Value Investor. 3 hal terpenting di Investasi: Akal sehat, Mindset dan Keberanian.', '', '', ''),
+(52, 'na__than21', 'Do best analysis for your best stocks', '', '', ''),
+(53, 'hana.bee', 'Formula Investasi Sederhana, Analyze, Buy, Watch the Grow and Sell, Tidak ada analisis yang 100% benar tetapi buatlah itu menjadi 99% benar', '', '', ''),
+(54, 'julian78', 'Seorang \"Sentimentalist\" yang mengambil faedah dari segala macam bentuk analisa: Fundamental, Technical, Bandarmology sampai Tape Reading, termasuk menganalisa Rumor, News & Corporate Action yang menghasilkan saham Trending Topic.', '', '', ''),
+(55, 'maia.flwr', '-Analisa dari Teknikal-\r\n-Trend Follower-', '', '', ''),
+(57, 'es_teler', 'Do your own research. ', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `following`
+-- Table structure for table `following`
 --
 
 CREATE TABLE `following` (
@@ -127,7 +159,7 @@ CREATE TABLE `following` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `following`
+-- Dumping data for table `following`
 --
 
 INSERT INTO `following` (`followingID`, `memberID`, `followedID`) VALUES
@@ -135,12 +167,87 @@ INSERT INTO `following` (`followingID`, `memberID`, `followedID`) VALUES
 (3, 51, 41),
 (4, 51, 47),
 (5, 41, 50),
-(6, 49, 41);
+(6, 49, 41),
+(47, 41, 0),
+(48, 41, 0),
+(49, 41, 0),
+(50, 41, 0),
+(51, 41, 0),
+(52, 41, 0),
+(53, 41, 0),
+(54, 41, 47),
+(56, 41, 49),
+(57, 41, 50),
+(58, 41, 51),
+(59, 41, 52),
+(60, 41, 53),
+(61, 41, 54),
+(62, 41, 55),
+(63, 41, 56),
+(64, 41, 57),
+(65, 47, 41),
+(66, 47, 48),
+(67, 47, 49),
+(68, 47, 50),
+(69, 47, 51),
+(70, 47, 52),
+(71, 47, 53),
+(72, 47, 54),
+(73, 47, 55),
+(74, 47, 56),
+(75, 48, 52),
+(76, 48, 53),
+(77, 48, 55),
+(78, 48, 57),
+(79, 49, 41),
+(80, 49, 47),
+(81, 49, 48),
+(82, 49, 55),
+(83, 50, 41),
+(84, 50, 48),
+(85, 50, 51),
+(86, 50, 53),
+(87, 50, 56),
+(88, 51, 48),
+(89, 51, 55),
+(90, 51, 56),
+(91, 51, 57),
+(92, 52, 47),
+(93, 52, 48),
+(94, 52, 49),
+(95, 52, 50),
+(96, 52, 51),
+(97, 52, 53),
+(98, 52, 54),
+(99, 53, 48),
+(100, 53, 49),
+(101, 53, 50),
+(102, 53, 55),
+(103, 53, 57),
+(104, 54, 55),
+(105, 54, 56),
+(106, 54, 57),
+(107, 54, 47),
+(108, 54, 41),
+(109, 55, 41),
+(110, 55, 47),
+(111, 55, 48),
+(112, 55, 49),
+(113, 56, 45),
+(114, 56, 41),
+(115, 56, 55),
+(116, 56, 57),
+(117, 57, 41),
+(118, 57, 51),
+(119, 57, 53),
+(120, 57, 54),
+(121, 57, 55),
+(122, 57, 56);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kelas`
+-- Table structure for table `kelas`
 --
 
 CREATE TABLE `kelas` (
@@ -159,7 +266,7 @@ CREATE TABLE `kelas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `kelas`
+-- Dumping data for table `kelas`
 --
 
 INSERT INTO `kelas` (`kelasID`, `memberID`, `judul`, `thumbnail`, `deskripsi`, `tujuan1`, `tujuan2`, `tujuan3`, `tujuan4`, `jenisKelas`, `harga`, `createdAt`) VALUES
@@ -176,7 +283,7 @@ INSERT INTO `kelas` (`kelasID`, `memberID`, `judul`, `thumbnail`, `deskripsi`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `materi`
+-- Table structure for table `materi`
 --
 
 CREATE TABLE `materi` (
@@ -188,7 +295,7 @@ CREATE TABLE `materi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `materi`
+-- Dumping data for table `materi`
 --
 
 INSERT INTO `materi` (`materiID`, `topikID`, `judul`, `deskripsi`, `linkvideo`) VALUES
@@ -227,7 +334,7 @@ INSERT INTO `materi` (`materiID`, `topikID`, `judul`, `deskripsi`, `linkvideo`) 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `materiselesaibaca`
+-- Table structure for table `materiselesaibaca`
 --
 
 CREATE TABLE `materiselesaibaca` (
@@ -238,7 +345,7 @@ CREATE TABLE `materiselesaibaca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `materiselesaibaca`
+-- Dumping data for table `materiselesaibaca`
 --
 
 INSERT INTO `materiselesaibaca` (`doneID`, `memberID`, `kelasID`, `materiID`) VALUES
@@ -248,7 +355,7 @@ INSERT INTO `materiselesaibaca` (`doneID`, `memberID`, `kelasID`, `materiID`) VA
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `member`
+-- Table structure for table `member`
 --
 
 CREATE TABLE `member` (
@@ -258,49 +365,58 @@ CREATE TABLE `member` (
   `Phone` varchar(15) NOT NULL,
   `Email` varchar(60) NOT NULL,
   `Password` varchar(60) NOT NULL,
-  `refresh_token` text,
-  `isAnalyst` tinyint(1) NOT NULL DEFAULT '0',
+  `refresh_token` text DEFAULT NULL,
+  `isAnalyst` tinyint(1) NOT NULL DEFAULT 0,
   `profilephoto` varchar(50) NOT NULL,
   `coverphoto` varchar(59) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `member`
+-- Dumping data for table `member`
 --
 
 INSERT INTO `member` (`memberID`, `Name`, `BirthDate`, `Phone`, `Email`, `Password`, `refresh_token`, `isAnalyst`, `profilephoto`, `coverphoto`) VALUES
-(41, 'Andikatama', '2001-01-01', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQxLCJuYW1lIjoiQW5kaWthdGFtYSIsImVtYWlsIjoiYW5keWthdGFtYUBnbWFpbC5jb21tIiwiaWF0IjoxNjU2MjQ2NTg0LCJleHAiOjE2NTYzMzI5ODR9.LV57J5pK04V6T81yoXofdXPbswdL_bI1Ufch_h_Ne_w', 1, 'andikatama.jpg', 'andikatama.jpg'),
+(41, 'Andikatama', '2003-02-05', '087868407686', 'andykatama@gmail.comm', '$2b$10$61FnpDEi1I9HTinujKnaV.lJAyknvCSjd19xciJ3OeBLjBZJhevuS', '', 1, 'andikatama.jpg', 'andikatama.jpg'),
 (47, 'Kapten Saham', '2001-01-01', '087868407686', 'andykatama@gmail.coma', '$2b$10$gNKotvu7xymVm5XEQZ21EeKQs3Nfmv6Dx7svd3omy22.lM/7fofvC', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ3LCJuYW1lIjoiS2FwdGVuIFNhaGFtIiwiZW1haWwiOiJhbmR5a2F0YW1hQGdtYWlsLmNvbWEiLCJpYXQiOjE2NTYzMzY0NTYsImV4cCI6MTY1NjQyMjg1Nn0.TixwNCk1Dfo_FeqkuejUCvFkLSWj8bteF8bRlLlTcWo', 1, 'kapten.jpg', 'kapten.jpg'),
-(48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ4LCJuYW1lIjoiVmFuZGFyaW5hIFJpc2NhIiwiZW1haWwiOiJ2YW5kYXJpbmFAZ21haWwuY29tIiwiaWF0IjoxNjU2MzM2ODkyLCJleHAiOjE2NTY0MjMyOTJ9.doHXMeyTod5qcdyx6XNk_l2vWa1UATRr3r7ZJeR5gbc', 1, 'vandarina.jpg', 'vandarina.jpg'),
+(48, 'Vandarina Risca', '1999-02-24', '085624742052', 'vandarina@gmail.com', '$2b$10$C6E5sB665YnTtPPw8P0n0.sammWBZGORLR6nuXtMrJLI59DzYgSzq', '', 1, 'vandarina.jpg', 'vandarina.jpg'),
 (49, 'Lylia', '2000-12-12', '085678789869', 'lylia88@gmail.com', '$2b$10$kAGyBBZB8Qx/p0O1Fnew3uJC4mk/KdzhzNjhcOyXCMyJ0Ora6Z/Fa', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoiTHlsaWEiLCJlbWFpbCI6Imx5bGlhODhAZ21haWwuY29tIiwiaWF0IjoxNjU2MzM3NDgwLCJleHAiOjE2NTY0MjM4ODB9.cpJgT0fJs1qWOjPRTtXZwXwbLZrsGS1nLj8DLRYqy4Y', 1, 'lylia.jpg', 'lylia.jpg'),
 (50, 'Kagura', '1945-08-17', '081266577899', 'balmond@gmail.com', '$2b$10$c92lts7Vtor8zZECGsqIJu.sCt8PKw4HXICqrM8H1ahTB3eKPywPa', '', 1, 'kagura.jpg', 'kagura.jpg'),
-(51, 'Gatot', '1977-08-08', '082154468791', 'gatotkaca@gmail.com', '$2b$10$6M9e/FTvq8RX1glSri01FerOwOLuvNFdPqvgGUaDovzhkJh/4Ddsi', '', 1, 'gatot.jpg', 'gatot.jpg');
+(51, 'Gatot', '1977-08-08', '082154468791', 'gatotkaca@gmail.com', '$2b$10$6M9e/FTvq8RX1glSri01FerOwOLuvNFdPqvgGUaDovzhkJh/4Ddsi', '', 1, 'gatot.jpg', 'gatot.jpg'),
+(52, 'Nathan', '1993-06-15', '082154563454', 'nathan@gmail.com', '$2b$10$ZYVbXds5Mwez53KYXwAar.eGiPZISnC.gFbIEyVG2OySny7iA7HvW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUyLCJuYW1lIjoiTmF0aGFuIiwiZW1haWwiOiJuYXRoYW5AZ21haWwuY29tIiwiaWF0IjoxNjU2NTk1NzEyLCJleHAiOjE2NTY2ODIxMTJ9.RWXZItHLDVNle6RW7QdhIbRVhH6WWMFfOKJpwlFxV4Q', 0, '', ''),
+(53, 'Hanabi', '1992-03-14', '087865673454', 'hanabi@gmail.com', '$2b$10$DhX5H3rcclPjIib/7r/WyuWODHsBF20kFikEEhCq0tq5nj3jA1UMu', '', 0, '', ''),
+(54, 'Julian', '1989-02-22', '081276560979', 'julian@gmail.com', '$2b$10$FqSu2Q6F.Vv3jqo4VUDAjumvibBP8rsOUm1r6oHaqzf0fDIQM3Hs.', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU0LCJuYW1lIjoiSnVsaWFuIiwiZW1haWwiOiJqdWxpYW5AZ21haWwuY29tIiwiaWF0IjoxNjU2NTk2NDQwLCJleHAiOjE2NTY2ODI4NDB9.d2LFI5olW590GB_OALkC9NxwvZnMWlJoGo_xVERRu3U', 0, '', ''),
+(55, 'Maia', '2002-03-24', '082366567867', 'maia@gmail.com', '$2b$10$UHk0F842K87YCy8TalWmDuxPEuzXnuSYRolfpSqcr9/uPxdqVEbl6', '', 0, '', ''),
+(56, 'Estelle', '1994-08-02', '081256348889', 'estelle@gmail.com', '$2b$10$JZMVzpTfYnq2sf41Z4wxV.4LyXQyBfS.YqKgYA5W2zHZzqRVuloFy', '', 0, '', ''),
+(57, 'Justin', '2001-10-19', '081267678889', 'justin@gmail.com', '$2b$10$z.L0j1nApn9y6ZnMzDCz7.NsHzlk5y9acjExvqKTCeNzcED/rM5DW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3LCJuYW1lIjoiSnVzdGluIiwiZW1haWwiOiJqdXN0aW5AZ21haWwuY29tIiwiaWF0IjoxNjU2NTk2NjYzLCJleHAiOjE2NTY2ODMwNjN9.MgQGOCMz8GPGiAk7Rmgu1OjVQDWXDKRAq_9JyFgrhgQ', 0, '', '');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `memberpurchase`
+-- Table structure for table `memberpurchase`
 --
 
 CREATE TABLE `memberpurchase` (
   `memberID` int(11) NOT NULL,
   `kelasID` int(11) NOT NULL,
-  `invoiceID` varchar(50) NOT NULL
+  `invoiceID` varchar(50) NOT NULL,
+  `paidAt` date NOT NULL,
+  `status` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `memberpurchase`
+-- Dumping data for table `memberpurchase`
 --
 
-INSERT INTO `memberpurchase` (`memberID`, `kelasID`, `invoiceID`) VALUES
-(41, 16, '62b0766cc8d34314a5a0eea9'),
-(41, 19, '62b07a6bc8d3433c20a0efe9'),
-(41, 21, '');
+INSERT INTO `memberpurchase` (`memberID`, `kelasID`, `invoiceID`, `paidAt`, `status`) VALUES
+(41, 16, '62b0766cc8d34314a5a0eea9', '2022-07-05', 'PAID'),
+(41, 18, '', '0000-00-00', ''),
+(41, 19, '62b07a6bc8d3433c20a0efe9', '0000-00-00', 'EXPIRED'),
+(41, 21, '', '0000-00-00', '');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `payout`
+-- Table structure for table `payout`
 --
 
 CREATE TABLE `payout` (
@@ -312,10 +428,18 @@ CREATE TABLE `payout` (
   `updatedAt` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `payout`
+--
+
+INSERT INTO `payout` (`payoutID`, `memberID`, `jumlah`, `status`, `createdAt`, `updatedAt`) VALUES
+('57e214ba82b034c325e84d6e', 41, 10000, 'FAILED', '2016-10-10', '2022-07-04'),
+('62b9cbff2fe6eac445e9e64a', 41, 10000, 'COMPLETED', '2022-06-27', '2022-07-04');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `payoutaddress`
+-- Table structure for table `payoutaddress`
 --
 
 CREATE TABLE `payoutaddress` (
@@ -327,7 +451,7 @@ CREATE TABLE `payoutaddress` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `payoutaddress`
+-- Dumping data for table `payoutaddress`
 --
 
 INSERT INTO `payoutaddress` (`memberID`, `bankCode`, `bankName`, `namaPemilik`, `nomorRekening`) VALUES
@@ -336,7 +460,7 @@ INSERT INTO `payoutaddress` (`memberID`, `bankCode`, `bankName`, `namaPemilik`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `topik`
+-- Table structure for table `topik`
 --
 
 CREATE TABLE `topik` (
@@ -346,7 +470,7 @@ CREATE TABLE `topik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `topik`
+-- Dumping data for table `topik`
 --
 
 INSERT INTO `topik` (`topikID`, `kelasID`, `namaTopik`) VALUES
@@ -455,37 +579,44 @@ ALTER TABLE `topik`
 -- AUTO_INCREMENT for table `analysis`
 --
 ALTER TABLE `analysis`
-  MODIFY `analysisID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `analysisID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
 --
 -- AUTO_INCREMENT for table `following`
 --
 ALTER TABLE `following`
-  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `followingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+
 --
 -- AUTO_INCREMENT for table `kelas`
 --
 ALTER TABLE `kelas`
   MODIFY `kelasID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
 --
 -- AUTO_INCREMENT for table `materi`
 --
 ALTER TABLE `materi`
   MODIFY `materiID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
 --
 -- AUTO_INCREMENT for table `materiselesaibaca`
 --
 ALTER TABLE `materiselesaibaca`
   MODIFY `doneID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `memberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+
 --
 -- AUTO_INCREMENT for table `topik`
 --
 ALTER TABLE `topik`
-  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;COMMIT;
+  MODIFY `topikID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
