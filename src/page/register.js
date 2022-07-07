@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Logo from './../public/assets/img/logo_cover.png';
-import { FormErrors } from '../component/FormErrors';
+import validator from 'validator';
 import './../public/assets/css/Form.css';
 
 class Register extends Component {
@@ -12,7 +12,10 @@ class Register extends Component {
           phone:'',
           email:'',
           password:'',
-          formErrors: {email: '', password: ''},
+          formErrors: {name:'', birthDate:'', phone:'', email: '', password: ''},
+          nameValid:false,
+          birthDateValid:false,
+          phoneValid:false,
           emailValid: false,
           passwordValid: false,
           formValid: false,
@@ -28,12 +31,27 @@ class Register extends Component {
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
+        let nameValid = this.state.nameValid;
+        let birthDateValid = this.state.birthDateValid;
+        let phoneValid = this.state.phoneValid;
         let emailValid = this.state.emailValid;
         let passwordValid = this.state.passwordValid;
 
         switch(fieldName) {
+          case 'name':
+            nameValid =  validator.isAlpha(value);
+            fieldValidationErrors.name = nameValid ? '' : ' is invalid';
+            break;
+          case 'birthDate':
+            birthDateValid =  validator.isBefore(value.toString(), new Date().toString());
+            fieldValidationErrors.birthDate = birthDateValid ? '' : ' is invalid';
+            break;
+          case 'phone':
+            phoneValid =  validator.isMobilePhone(value, ['id-ID']);
+            fieldValidationErrors.phone = phoneValid ? '' : ' is invalid';
+            break;
           case 'email':
-            emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+            emailValid = validator.isEmail(value);
             fieldValidationErrors.email = emailValid ? '' : ' is invalid';
             break;
           case 'password':
@@ -44,17 +62,28 @@ class Register extends Component {
             break;
         }
         this.setState({formErrors: fieldValidationErrors,
+                        nameValid: nameValid,
+                        birthDateValid: birthDateValid,
+                        phoneValid: phoneValid,
                         emailValid: emailValid,
                         passwordValid: passwordValid
                       }, this.validateForm);
       }
 
     validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+        this.setState(
+          {
+            formValid:
+            this.state.nameValid &&
+            this.state.birthDateValid &&
+            this.state.phoneValid &&
+            this.state.emailValid &&
+            this.state.passwordValid
+          });
       }
 
     errorClass(error) {
-        return(error.length === 0 ? '' : 'has-error');
+        return(error.length === 0 ? '' : 'is-invalid');
       }
 
     register(){
@@ -105,35 +134,47 @@ class Register extends Component {
             <div class="row d-flex align-items-center justify-content-center">
               <form onSubmit={Register}>
                 <h2 class="my-4 text-center text-primary">Daftar</h2>
-                <div className="panel panel-default">
-                  <FormErrors formErrors={this.state.formErrors} />
-                </div>
-
                   <div class="form-group">
-                     <label class="text-primary">Nama Lengkap</label>
-                     <input onChange={ev => this.setState({ name: ev.target.value })} type="text" class="form-control my-2" placeholder="Nama Lengkap" />
+                     <label htmlFor="name" class="text-primary">Nama Lengkap</label>
+                     <input type="text" class={`form-control my-2 ${this.errorClass(this.state.formErrors.name)}`} placeholder="Nama Lengkap" name="name" value = {this.state.name} onChange={this.handleUserInput} required/>
+                     <div class="invalid-feedback">
+                     Masukkan Nama yang valid.
+                     </div>
                   </div>
                   <div class="form-group">
-                     <label class="text-primary">Tanggal Lahir</label>
-                     <input onChange={ev => this.setState({ birthDate: ev.target.value })} type="date" class="form-control my-2"  />
+                     <label htmlFor="birthDate" class="text-primary">Tanggal Lahir</label>
+                     <input type="date" class={`form-control my-2 ${this.errorClass(this.state.formErrors.birthDate)}`} name="birthDate" value={this.state.birthDate} onChange={this.handleUserInput} required/>
+                     <div class="invalid-feedback">
+                     Masukkan Tanggal Lahir yang valid.
+                     </div>
                   </div>
                   <div class="form-group">
-                     <label class="text-primary">No. Handphone</label>
-                     <input onChange={ev => this.setState({ phone: ev.target.value })} type="text" class="form-control my-2" placeholder="No. Handphone" />
+                     <label htmlFor="phone" class="text-primary">No. Handphone</label>
+                     <input type="text" class={`form-control my-2 ${this.errorClass(this.state.formErrors.phone)}`} placeholder="No. Handphone" name="phone" value={this.state.phone} onChange={this.handleUserInput} required/>
+                     <div class="invalid-feedback">
+                     Masukkan No. Handphone yang valid.
+                     </div>
                   </div>
-                  <div class={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
+                  <div class="form-group">
                      <label htmlFor="email" class="text-primary">Email</label>
-                     <input type="text" class="form-control my-2" placeholder="Email" name="email" value={this.state.email} onChange={this.handleUserInput} required/>
+                     <input type="text" class={`form-control my-2 ${this.errorClass(this.state.formErrors.email)}`} placeholder="Email" name="email" value={this.state.email} onChange={this.handleUserInput} required/>
+                     <div class="invalid-feedback">
+                     Masukkan Email yang valid.
+                     </div>
                   </div>
-                  <div class={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
+                  <div class="form-group">
                      <label htmlFor="password" class="text-primary">Password</label>
-                     <input type="password" class="form-control my-2" placeholder="Password" name="password" value={this.state.password} onChange={this.handleUserInput} />
+                     <input type="password" class={`form-control my-2 ${this.errorClass(this.state.formErrors.password)}`} placeholder="Password" name="password" value={this.state.password} onChange={this.handleUserInput} required/>
+                     <div class="invalid-feedback">
+                     Minimal terdiri dari 6 karakter.
+                     </div>
                   </div>
                   <button
                   className="btn btn-primary text-center mx-auto text-white font-weight-bold"
                   href="#"
                   style={{width:"300px"}}
-                  onClick={() => this.register()}>
+                  onClick={() => this.register()}
+                  disabled={!this.state.formValid}>
                     Daftar
                   </button>
                   <div class="my-3">
