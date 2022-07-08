@@ -67,29 +67,29 @@ class Mengikuti extends Component {
     <>
     <div class="container overflow-auto" style={{height:'90vh'}}>
       <div className="row">
-        <h2 className="col-12 m-1 mb-4 text-primary">Mengikuti</h2>
-        <div class="row ml-2">
-          <h5  className="col-auto m-1 pr-0 text-primary">Menampilkan</h5>
-          <div class="dropdown col">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{width:80}}>
-              30
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item">30</a>
-              <a class="dropdown-item">60</a>
-              <a class="dropdown-item">100</a>
+        <h2 className="col-12 mb-4 text-primary">Mengikuti</h2>
+        <div class="col-12">
+          <div class="row container d-flex">
+            <h5  className="my-auto mr-2 text-primary">Menampilkan</h5>
+            <div class="dropdown mr-2">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{width:80}}>
+                30
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item">30</a>
+                <a class="dropdown-item">60</a>
+                <a class="dropdown-item">100</a>
+              </div>
             </div>
-          </div>
-          <div class="col">
-            <h5 className="col-auto m-1 px-0 text-primary">Data</h5>
+            <h5 className="my-auto text-primary">Data</h5>
+            <div class="row ml-auto">
+              <h5 className="my-auto mr-2 text-primary">Cari</h5>
+              <input type="text" class="form-control mr-2" placeholder="Cari Analis" style={{width:200}} />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="row d-flex justify-content-end mr-4">
-        <h5 className="col-auto m-3 px-0 text-primary">Cari</h5>
-        <input type="text" class="form-control my-2" placeholder="Cari Analis" style={{width:200}} />
-      </div>
 
       <div class="row py-4 m-0">
             {this.state.data.map(data =>

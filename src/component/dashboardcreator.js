@@ -133,7 +133,7 @@ class Dashboardcreator extends Component {
     .then(res=>{
       return res.json();
     })
-    .then(res=>{      
+    .then(res=>{
       let jumlahTarik = 0;
       for(let i=0; i<res.length; i++){
         jumlahTarik += res[0].dataInvoice.amount;
@@ -147,6 +147,15 @@ class Dashboardcreator extends Component {
       this.setState({ msg: err.msg })
     })
   }
+
+  numberWithCommas(x) {
+    x = x.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(x))
+        x = x.replace(pattern, "$1.$2");
+    return x;
+  }
+
   render() {
     return (
       <div class="container overflow-auto" style={{height:'90vh'}}>
@@ -166,7 +175,7 @@ class Dashboardcreator extends Component {
                   Jumlah Saldo Saat Ini
                 </div>
                 <div class="">
-                  Rp {this.state.saldoSekarang}
+                  Rp {this.numberWithCommas(this.state.saldoSekarang)}
                 </div>
               </div></div>
               <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-donate"></i>
@@ -175,7 +184,7 @@ class Dashboardcreator extends Component {
                     Dukungan Bulan Ini
                   </div>
                   <div class="">
-                    Rp {this.state.TotalTraktiranBulanIni}
+                    Rp {this.numberWithCommas(this.state.TotalTraktiranBulanIni)}
                   </div>
                 </div></div>
                 <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-money-bill-wave"></i>
@@ -184,7 +193,7 @@ class Dashboardcreator extends Component {
                       Jumlah Pencairan Bulan Ini
                     </div>
                     <div class="">
-                      Rp {this.state.TotalPencairanBulanIni}
+                      Rp {this.numberWithCommas(this.state.TotalPencairanBulanIni)}
                     </div>
                   </div></div>
                 </div>
