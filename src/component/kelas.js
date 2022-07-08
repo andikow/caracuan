@@ -3,6 +3,7 @@ import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
 import './../public/assets/css/transaksi.css'
 import 'datatables.net';
+import validator from 'validator';
 var moment = require('moment');
 
 
@@ -20,7 +21,13 @@ class Kelas extends Component {
       tujuan3:'',
       tujuan4:'',
       jenisKelas:'',
-      harga:'',
+      inputharga:0,
+      formErrors: {judul:'', thumbnail:'', deskripsi:'', tujuan1: '', inputharga:''},
+      judulValid:false,
+      thumbnailValid:false,
+      deskripsiValid:false,
+      tujuan1Valid:false,
+      inputhargaValid:false,
       image:"https://fakeimg.pl/350x200/",
       saveImage:null,
       kelasID:'',
@@ -29,13 +36,79 @@ class Kelas extends Component {
     };
   }
 
+  handleUserInput = (e) => {
+      const name = e.target.name;
+      const value = e.target.value;
+      this.setState({[name]: value},
+                    () => { this.validateField(name, value) });
+    }
+
+  validateField(fieldName, value) {
+      let fieldValidationErrors = this.state.formErrors;
+      let judulValid = this.state.judulValid;
+      let thumbnailValid = this.state.thumbnailValid;
+      let deskripsiValid = this.state.deskripsiValid;
+      let tujuan1Valid = this.state.tujuan1Valid;
+      let inputhargaValid = this.state.inputhargaValid;
+
+      switch(fieldName) {
+        case 'judul':
+          judulValid =  !validator.isEmpty(value);
+          fieldValidationErrors.judul = judulValid ? '' : ' is invalid';
+          break;
+        case 'thumbnail':
+          thumbnailValid =  !validator.isEmpty(value);
+          fieldValidationErrors.thumbnail = thumbnailValid ? '' : ' is invalid';
+          break;
+        case 'deskripsi':
+          deskripsiValid =  !validator.isEmpty(value);
+          fieldValidationErrors.deskripsi = deskripsiValid ? '' : ' is invalid';
+          break;
+        case 'tujuan1':
+          tujuan1Valid =  !validator.isEmpty(value);
+          fieldValidationErrors.tujuan1 = tujuan1Valid ? '' : ' is invalid';
+          break;
+        case 'inputharga':
+          inputhargaValid = validator.isInt(value, [{gt: -1}])
+          fieldValidationErrors.inputharga = inputhargaValid ? '': ' is too short';
+          break;
+        default:
+          break;
+      }
+      this.setState({formErrors: fieldValidationErrors,
+                    judulValid:judulValid,
+                    thumbnailValid:thumbnailValid,
+                    deskripsiValid:deskripsiValid,
+                    tujuan1Valid:tujuan1Valid,
+                    inputhargaValid:inputhargaValid,
+                    }, this.validateForm);
+    }
+
+  validateForm() {
+      this.setState(
+        {
+          formValid:
+          this.state.judulValid &&
+          this.state.thumbnailValid &&
+          this.state.deskripsiValid &&
+          this.state.tujuan1 &&
+          this.state.inputhargaValid
+        });
+    }
+
+  errorClass(error) {
+      return(error.length === 0 ? '' : 'is-invalid');
+    }
+
   async componentDidMount(){
     $('input[name="jenisPostingan"]').change(function(){
       $('input[name="inputharga"]').prop('disabled',this.value !== 'Berbayar' ? true:false)
       if($('input[name="inputharga"]').prop('disabled')){
       $('input[name="inputharga"]').val(0);
       }
-    });
+    })
+    $("#opsiGratis").prop("checked", true);
+    $('input[name="inputharga"]').val(0);
 
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
@@ -95,6 +168,8 @@ class Kelas extends Component {
   }
 
   async submitKelas(){
+    this.validateForm()
+    if(this.state.formValid){
       let formData = new FormData();
       formData.append("photo", this.state.saveImage);
 
@@ -114,6 +189,11 @@ class Kelas extends Component {
         memberID:this.state.memberID,
         judul:this.state.judul,
         thumbnail:this.state.thumbnail,
+        deskripsi:this.state.deskripsi,
+        tujuan1:this.state.tujuan1,
+        tujuan2:this.state.tujuan2,
+        tujuan3:this.state.tujuan3,
+        tujuan4:this.state.tujuan4,
         jenisKelas:this.state.jenisKelas,
         harga:this.state.harga,
       }
@@ -131,6 +211,10 @@ class Kelas extends Component {
         .then(alert('Kelas berhasil disimpan!'))
         .then(window.location.reload())
 
+    }
+    else {
+      alert('Harap isi bagian yang wajib!')
+    }
     }
 
   ambilDataKelas(e){
@@ -236,7 +320,6 @@ class Kelas extends Component {
         .then(window.location.reload())
       }
 
-
     render() {
 
       return (
@@ -254,29 +337,43 @@ class Kelas extends Component {
             <div class="modal-body">
               <div class="container">
                 <div class="row">
-                  <label for="judulkelas">Judul Kelas</label>
-                  <input type="text" class="form-control" id="judulkelas" placeholder="Judul Kelas" onChange={ev => this.setState({ judul: ev.target.value })}/>
+                  <label htmlFor="judulkelas">Judul Kelas</label>
+                  <input type="text" class={`form-control ${this.errorClass(this.state.formErrors.judul)}`} name="judul" id="judulkelas" placeholder="Judul Kelas" onChange={this.handleUserInput} required />
+                  <div class="invalid-feedback">
+                  Judul wajib diisi.
+                  </div>
                 </div>
                 <div class="row">
-                  <label for="thumbnail">Thumbnail</label>
+                  <label htmlFor="thumbnail">Thumbnail</label>
                   <div className="col-12 text-center">
                     <img src={this.state.image} className="img-thumbnail" alt="..." />
                   </div>
                   <label htmlFor="formFile" className="form-label">Upload image here</label>
                   <input
-                  onChange={(e) => {e.preventDefault();this.handleUploadChange(e)}}
-                  className="form-control"
+                  onChange={(e) => {e.preventDefault();this.handleUploadChange(e);this.handleUserInput(e)}}
+                  class={`form-control ${this.errorClass(this.state.formErrors.thumbnail)}`}
+                  name="thumbnail" id="formFile"
                   type="file"
-                  id="formFile"
-                  />
+                  accept="image/jpg, image/png, image/jpeg, image/gif, image/bmp, image/tif, image/tiff"
+                  required />
+                  <div class="invalid-feedback">
+                  Gambar Kelas wajib diisi.
+                  </div>
                 </div>
                 <div class="row">
-                  <label for="deskripsikelas">Deskripsi Kelas</label>
-                  <input type="text" class="form-control" id="deskripsikelas" placeholder="Deskripsi Kelas" onChange={ev => this.setState({ deskripsi: ev.target.value })}/>
+                  <label htmlFor="deskripsikelas">Deskripsi Kelas</label>
+                  <input type="text" class={`form-control ${this.errorClass(this.state.formErrors.deskripsi)}`} name="deskripsi" id="deskripsikelas" placeholder="Deskripsi Kelas" onChange={this.handleUserInput} required/>
+                  <div class="invalid-feedback">
+                  Deskripsi wajib diisi.
+                  </div>
                 </div>
                 <div class="row">
-                  <label for="tujuan">Tujuan Pembelajaran <small>(maksimal 4)</small></label>
-                  <input type="text" class="form-control" id="tujuan1" placeholder="Tujuan ke-1" onChange={ev => this.setState({ tujuan1: ev.target.value })}/>
+                  <label htmlFor="tujuan">Tujuan Pembelajaran <small>(maksimal 4)</small></label>
+                  <input type="text" class={`form-control ${this.errorClass(this.state.formErrors.tujuan1)}`}
+                  name="tujuan1" id="tujuan1" placeholder="Tujuan ke-1" onChange={this.handleUserInput} required/>
+                  <div class="invalid-feedback">
+                  Minimal Tujuan 1 harus diisi.
+                  </div>
                   <input type="text" class="form-control" id="tujuan2" placeholder="Tujuan ke-2" onChange={ev => this.setState({ tujuan2: ev.target.value })}/>
                   <input type="text" class="form-control" id="tujuan3" placeholder="Tujuan ke-3" onChange={ev => this.setState({ tujuan3: ev.target.value })}/>
                   <input type="text" class="form-control" id="tujuan4" placeholder="Tujuan ke-4" onChange={ev => this.setState({ tujuan4: ev.target.value })}/>
@@ -285,13 +382,13 @@ class Kelas extends Component {
                   <label for="jenisKelas">Jenis Kelas</label>
                   <div class="">
                     <div class="form-check-inline">
-                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenisKelas: ev.target.value })}/>
+                      <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiGratis" value="Gratis" onChange={ev => this.setState({ jenisKelas: ev.target.value})}/>
                       <label class="form-check-label" for="opsiGratis">Gratis</label>
                     </div>
                     <div class="form-check-inline">
                       <input class="d-inline form-check-input" type="radio" name="jenisPostingan" id="opsiBerbayar" value="Berbayar" onChange={ev => this.setState({ jenisKelas: ev.target.value })}/>
                       <label class="form-check-label" for="opsiBerbayar">Berbayar</label>
-                      <input class="d-inline form-control ml-2" name="inputharga" type="number" placeholder="Harga" disabled onChange={ev => this.setState({ harga: ev.target.value })}/>
+                      <input class={`form-control d-inline form-control ml-2 ${this.errorClass(this.state.formErrors.inputharga)}`} name="inputharga" type="number" placeholder="Harga" disabled onChange={this.handleUserInput} required/>
                     </div>
                   </div>
                 </div>

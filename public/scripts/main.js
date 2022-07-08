@@ -36,7 +36,7 @@ function showResults(quizID) {
           $('#modalnilai').modal({backdrop: 'static', keyboard: false})
         }
         // Change background colour of results div according to score percent
-        if (quizScorePercent >= 20) {
+        if (quizScorePercent >= 70) {
           document.getElementById('nilaidimodal').style.color = '#4caf50';
           $("#deskripsi-nilai").html("Selamat! <br>Anda berhasil mendaftar sebagai Analis!");
           $("#animasi-hasilanalis").attr("src","soalsaham/lulus.png");
@@ -55,7 +55,19 @@ function showResults(quizID) {
             })
             .then(res=>{
               return res.json()
+            });
+          fetch(`http://localhost:4000/user/setbalance`,
+            {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
             })
+            .then(res=>{
+              return res.json()
+            });
         }
         else if (quizScorePercent >= 0 && quizScorePercent <= 20) {
           sessionStorage.removeItem("justOnce", "true");

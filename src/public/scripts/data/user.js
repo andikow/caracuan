@@ -243,6 +243,17 @@ router.put('/setanalyst', async function (req,res){
   }
 });
 
+router.post('/setbalance', async function (req,res){
+  try {
+    let data = req.body;
+    const sqlQuery = `INSERT INTO balance VALUES ('${data.memberID}','0')`;
+    const rows = await pool.query(sqlQuery);
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+});
+
 router.get('/pengikut/:followedID', async function(req,res){
   try {
     let followedID = req.params.followedID;
@@ -291,7 +302,7 @@ router.delete('/mengikuti', async function (req,res){
 router.post('/submitkelas', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.deskripsi}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
+      const sqlQuery = `INSERT INTO kelas VALUES ('','${data.memberID}','${data.judul}','${data.thumbnail}','${data.deskripsi}','${data.tujuan1}','${data.tujuan2}','${data.tujuan3}','${data.tujuan4}','${data.jenisKelas}', '${data.harga}', CURRENT_DATE())`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -419,15 +430,17 @@ router.get('/carianalis/:name', async function(req,res){
         const sqlQuery = `
         SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut, username, shortbio,
         CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto,
-        CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto
-        FROM member, creator, (
+        CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto,
+        TotalPenilaian, PersenPenilaian
+        FROM member, creator, (SELECT analysis.memberID, (cast(cast(AVG (round(agreed/(disagreed+agreed)*100,2)) as DECIMAL(9,6)) as float)) AS PersenPenilaian, SUM(analysis.agreed+analysis.disagreed) AS TotalPenilaian FROM analysis GROUP BY analysis.memberID) as q2, (
           SELECT member.memberID, COUNT(followedID) AS pengikut
           FROM member
           LEFT JOIN following
           ON member.memberID = following.followedID
           GROUP BY memberID) as q1
         WHERE member.memberID = q1.memberID AND
-        member.memberID = creator.memberID AND isAnalyst = 1 AND member.name LIKE '${name}'`;
+        member.memberID = q2.memberID AND
+        member.memberID = creator.memberID AND isAnalyst = 1 AND member.name LIKE '${name}';`;
         const rows = await pool.query(sqlQuery);
         console.log(sqlQuery);
         res.status(200).json(rows);
@@ -594,13 +607,7 @@ router.get('/cekkelas/:memberID/:kelasID', async function(req,res){
 
 router.get('/analisa/:memberID', async function(req,res){
   try {
-    let startdate = "2022-06-06";
-    var new_date = moment(startdate, "YYYY-MM-DD").add(65, 'days');
-    var day = new_date.format('DD');
-    var month = new_date.format('MM');
-    var year = new_date.format('YYYY');
-    console.log(moment(startdate, "YYYY-MM-DD").add(65, 'days').format('YYYY-M-DD'));
-    console.log(day + '.' + month + '.' + year);
+
 
     let memberID = req.params.memberID
     const sqlQuery = `SELECT * FROM analysis WHERE memberID = "${memberID}"`;
@@ -640,25 +647,20 @@ router.get('/analisa/:memberID', async function(req,res){
             })
 
       rows[i]["price"] = isHit;
-
-            let tes = await fetch('https://api.stockdio.com/data/financial/info/v1/GetCompanyInfo?app-key=' + process.env.REACT_STOCKDIO_KEY + '&stockExchange=IDX&symbol=' + rows[i].stockCode,
-                  {
-                    method: 'GET',
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    credentials:'include'
-                  })
-                  .then(res=>{
-                    return res.json()
-                  })
-                  .then(data=>{
-                    return data.data.company;
-                  });
-                  console.log(tes + 'a');
-            console.log(isHit + 'b');
     }
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+
+
+});
+
+router.get('/penilaian/:memberID', async function(req,res){
+  try {
+    let memberID = req.params.memberID
+    const sqlQuery = `SELECT (cast(cast(AVG (round(agreed/(disagreed+agreed)*100,2)) as DECIMAL(9,6)) as float)) AS PersenPenilaian, SUM(agreed+disagreed) AS TotalPenilaian FROM analysis WHERE memberID = '${memberID}';`;
+    const rows = await pool.query(sqlQuery);
     res.status(200).json(rows);
   } catch (error) {
     res.status(400).send(error.message)

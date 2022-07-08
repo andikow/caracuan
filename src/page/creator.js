@@ -28,6 +28,7 @@ class Creator extends React.Component{
       isFollowed:false,
       pengikut:0,
       name:'',
+      penilaian:{},
     };
   }
 
@@ -73,6 +74,28 @@ class Creator extends React.Component{
       this.setState({
         data: res[0]
       });
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/penilaian/` + this.state.id + '/',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        penilaian: res[0]
+      });
+      console.log(this.state.penilaian);
     })
     .catch((err) =>{
       this.setState({ msg: err.msg })
@@ -207,14 +230,98 @@ class Creator extends React.Component{
         <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
         <p>@{this.state.data.username}</p>
          <h6 className="font-weight-bold">{'Pengikut : ' + this.state.pengikut}</h6>
-         <h6 className="font-weight-bold">Performa : 85%</h6>
+         <h6 className="font-weight-bold">Performa : {this.state.penilaian.PersenPenilaian}%</h6>
          <p>
-         <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
-         <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
-         <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
-         <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
-         <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt mr-2"></i>
-         (24 penilaian)
+         {
+           this.state.penilaian.PersenPenilaian < 10 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 20 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 30 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 40 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 50 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 60 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 70 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 80 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 90 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           this.state.penilaian.PersenPenilaian < 100 ?
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
+           </>:
+           <>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star mr-2"></i>
+           </>
+         }
+         ({this.state.penilaian.TotalPenilaian} penilaian)
          </p>
         </div>
       </div>

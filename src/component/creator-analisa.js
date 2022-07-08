@@ -49,13 +49,6 @@ class CreatorAnalisa extends Component {
   }
 
   async componentDidMount() {
-    let startdate = "2022-06-06";
-    var new_date = moment(startdate, "YYYY-MM-DD").add(65, 'days');
-    var day = new_date.format('DD');
-    var month = new_date.format('MM');
-    var year = new_date.format('YYYY');
-    console.log(new_date.format('YYYY-MM-DD'));
-    console.log(day + '.' + month + '.' + year);
 
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
@@ -179,7 +172,7 @@ class CreatorAnalisa extends Component {
               <div class="col">
                 <p className="text-primary" style={{fontSize:"18px"}}>PREDIKSI</p>
               </div>
-              <div class="col text-right"><h4 class= "font-weight-bold text-success">Berhasil</h4></div>
+              <div class="col text-right">{data.isHit == "Hold" ?  <h4 class= "font-weight-bold text-warning">Hold</h4> : data.isHit == "Hit" ? <h4 class= "font-weight-bold text-success">Berhasil</h4> :  <h4 class= "font-weight-bold text-danger">Gagal</h4>}</div>
             </div>
           <h5 className="text-primary card-title">{data.stockCode + ' '}<span className="text-secondary" style={{fontSize:"13px"}}>{data.namaSaham}</span></h5>
           <h3 className="text-primary card-title">{data.targetPrice} <span className="text-secondary" style={{fontSize:"13px"}}>Target Harga</span></h3>
