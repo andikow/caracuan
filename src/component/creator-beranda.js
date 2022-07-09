@@ -39,7 +39,7 @@ class CreatorBeranda extends Component {
             <div className="bg-light py-3 px-4">
               <input type="text" className="form-control font-weight-bold" placeholder="Nama (opsional)" style={{width:'350px'}} />
               <input type="text" className="form-control font-weight-bold my-2" placeholder="Pesan dukungan"  style={{width:'350px'}} />
-              <a className="btn btn-primary text-center mx-2 text-white font-weight-bold" href="#">Kirim Pesan</a>
+              <btn className="btn btn-primary text-center mx-2 text-white font-weight-bold">Kirim Pesan</btn>
             </div>
           </form>
 

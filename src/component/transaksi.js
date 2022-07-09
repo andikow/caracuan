@@ -97,7 +97,7 @@ class Transaksi extends Component {
             <tr>
             <td>{moment(data.dataInvoice.created).format("DD MMM YYYY")}</td>
             <td>{data.dataInvoice.description}</td>
-            <td>Rp {this.numberWithCommas(data.dataInvoice.amount)}</td>
+            <td>Rp {this.numberWithCommas(data.dataInvoice.amount) || 0}</td>
             <td>{data.dataInvoice.payment_method != undefined ? data.dataInvoice.payment_method + ' (' + data.dataInvoice.bank_code + ')' : ""}</td>
             <td class="">{data.dataInvoice.status == "SETTLED" ? "Lunas" : data.dataInvoice.status == "PENDING" ? "Menunggu Pembayaran" : ""}</td>
             </tr>

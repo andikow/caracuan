@@ -4,6 +4,7 @@ import Chart from 'chart.js/auto';
 var moment = require('moment');
 
 class Dashboardcreator extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +16,7 @@ class Dashboardcreator extends Component {
     };
   }
   async componentDidMount(){
+    this._isMounted = true;
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
     {
       method: 'GET',
@@ -89,39 +91,38 @@ class Dashboardcreator extends Component {
  }
 
 
- let last30days = Last30Days();
- let cumValue = [];
- let labels = Last30Days();
- cumValue.push(0);
- for (var i = 0; i < 30; i++) {
-   for (var j = 0; j < this.state.dataTraktir.length; j++) {
-     if(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD").indexOf(last30days[i]) > -1){
-       if(last30days.indexOf(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD")) == i){
-         cumValue.pop();
-         cumValue.push(this.state.dataTraktir[j].dataInvoice.amount);
-         console.log(i + ' ' + j);
-         continue;
+     let last30days = Last30Days();
+     let cumValue = [];
+     let labels = Last30Days();
+     cumValue.push(0);
+     for (var i = 0; i < 30; i++) {
+       for (var j = 0; j < this.state.dataTraktir.length; j++) {
+         if(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD").indexOf(last30days[i]) > -1){
+           if(last30days.indexOf(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD")) == i){
+             cumValue.pop();
+             cumValue.push(this.state.dataTraktir[j].dataInvoice.amount);
+             console.log(i + ' ' + j);
+             continue;
+           }
+         }
+         else{
+         }
        }
+       cumValue.push(0);
      }
-     else{
-     }
-   }
-   cumValue.push(0);
- }
- cumValue.pop();
-
- const findCumulativeSum = arr => {
-   const creds = arr.reduce((acc, val) => {
-      let { sum, res } = acc;
-      sum += val;
-      res.push(sum);
-      return { sum, res };
-   }, {
-      sum: 0,
-      res: []
-   });
-   return creds.res;
-};
+     cumValue.pop();
+     const findCumulativeSum = arr => {
+       const creds = arr.reduce((acc, val) => {
+          let { sum, res } = acc;
+          sum += val;
+          res.push(sum);
+          return { sum, res };
+       }, {
+          sum: 0,
+          res: []
+       });
+       return creds.res;
+    };
 
     const myChart = new Chart(ctx, {
         type: 'bar',
@@ -186,12 +187,17 @@ class Dashboardcreator extends Component {
       return res.json();
     })
     .then(res=>{
-      this.setState({
-        TotalPencairanBulanIni: res[0].TotalPencairanBulanIni
-      });
+        if (this._isMounted) {
+          this.setState({
+            TotalPencairanBulanIni: res[0].TotalPencairanBulanIni
+          });
+          console.log(this.state.TotalPencairanBulanIni);
+        }
     })
     .catch((err) =>{
+      if (this._isMounted) {
       this.setState({ msg: err.msg })
+    }
     })
 
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/traktiran/by/month/${this.state.memberID}`,
@@ -211,22 +217,28 @@ class Dashboardcreator extends Component {
       for(let i=0; i<res.length; i++){
         jumlahTraktiran += res[i].dataInvoice.amount;
       }
+      if (this._isMounted) {
       this.setState({
         TotalTraktiranBulanIni:jumlahTraktiran
       });
+    }
     })
     .catch((err) =>{
       this.setState({ msg: err.msg })
     })
+    }
+
+    componentWillUnmount() {
+    this._isMounted = false;
   }
 
-  numberWithCommas(x) {
-    x = x.toString();
-    var pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x))
-        x = x.replace(pattern, "$1.$2");
-    return x;
-  }
+    numberWithCommas(x) {
+      x = x.toString();
+      var pattern = /(-?\d+)(\d{3})/;
+      while (pattern.test(x))
+          x = x.replace(pattern, "$1.$2");
+      return x;
+    }
 
   render() {
     return (
@@ -247,7 +259,7 @@ class Dashboardcreator extends Component {
                   Jumlah Saldo Saat Ini
                 </div>
                 <div class="">
-                  Rp {this.numberWithCommas(this.state.saldoSekarang)}
+                  Rp {this.numberWithCommas(this.state.saldoSekarang || 0)}
                 </div>
               </div></div>
               <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-donate"></i>
@@ -256,7 +268,7 @@ class Dashboardcreator extends Component {
                     Dukungan Bulan Ini
                   </div>
                   <div class="">
-                    Rp {this.numberWithCommas(this.state.TotalTraktiranBulanIni)}
+                    Rp {this.numberWithCommas(this.state.TotalTraktiranBulanIni || 0)}
                   </div>
                 </div></div>
                 <div class="m-1 p-2 col-4 flex-fill bd-highlight navbar"><i class="fas fa-2x fa-money-bill-wave"></i>
@@ -265,7 +277,7 @@ class Dashboardcreator extends Component {
                       Jumlah Pencairan Bulan Ini
                     </div>
                     <div class="">
-                      Rp {this.numberWithCommas(this.state.TotalPencairanBulanIni)}
+                      Rp {this.numberWithCommas(this.state.TotalPencairanBulanIni || 0)}
                     </div>
                   </div></div>
                 </div>
