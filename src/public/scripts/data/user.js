@@ -176,7 +176,7 @@ router.get('/kelasdibeli/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
         const sqlQuery = `
-        SELECT memberpurchase.kelasID, member.name, kelas.judul, kelas.thumbnail, q3.materiselesai, q3.jumlahmateri
+        SELECT DISTINCT memberpurchase.kelasID, member.name, kelas.judul, kelas.thumbnail, q3.materiselesai, q3.jumlahmateri
         FROM memberpurchase, kelas, member, (
           SELECT memberpurchase.kelasID, q2.materiselesai, q2.jumlahmateri
           FROM memberpurchase
@@ -191,6 +191,7 @@ router.get('/kelasdibeli/:memberID', async function(req,res){
             WHERE
             q1.kelasID = materiselesaibaca.kelasID AND
             memberID = '${memberID}'
+            GROUP BY materiselesaibaca.kelasID
           ) AS q2
           ON memberpurchase.kelasID = q2.kelasID
         ) AS q3

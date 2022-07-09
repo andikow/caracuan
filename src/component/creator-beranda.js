@@ -51,13 +51,13 @@ class CreatorBeranda extends Component {
             <h5 className="font-weight-bold text-primary">Sosial & Tautan</h5>
             <div class="row">
               <div class="col">
-                <a className="btn btn-outline-success text-success btn-block text-center font-weight-bold" href="#"><i className="fab fa-instagram"></i> Instagram</a>
+                <a className="btn btn-outline-success text-success btn-block text-center font-weight-bold" href={`https://www.instagram.com/${this.state.data.instagram}`}><i className="fab fa-instagram"></i> Instagram</a>
               </div>
               <div class="col">
-                <a className="btn btn-outline-primary text-primary btn-block text-center font-weight-bold" href="#"><i className="fab fa-twitter"></i> Twitter</a>
+                <a className="btn btn-outline-primary text-primary btn-block text-center font-weight-bold" href={`https://www.twitter.com/${this.state.data.twitter}`}><i className="fab fa-twitter"></i> Twitter</a>
               </div>
               <div class="col">
-                <a className="btn btn-outline-danger text-danger btn-block text-center font-weight-bold" href="#"><i className="fab fa-youtube"></i> Youtube</a>
+                <a className="btn btn-outline-danger text-danger btn-block text-center font-weight-bold" href={`https://www.youtube.com/${this.state.data.youtube}`}><i className="fab fa-youtube"></i> Youtube</a>
               </div>
 
             </div>

@@ -230,7 +230,7 @@ class Creator extends React.Component{
         <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
         <p>@{this.state.data.username}</p>
          <h6 className="font-weight-bold">{'Pengikut : ' + this.state.pengikut}</h6>
-         <h6 className="font-weight-bold">Performa : {this.state.penilaian.PersenPenilaian}%</h6>
+         <h6 className="font-weight-bold">Performa : {parseFloat(this.state.penilaian.PersenPenilaian).toFixed(2)}%</h6>
          <p>
          {
            this.state.penilaian.PersenPenilaian < 10 ?

@@ -95,8 +95,8 @@ class Akademi extends Component {
 
               <div class="card-footer">
               <span class="align-middle float-left text-primary font-weight-bold">
-              {((data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0)) ?
-                (data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0) * 100 : 0} %
+              {parseFloat(((data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0)) ?
+                (data.materiselesai ? data.materiselesai : 0) / (data.jumlahmateri ? data.jumlahmateri : 0) * 100 : 0).toFixed(0)} %
               </span>
               <span class="align-middle float-left text-primary font-weight-bold"></span>
                 <button class="btn btn-warning btn-sm float-right">
