@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
 import 'datatables.net';
+import HashLoader from "react-spinners/HashLoader";
 var moment = require('moment');
+const override: React.CSSProperties = {
+  display: "block",
+  margin: "auto",
+  borderColor: "red",
+};
 
 class Saldo extends Component {
   constructor(props) {
@@ -21,6 +27,7 @@ class Saldo extends Component {
       namaPemilik:'',
       nomorRekening:'',
       objectblank:{a:1},
+      loading: true,
     };
   }
 
@@ -103,7 +110,8 @@ class Saldo extends Component {
     })
     .then(res=>{
       this.setState({
-        riwayatPenarikan: res
+        riwayatPenarikan: res,
+        loading:false,
       });
       console.log(this.state.riwayatPenarikan);
       $('#transaksi').DataTable();
@@ -344,13 +352,22 @@ class Saldo extends Component {
                           {this.state.riwayatPenarikan.map(data =>
                             <tr>
                             <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
-                            <td>{data.jumlah}</td>
+                            <td>Rp{this.numberWithCommas(data.jumlah)}</td>
                             <td>{moment(data.updatedAt).format("DD MMM YYYY")}</td>
                             <td>{data.status}</td>
                             </tr>
                           )}
                           </tbody>
                         </table>
+                        <div className="sweet-loading p-3">
+                        <HashLoader
+                        cssOverride={override}
+                        size={150}
+                        color={"#217691"}
+                        loading={this.state.loading}
+                        speedMultiplier={1.5}
+                        />
+                        </div>
                       </div>
                     </div>
 

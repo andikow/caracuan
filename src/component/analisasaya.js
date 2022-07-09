@@ -3,7 +3,13 @@ import $ from 'jquery';
 import 'datatables.net';
 import jwt_decode from 'jwt-decode';
 import CONFIG from './../public/scripts/globals/config.js';
+import HashLoader from "react-spinners/HashLoader";
 var moment = require('moment');
+const override: React.CSSProperties = {
+  display: "block",
+  margin: "auto",
+  borderColor: "red",
+};
 
 class AnalisaSaya extends Component {
   constructor(props) {
@@ -16,6 +22,7 @@ class AnalisaSaya extends Component {
       targetHarga:'',
       hari:'',
       deskripsi:'',
+      loading: true,
     };
   }
   async componentDidMount() {
@@ -80,7 +87,8 @@ class AnalisaSaya extends Component {
       })
       .then(data=>{
         this.setState({
-          data: data
+          data: data,
+          loading:false,
         });
         $('#riwayatanalisa').DataTable({
           destroy:true,
@@ -195,6 +203,15 @@ class AnalisaSaya extends Component {
                     <tbody>
                     </tbody>
                   </table>
+                  <div className="sweet-loading p-3">
+                  <HashLoader
+                  cssOverride={override}
+                  size={150}
+                  color={"#217691"}
+                  loading={this.state.loading}
+                  speedMultiplier={1.5}
+                  />
+                  </div>
                 </div>
                 </div>
               </div>
