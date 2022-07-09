@@ -291,7 +291,7 @@ class DetailPost extends Component {
         <div></div> :
         <div class="col-12 mt-2">
           <div class="alert alert-warning" role="alert">
-            Anda belum berlangganan kelas ini! Traktir <button onClick={() => this.checkout()} type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#paymentModal">1 <i className="far fa-ice-cream" style={{color:"white"}}></i></button> untuk berlangganan.
+            Anda belum berlangganan kelas ini! Traktir <button onClick={() => this.checkout()} type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#paymentModal"><i className="far fa-donate" style={{color:"white"}}></i></button> untuk berlangganan.
           </div>
         </div>
       }

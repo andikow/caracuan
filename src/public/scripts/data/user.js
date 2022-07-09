@@ -898,7 +898,7 @@ router.post('/updateinvoice', async function (req,res){
         SET
           status = "${data.status}",
           paidAt = "${data.paid_at}",
-          balance = balance + ${data.adjusted_received_amount}
+          balance = balance + ${data.amount}
         WHERE invoiceID = "${data.id}";`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);

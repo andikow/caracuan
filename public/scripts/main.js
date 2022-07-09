@@ -69,7 +69,7 @@ function showResults(quizID) {
               return res.json()
             });
         }
-        else if (quizScorePercent >= 0 && quizScorePercent <= 20) {
+        else if (quizScorePercent >= 0 && quizScorePercent < 70) {
           sessionStorage.removeItem("justOnce", "true");
           document.getElementById('nilaidimodal').style.color = '#f44336'
           $("#animasi-hasilanalis").attr("src","soalsaham/gagal.png");
