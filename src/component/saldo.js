@@ -352,7 +352,7 @@ class Saldo extends Component {
                           {this.state.riwayatPenarikan.map(data =>
                             <tr>
                             <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
-                            <td>{data.jumlah}</td>
+                            <td>Rp{this.numberWithCommas(data.jumlah)}</td>
                             <td>{moment(data.updatedAt).format("DD MMM YYYY")}</td>
                             <td>{data.status}</td>
                             </tr>

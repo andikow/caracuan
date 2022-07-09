@@ -826,7 +826,8 @@ router.get('/traktiran/by/month/:memberID', async function(req,res){
         status = "PAID" AND
         MONTH(paidAt)= MONTH(CURRENT_DATE()) AND
         YEAR(paidAt)= YEAR(CURRENT_DATE()) AND
-        kelas.memberID = "${memberID}";`;
+        kelas.memberID = "${memberID}"
+        ORDER BY paidAt DESC;`;
     const rows = await pool.query(sqlQuery);
     const { Invoice } = x;
     const i = new Invoice({});

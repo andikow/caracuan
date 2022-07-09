@@ -70,6 +70,14 @@ class Transaksi extends Component {
       })
   }
 
+  numberWithCommas(x) {
+    x = x.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(x))
+        x = x.replace(pattern, "$1.$2");
+    return x;
+  }
+
   render() {
     return (
     <div class="container-fluid overflow-auto" style={{height:'90vh'}}>
@@ -89,7 +97,7 @@ class Transaksi extends Component {
             <tr>
             <td>{moment(data.dataInvoice.created).format("DD MMM YYYY")}</td>
             <td>{data.dataInvoice.description}</td>
-            <td>{data.dataInvoice.amount}</td>
+            <td>{this.numberWithCommas(data.dataInvoice.amount)}</td>
             <td>{data.dataInvoice.payment_method != undefined ? data.dataInvoice.payment_method + ' (' + data.dataInvoice.bank_code + ')' : ""}</td>
             <td class="">{data.dataInvoice.status == "SETTLED" ? "Lunas" : data.dataInvoice.status == "PENDING" ? "Menunggu Pembayaran" : ""}</td>
             </tr>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import jwt_decode from 'jwt-decode';
 import Chart from 'chart.js/auto';
+var moment = require('moment');
 
 class Dashboardcreator extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class Dashboardcreator extends Component {
     this.state = {
       memberID:'',
       saldoSekarang:0,
+      dataTraktir:[],
       TotalPencairanBulanIni:0,
       TotalTraktiranBulanIni:0,
     };
@@ -43,31 +45,102 @@ class Dashboardcreator extends Component {
       })
     })
     const ctx = document.getElementById('Chart');
+
+    await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/traktiran/by/month/${this.state.memberID}`,
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials:'include'
+    })
+    .then(res=>{
+      return res.json();
+    })
+    .then(res=>{
+      this.setState({
+        dataTraktir:res,
+      });
+    })
+    .catch((err) =>{
+      this.setState({ msg: err.msg })
+    })
+
+    function formatDate(date){
+    var dd = date.getDate();
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    if(dd<10) {dd='0'+dd}
+    if(mm<10) {mm='0'+mm}
+    date = yyyy+'-'+mm+'-'+dd;
+    return date
+ }
+
+    function Last30Days () {
+    var result = [];
+    for (var i=0; i<30; i++) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        result.push( formatDate(d) )
+    }
+
+    return(result);
+ }
+
+
+ let last30days = Last30Days();
+ let cumValue = [];
+ let labels = Last30Days();
+ cumValue.push(0);
+ for (var i = 0; i < 30; i++) {
+   for (var j = 0; j < this.state.dataTraktir.length; j++) {
+     if(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD").indexOf(last30days[i]) > -1){
+       if(last30days.indexOf(moment(this.state.dataTraktir[j].paidAt).format("YYYY-MM-DD")) == i){
+         cumValue.pop();
+         cumValue.push(this.state.dataTraktir[j].dataInvoice.amount);
+         console.log(i + ' ' + j);
+         continue;
+       }
+     }
+     else{
+     }
+   }
+   cumValue.push(0);
+ }
+ cumValue.pop();
+
+ const findCumulativeSum = arr => {
+   const creds = arr.reduce((acc, val) => {
+      let { sum, res } = acc;
+      sum += val;
+      res.push(sum);
+      return { sum, res };
+   }, {
+      sum: 0,
+      res: []
+   });
+   return creds.res;
+};
+
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['1-Jan', '2-Jan', '3-Jan', '4-Jan', '5-Jan', '6-Jan'],
+            labels: labels,
             datasets: [{
-                label: 'Jumlah dukungan dalam 30 hari terakhir',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Akumulasi dukungan dalam 30 hari terakhir',
+                data: findCumulativeSum(cumValue),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 206, 86, 1)',
+
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+
                 ],
                 borderWidth: 1
-            }]
+            },
+          ]
         },
         options: {
             scales: {
@@ -134,13 +207,12 @@ class Dashboardcreator extends Component {
       return res.json();
     })
     .then(res=>{
-      let jumlahTarik = 0;
+      let jumlahTraktiran = 0;
       for(let i=0; i<res.length; i++){
-        jumlahTarik += res[0].dataInvoice.amount;
+        jumlahTraktiran += res[i].dataInvoice.amount;
       }
-      console.log(jumlahTarik);
       this.setState({
-        TotalTraktiranBulanIni:jumlahTarik
+        TotalTraktiranBulanIni:jumlahTraktiran
       });
     })
     .catch((err) =>{

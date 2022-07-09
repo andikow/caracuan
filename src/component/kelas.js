@@ -156,6 +156,14 @@ class Kelas extends Component {
       })
   }
 
+  numberWithCommas(x) {
+    x = x.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(x))
+        x = x.replace(pattern, "$1.$2");
+    return x;
+  }
+
   handleUploadChange(e) {
     if(e){
       let uploaded = e.target.files[0];
@@ -498,7 +506,7 @@ class Kelas extends Component {
                       <td>{data.judul}</td>
                       <td><img src={data.thumbnail} width="100px"/></td>
                       <td>{data.jenisKelas}</td>
-                      <td>{data.harga}</td>
+                      <td>Rp {this.numberWithCommas(data.harga)}</td>
                       <td><button class="btn btn-light" id={data.kelasID} onClick = {e => this.ambilDataKelas(e.target.id)} data-toggle="modal" data-target="#modalubahkelas"><i className="fa fa-edit fa-sm  font-weight-bold pr-2"></i> Ubah</button></td>
                     </tr>)
                   }
