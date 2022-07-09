@@ -307,11 +307,11 @@ class Creator extends React.Component{
            </>:
            this.state.penilaian.PersenPenilaian < 100 ?
            <>
-           <i style={{color:"#F5C60D"}} className="fas fa-star-half-alt"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
+           <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
            <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
            <i style={{color:"#F5C60D"}} className="fas fa-star"></i>
            <i style={{color:"#F5C60D"}} className="fas fas fa-star-half-alt"></i>
-           <i style={{color:"#F5C60D"}} className="far fa-star mr-2"></i>
            </>:
            <>
            <i style={{color:"#F5C60D"}} className="fas fa-star"></i>

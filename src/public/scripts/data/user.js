@@ -582,7 +582,7 @@ router.get('/creator/:name', async function(req,res){
 router.post('/kelasgratis', async function (req,res){
     try {
       let data = req.body;
-      const sqlQuery = `INSERT INTO memberpurchase VALUES ('${data.memberID}','${data.kelasID}','')`;
+      const sqlQuery = `INSERT INTO memberpurchase VALUES ('${data.memberID}','${data.kelasID}','','','')`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
@@ -715,7 +715,7 @@ router.post('/cetakinvoice', async function (req,res){
         },
         successRedirectURL: data.currentpath,
       });
-      pool.query(`INSERT INTO memberpurchase (memberID, kelasID, invoiceID) values ('${data.memberID}', '${data.kelasID}', '${invoice.id}') ON DUPLICATE KEY UPDATE invoiceID = '${invoice.id}'`);
+      pool.query(`INSERT INTO memberpurchase (memberID, kelasID, invoiceID, paidAt, status) values ('${data.memberID}', '${data.kelasID}', '${invoice.id}', '', '') ON DUPLICATE KEY UPDATE invoiceID = '${invoice.id}'`);
       res.status(200).json(invoice)
     } catch (e) {
       res.status(400).send(e.message)
