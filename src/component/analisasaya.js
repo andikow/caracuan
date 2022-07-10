@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import $ from 'jquery';
+import validator from 'validator';
 import 'datatables.net';
 import jwt_decode from 'jwt-decode';
 import CONFIG from './../public/scripts/globals/config.js';
@@ -22,9 +23,71 @@ class AnalisaSaya extends Component {
       targetHarga:'',
       hari:'',
       deskripsi:'',
+      formErrors: {kodeSaham:'', targetHarga:'', hari:'', deskripsi:''},
+      kodeSahamValid:'',
+      targetHargaValid:'',
+      hariValid:'',
+      deskripsiValid:'',
       loading: true,
     };
   }
+  handleUserInput = (e) => {
+      const name = e.target.name;
+      const value = e.target.value;
+      this.setState({[name]: value},
+                    () => { this.validateField(name, value) });
+    }
+
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let kodeSahamValid = this.state.kodeSahamValid;
+        let targetHargaValid = this.state.targetHargaValid;
+        let hariValid = this.state.hariValid;
+        let deskripsiValid = this.state.deskripsiValid;
+
+        switch(fieldName) {
+          case 'kodeSaham':
+            kodeSahamValid =  validator.isAlpha(value);
+            fieldValidationErrors.kodeSaham = kodeSahamValid ? '' : ' tidak valid';
+            break;
+          case 'targetHarga':
+            targetHargaValid =  validator.isInt(value, [{gt: -1}]);
+            fieldValidationErrors.targetHarga = targetHargaValid ? '' : ' tidak valid';
+            break;
+          case 'hari':
+            hariValid = validator.isInt(value, [{gt: -1}]);
+            fieldValidationErrors.hari = hariValid ? '' : ' tidak valid';
+            break;
+          case 'deskripsi':
+            deskripsiValid = value.length > 0;
+            fieldValidationErrors.deskripsi = deskripsiValid ? '': ' wajib diisi';
+            break;
+          default:
+            break;
+        }
+        this.setState({formErrors: fieldValidationErrors,
+                        kodeSahamValid: kodeSahamValid,
+                        targetHargaValid: targetHargaValid,
+                        hariValid: hariValid,
+                        deskripsiValid: deskripsiValid
+                      }, this.validateForm);
+      }
+
+    validateForm() {
+        this.setState(
+          {
+            formValid:
+            this.state.kodeSahamValid &&
+            this.state.targetHargaValid &&
+            this.state.hariValid &&
+            this.state.deskripsiValid
+          });
+      }
+
+    errorClass(error) {
+        return(error.length === 0 ? '' : 'is-invalid');
+      }
+
   async componentDidMount() {
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
@@ -105,11 +168,7 @@ class AnalisaSaya extends Component {
             { data: "stockCode" },
             { data: "targetPrice" },
             { data: "initialPrice" },
-            { data: "",
-            render:function(){
-              return '<a href="/detail">Detail</a>'
-            }
-          },
+            { data: "isHit" },
         ]
       });
     })
@@ -129,7 +188,6 @@ class AnalisaSaya extends Component {
     var data = {
       memberID:this.state.memberID,
       kodeSaham:this.state.kodeSaham,
-      hargaAwal:this.state.hargaAwal,
       targetHarga:this.state.targetHarga,
       hari:this.state.hari,
       deskripsi:this.state.deskripsi,
@@ -164,19 +222,50 @@ class AnalisaSaya extends Component {
                 <div class="card-title">
                   Buat Analisa
                 </div>
-                <div class="row m-2">
-                  <label for="kode-saham" class="col-form-label col-auto pl-0">Target saya untuk:</label>
-                  <input class="form-control col-2" id="kode-saham" type="text" placeholder="Kode Saham" aria-label="input-kode-saham" onChange={ev => {this.setState({ kodeSaham: ev.target.value })}}/>
-                  <label for="harga-saham" class="col-auto col-form-label">adalah</label>
-                  <input class="form-control col-2" id="harga-saham" type="text" placeholder="Harga" aria-label="input-harga-saham" onChange={ev => this.setState({ targetHarga: ev.target.value })}/>
-                  <label for="harga-saham" class="col-auto col-form-label">tercapai dalam</label>
-                  <input class="form-control col-2" id="harga-saham" type="text" placeholder="" aria-label="input-harga-saham" onChange={ev => this.setState({ hari: ev.target.value })}/>
-                  <label for="harga-saham" class="col-auto col-form-label">hari</label>
+                <div class="row">
+                  <div class="col form-group">
+                    <div class="row">
+                      <label htmlFor="kodeSaham" class="col-auto col-form-label">Target saya untuk:</label>
+                      <input class={`col form-control ${this.errorClass(this.state.formErrors.kodeSaham)}`} id="kodeSaham" type="text" name="kodeSaham" value={this.state.kodeSaham} placeholder="Kode Saham" aria-label="input-kode" onChange={this.handleUserInput} required/>
+                      <div class="invalid-feedback text-right">
+                        Masukkan Kode Saham yang valid.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col form-group">
+                    <div class="row">
+                      <label htmlFor="targetHarga" class="col-auto col-form-label">adalah</label>
+                      <input class={`col form-control ${this.errorClass(this.state.formErrors.targetHarga)}`} id="targetHarga" type="text" name="targetHarga" value={this.state.targetHarga} placeholder="Harga" aria-label="input-target" onChange={this.handleUserInput} required/>
+                      <div class="invalid-feedback text-right">
+                        Masukkan Target Harga yang valid.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col form-group">
+                    <div class="row">
+                      <label htmlFor="hari" class="col-auto col-form-label">tercapai dalam</label>
+                      <input class={`col form-control ${this.errorClass(this.state.formErrors.hari)}`} id="hari" type="text" name="hari" value={this.state.hari} placeholder="1" aria-label="input-hari" onChange={this.handleUserInput} required/>
+                      <div class="invalid-feedback text-right">
+                        Masukkan Hari yang valid.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-auto form-group">
+                    <div class="row">
+                      <label htmlFor="hari" class="col-auto col-form-label">hari</label>
+                    </div>
+                  </div>
+
                 </div>
-                <div class="row m-2">
-                  <label for="kode-saham" class="col-form-label col-auto pl-0">Deskripsi</label>
-                  <textarea class="form-control" aria-label="With textarea" onChange={ev => this.setState({ deskripsi: ev.target.value })}></textarea>
-                  <button type="button" class="mt-2 btn btn-primary" onClick={() => this.submitanalisis()}>Simpan</button>
+                <div class="row mb-2">
+                  <div class="col">
+                    <label htmlFor="deskripsi" class="col-form-label col-auto pl-0">Deskripsi</label>
+                    <textarea class={`form-control ${this.errorClass(this.state.formErrors.deskripsi)}`} aria-label="With textarea" name="deskripsi" value={this.state.deskripsi} onChange={this.handleUserInput} required></textarea>
+                    <div class="invalid-feedback">
+                      Deskripsi Tidak Boleh Kosong.
+                    </div>
+                    <button type="button" class="mt-2 btn btn-primary" onClick={() => this.submitanalisis()} disabled={!this.state.formValid}>Simpan</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -197,7 +286,7 @@ class AnalisaSaya extends Component {
                         <th>Saham</th>
                         <th>Target</th>
                         <th>Initial</th>
-                        <th>Detail</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
