@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from './../public/assets/img/logo_cover_white.png';
+import DefaultAvatar from './../public/assets/img/default_avatar.png';
 import { NavLink } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
@@ -93,7 +94,7 @@ class Header extends React.Component{
               this.state.isLogin ?
               <NavLink to="/dashboard/akademi">
               <div className="d-flex align-content-center flex-wrap ml-2">
-              <img src={this.state.profilImage} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+              <img src={this.state.profilImage != `http://localhost:${process.env.REACT_APP_REQ_PORT}/uploads/profil/` ? this.state.profilImage : DefaultAvatar} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
               </div></NavLink>:
               <a className="nav-item nav-link text-white" href="" style={{paddingLeft:"20px"}}>Jadi Analis
               </a>

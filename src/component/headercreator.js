@@ -1,5 +1,6 @@
 import React from 'react';
 import Poto from './../public/assets/img/creator.png';
+import DefaultAvatar from './../public/assets/img/default_avatar.png';
 import Logo from './../public/assets/img/logo_cover.png';
 import {NavLink} from "react-router-dom";
 import jwt_decode from 'jwt-decode';
@@ -83,7 +84,7 @@ async componentDidMount() {
             <button className="btn btn-outline-primary btn-sm my-auto rounded-circle" type="search"><i className="fa fa-search fa-sm fa-fw font-weight-bold"></i></button>
             <button className="btn btn-sm my-auto"><a className="nav-item nav-link" href="#"  style={{paddingLeft:"20px", paddingRight:"20px"}}><i className="fa fa-bell-on fa-fw text-primary fa-lg"></i></a></button>
             <div className="d-flex align-content-center flex-wrap">
-              <img src={this.state.profilImage} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
+              <img src={this.state.profilImage != `http://localhost:${process.env.REACT_APP_REQ_PORT}/uploads/profil/` ? this.state.profilImage : DefaultAvatar} alt="Poto" height="40" style={{borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
             </div>
 
             <div className="row ml-2">

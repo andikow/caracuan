@@ -35,8 +35,10 @@ router.post('/register', async function (req,res){
       let data = req.body;
       const salt = await bcrypt.genSalt();
       const hashPassword = await bcrypt.hash(data.password, salt);
-      const sqlQuery = `INSERT INTO member VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${hashPassword}','','0','','')`;
-      const rows = await pool.query(sqlQuery);
+      const registersqlQuery = `INSERT INTO member VALUES ('','${data.name}','${data.birthDate}','${data.phone}','${data.email}', '${hashPassword}','','0','','')`;
+      const register = await pool.query(registersqlQuery);
+      const creatorsqlQuery = `INSERT INTO creator (memberID, username, shortbio, instagram, twitter, youtube ) VALUES ('${register.insertId}', '', '', '', '', '');`;
+      const rows = await pool.query(creatorsqlQuery);
       res.status(200).json(rows);
     } catch (error) {
         res.status(400).send(error.message)
@@ -399,14 +401,19 @@ router.post('/updatemember', async function (req,res){
       const sqlQuery = `
         UPDATE member
         INNER JOIN creator
-        ON member.memberID = creator.memberID AND member.memberID = ${data.memberID}
+        ON member.memberID = creator.memberID AND member.memberID = '${data.memberID}'
         SET
         profilephoto = IF(profilephoto = "${data.profilImageName}", profilephoto, "${data.profilImageName}"),
         coverphoto = IF(coverphoto = "${data.coverImageName}", coverphoto, "${data.coverImageName}"),
+        Name = "${data.name}",
+        BirthDate = "${data.birthDate}",
+        Phone = "${data.phone}",
+        Email = "${data.email}",
+        username = '${data.username}',
         shortbio = '${data.shortbio}',
         instagram = '${data.instagram}',
         twitter = '${data.twitter}',
-        youtube = '${data.youtube}',`;
+        youtube = '${data.youtube}';`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);
     } catch (error) {
