@@ -900,11 +900,13 @@ router.post('/updateinvoice', async function (req,res){
     try {
       let data = req.body;
       const sqlQuery = `
-        UPDATE memberpurchase
+      UPDATE memberpurchase
+        INNER JOIN kelas
+        ON memberpurchase.kelasID = kelas.kelasID
         INNER JOIN balance
-        ON balance.memberID = memberpurchase.memberID
+        ON balance.memberID = kelas.memberID
         SET
-          status = "${data.status}",
+        status = "${data.status}",
           paidAt = "${data.paid_at}",
           balance = balance + ${data.amount}
         WHERE invoiceID = "${data.id}";`;
