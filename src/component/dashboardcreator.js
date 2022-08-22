@@ -172,6 +172,7 @@ class Dashboardcreator extends Component {
         this.setState({
         saldoSekarang: data[0].balance,
       })
+      console.log(data);
     })
 
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/payout/by/month/${this.state.memberID}`,

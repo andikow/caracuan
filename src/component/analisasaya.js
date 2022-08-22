@@ -264,7 +264,35 @@ class AnalisaSaya extends Component {
                     <div class="invalid-feedback">
                       Deskripsi Tidak Boleh Kosong.
                     </div>
-                    <button type="button" class="mt-2 btn btn-primary" onClick={() => this.submitanalisis()} disabled={!this.state.formValid}>Simpan</button>
+                    <div class="row">
+                      <div class="col my-auto">
+                        <label for="jenisKelas">Kategori</label>
+                        <div class="form-check-inline ml-2">
+                          <input class="d-inline form-check-input" type="radio" name="kategoriAnalisis" id="opsiAman" value="Aman" data-toggle="tooltip" data-placement="top" title="Aman" onChange={ev => this.setState({ kategori: ev.target.value })}/>
+                          <label class="form-check-label" for="opsiAman" data-toggle="tooltip" data-placement="top" title="Aman">
+                            <i class="fas fa-exclamation text-success"></i>
+                          </label>
+                        </div>
+                        <div class="form-check-inline ml-2">
+                          <input class="d-inline form-check-input" type="radio" name="kategoriAnalisis" id="opsiModerat" value="Moderat" data-toggle="tooltip" data-placement="top" title="Moderat" onChange={ev => this.setState({ kategori: ev.target.value })}/>
+                          <label class="form-check-label" for="opsiModerat" data-toggle="tooltip" data-placement="top" title="Moderat">
+                            <i class="fas fa-exclamation text-warning"></i>
+                            <i class="fas fa-exclamation text-warning"></i>
+                          </label>
+                        </div>
+                        <div class="form-check-inline ml-2">
+                          <input class="d-inline form-check-input" type="radio" name="kategoriAnalisis" id="opsiBerbahaya" value="Berbahaya" data-toggle="tooltip" data-placement="top" title="Berbahaya" onChange={ev => this.setState({ kategori: ev.target.value })}/>
+                          <label class="form-check-label" for="opsiBerbahaya" data-toggle="tooltip" data-placement="top" title="Berbahaya">
+                            <i class="fas fa-exclamation text-danger"></i>
+                            <i class="fas fa-exclamation text-danger"></i>
+                            <i class="fas fa-exclamation text-danger"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col text-right">
+                        <button type="button" class="mt-2 btn btn-primary mr-0" onClick={() => this.submitanalisis()} disabled={!this.state.formValid}>Simpan</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

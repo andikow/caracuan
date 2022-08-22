@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Poto from './../public/assets/img/creator.png';
 import jwt_decode from 'jwt-decode';
 var moment = require('moment');
 
@@ -28,6 +27,7 @@ class Pengaturan extends Component {
     }
   }
   async componentDidMount() {
+
     await fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/token`,
       {
         method: 'GET',
@@ -161,7 +161,7 @@ class Pengaturan extends Component {
       <>
       <div class="container overflow-auto" style={{height:'90vh'}}>
         <div class="row">
-          <h2 className="col-12 px-4 my-4 text-primary">Pengaturan</h2>
+          <h2 className="col-12 px-4 my-4 text-primary font-weight-bold">Pengaturan</h2>
         </div>
         <div class="row">
           <div class="col-12">
@@ -170,7 +170,7 @@ class Pengaturan extends Component {
                 <img src={this.state.coverImage} className="img-thumbnail" alt="..." />
               </div>
               <div className="my-3">
-                <label htmlFor="formFile" className="form-label text-primary">
+                <label htmlFor="formFile" className="form-label text-primary font-weight-bold">
                   Upload foto cover
                 </label>
                 <input
@@ -189,7 +189,7 @@ class Pengaturan extends Component {
                 <img src={this.state.profilImage} className="img-thumbnail" alt="..." />
               </div>
               <div className="my-3">
-                <label htmlFor="formFile" className="form-label text-primary">
+                <label htmlFor="formFile" className="form-label text-primary font-weight-bold">
                   Upload foto profil
                 </label>
                 <input
@@ -252,7 +252,12 @@ class Pengaturan extends Component {
                <input type="text" onChange={ev => this.setState({ email: ev.target.value })} class="form-control my-2" placeholder="johndoe@johndoe.com" defaultValue={this.state.dataMember.Email}/>
             </div>
             <div class="pt-4 form-group">
-              <p class="pt-4 text-primary">Ganti Password</p>
+               <p class="text-primary font-weight-bold">Sudah Memiliki Sertifikat?</p>
+               <label class="text-primary">Masukkan No Sertifikat <small>(terbaru)</small></label>
+               <input type="text" class="form-control my-2" placeholder="No Sertifikat" />
+            </div>
+            <div class="pt-4 form-group">
+               <p class="text-primary font-weight-bold">Ganti Password</p>
                <label class="text-primary">Password Baru</label>
                <input type="password" class="form-control my-2" placeholder="Password" />
                <label class="text-primary">Konfirmasi Password Baru</label>

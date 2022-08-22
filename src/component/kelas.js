@@ -203,7 +203,7 @@ class Kelas extends Component {
         tujuan3:this.state.tujuan3,
         tujuan4:this.state.tujuan4,
         jenisKelas:this.state.jenisKelas,
-        harga:this.state.harga,
+        harga:this.state.inputharga,
       }
 
       fetch(`http://localhost:${process.env.REACT_APP_REQ_PORT}/user/submitkelas`,

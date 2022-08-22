@@ -213,7 +213,7 @@ router.get('/kelasdibeli/:memberID', async function(req,res){
 router.get('/mengikuti/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        const sqlQuery = `SELECT following.followedID, member.Name, member.profilephoto, username FROM member, following, creator WHERE following.followedID = creator.memberID AND following.followedID = member.memberID AND following.memberID = '${memberID}';`;
+        const sqlQuery = `SELECT following.followedID, member.Name, member.profilephoto, username, noSertifikat FROM member, following, creator WHERE following.followedID = creator.memberID AND following.followedID = member.memberID AND following.memberID = '${memberID}';`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -224,7 +224,7 @@ router.get('/mengikuti/:memberID', async function(req,res){
 router.get('/diikuti/:memberID', async function(req,res){
     try {
         let memberID = req.params.memberID
-        const sqlQuery = `SELECT following.memberID, member.Name, member.profilephoto, username FROM member, following, creator WHERE following.memberID = creator.memberID AND following.memberID = member.memberID AND following.followedID = '${memberID}';`;
+        const sqlQuery = `SELECT following.memberID, member.Name, member.profilephoto, username, noSertifikat FROM member, following, creator WHERE following.memberID = creator.memberID AND following.memberID = member.memberID AND following.followedID = '${memberID}';`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -436,7 +436,7 @@ router.get('/carianalis/:name', async function(req,res){
     try {
       var name = req.params.name;
         const sqlQuery = `
-        SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut, username, shortbio,
+        SELECT member.memberID, Name, refresh_token, isAnalyst, pengikut, username, shortbio, noSertifikat,
         CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/profil/", profilephoto) AS profilephoto,
         CONCAT('${req.protocol}', "://", '${req.get("host")}', "/uploads/cover/", coverphoto) AS coverphoto,
         TotalPenilaian, PersenPenilaian
@@ -462,7 +462,7 @@ router.get('/carianalis/:name', async function(req,res){
 router.get('/kreator/:id', async function(req,res){
     try {
         var id = req.params.id
-        const sqlQuery = `SELECT member.memberID, Name, BirthDate, Phone, Email, profilephoto, coverphoto, username, shortbio, instagram, twitter, youtube FROM member, creator WHERE creator.memberID = member.memberID AND member.memberID = ${id};`;
+        const sqlQuery = `SELECT member.memberID, Name, BirthDate, Phone, Email, profilephoto, coverphoto, username, shortbio, instagram, twitter, youtube, noSertifikat FROM member, creator WHERE creator.memberID = member.memberID AND member.memberID = ${id};`;
         const rows = await pool.query(sqlQuery);
         res.status(200).json(rows);
     } catch (error) {
@@ -883,7 +883,7 @@ router.post('/updatereimbursestatus', async function (req,res){
         ON payout.memberID = balance.memberID
         SET
           status = "${data.status}",
-          balance = IF("${data.status}" = "FAILED", balance - ${data.amount} - (0.1 * ${data.amount}), balance),
+          balance = IF("${data.status}" = "COMPLETED", balance - ${data.amount} - (0.1 * ${data.amount}), balance),
           createdAt = '${data.created}',
           updatedAt = '${data.updated}'
         WHERE payoutID = "${data.id}";`;
@@ -907,8 +907,8 @@ router.post('/updateinvoice', async function (req,res){
         ON balance.memberID = kelas.memberID
         SET
         status = "${data.status}",
-          paidAt = "${data.paid_at}",
-          balance = balance + ${data.amount}
+          memberpurchase.paidAt = "${data.paid_at}",
+          balance.balance = balance.balance + ${data.amount}
         WHERE invoiceID = "${data.id}";`;
       const rows = await pool.query(sqlQuery);
       res.status(200).json(rows);

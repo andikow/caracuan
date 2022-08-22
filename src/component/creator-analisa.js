@@ -177,13 +177,28 @@ class CreatorAnalisa extends Component {
           <h5 className="text-primary card-title">{data.stockCode + ' '}<span className="text-secondary" style={{fontSize:"13px"}}>{data.namaSaham}</span></h5>
           <h3 className="text-primary card-title">{data.targetPrice} <span className="text-secondary" style={{fontSize:"13px"}}>Target Harga</span></h3>
           <div className="row">
-          <div className="col">
+          <div className="col-auto">
+          <p className="text-primary" style={{fontSize:"12px"}}>Kategori <br />
+          {
+            data.kategori == -1 ? <span data-toggle="tooltip" data-placement="top" title="Aman"><i class="fas fa-exclamation text-success"></i></span> :
+            data.kategori == 0 ?
+              <span data-toggle="tooltip" data-placement="top" title="Moderat">
+                <i class="fas fa-exclamation text-warning"></i>
+                <i class="fas fa-exclamation text-warning"></i>
+              </span>:
+              <span data-toggle="tooltip" data-placement="top" title="Berbahaya">
+                <i class="fas fa-exclamation text-danger"></i>
+                <i class="fas fa-exclamation text-danger"></i>
+                <i class="fas fa-exclamation text-danger"></i>
+              </span>}</p>
+          </div>
+          <div className="col-auto">
           <p className="text-primary" style={{fontSize:"12px"}}>Harga Awal <br />{data.initialPrice}</p>
           </div>
-          <div className="col">
+          <div className="col-auto">
           <p className="text-primary" style={{fontSize:"12px"}}>Perubahan <br /> <span className="text-success">{this.round((data.targetPrice - data.initialPrice)/data.initialPrice * 100) } %</span></p>
           </div>
-          <div className="col">
+          <div className="col-auto">
           <p className="text-primary" style={{fontSize:"12px"}}>Waktu <br />{data.days + ' hari (tersisa ' + ((data.days - moment(today).diff(data.date, "days")) < 0 ? "0":(data.days - moment(today).diff(data.date, "days"))) + ' hari lagi)'}</p>
           </div>
           </div>

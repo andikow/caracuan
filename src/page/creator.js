@@ -227,7 +227,7 @@ class Creator extends React.Component{
       <div className="aside pb-4 bg-light col-xs-12 col-sm-4 col-md-3 text-primary">
         <img src={this.state.profilImage} alt="Poto" height="150" style={{marginTop: "30px", borderRadius: "100%", display:'block', marginRight:'auto', marginLeft:'auto'}} />
         <div style={{textAlign:'center'}}>
-        <h5 className="pt-4 font-weight-bold">{this.state.data.Name}</h5>
+        <h5 className="pt-4 font-weight-bold">{this.state.data.Name} {this.state.data.noSertifikat != 0 ? <i class="fas fa-xs fa-badge-check" title="Tersertifikasi"></i>:""}</h5>
         <p>@{this.state.data.username}</p>
          <h6 className="font-weight-bold">{'Pengikut : ' + this.state.pengikut}</h6>
          <h6 className="font-weight-bold">Performa : {parseFloat(this.state.penilaian.PersenPenilaian).toFixed(2)}%</h6>

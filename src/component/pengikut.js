@@ -99,7 +99,7 @@ class Pengikut extends Component {
                     </div>
                     <div class="col">
                     <div class="row mr-auto">
-                      <a href={"/#/creator/" + data.memberID + "/beranda/"}><p className="text-primary font-weight-bold mb-0">{data.Name}</p></a>
+                      <a href={"/#/creator/" + data.memberID + "/beranda/"}><p className="text-primary font-weight-bold mb-0">{data.Name} {data.noSertifikat != 0 ? <i class="fas fa-xs fa-badge-check" title="Tersertifikasi"></i>:""}</p></a>
                     </div>
                     <div class="row mr-auto">
                       <p class="text-info font-weight-bold mb-2" style={{fontSize:12}}>{data.username}</p>

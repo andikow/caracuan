@@ -65,7 +65,7 @@ export default class CariAnalis extends React.Component{
             </div>
             <div class="info">
               <div class="title">
-                <a href={"/#/creator/" + data.memberID + "/beranda/"}><h4 className="text-primary">{data.Name}</h4></a>
+                <a href={"/#/creator/" + data.memberID + "/beranda/"}><h4 className="text-primary">{data.Name} {data.noSertifikat != 0 ? <i class="fas fa-xs fa-badge-check" title="Tersertifikasi"></i>:""}</h4></a>
               </div>
               <h5 class="desc">@{data.username}</h5>
               <span class="dotswrap" style={{height:"50px"}}><h5 class="desc" >{data.shortbio}</h5></span>
